@@ -1,1 +1,1 @@
-A cross platform lua file stealer for Garry's Mod.
+A cross-platform tool for downloading lua files from servers on Garry's Mod.
