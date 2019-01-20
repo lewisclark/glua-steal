@@ -14,42 +14,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "os.h"
-#include "init.h"
+#ifndef INIT_H
+#define INIT_H
 
-#if (defined(OS_LINUX) || defined(OS_MAC))
-#include <pthread.h>
+#include <cinttypes>
 
-int __attribute__((constructor)) main() {
-	pthread_t th;
-	pthread_create(&th, NULL, (void*(*)(void*))glt::Init, NULL);
-
-	return 0;
+namespace glt {
+	std::uintptr_t* Init(std::uintptr_t*);
 }
 
-int __attribute__((destructor)) kill() {
-	return 0;
-}
-#endif
-
-
-
-#ifdef OS_WINDOWS
-#include <windows.h>
-
-BOOL APIENTRY DllMain(HINSTANCE lib, DWORD reason, LPVOID) {
-	switch (reason) {
-		case DLL_PROCESS_ATTACH: {
-			DisableThreadLibraryCalls(lib);
-			CreateThread(0, 0, (LPTHREAD_START_ROUTINE)glt::Init, 0, 0, 0);
-
-			return true;
-		}
-		case DLL_PROCESS_DETACH: {
-			return true;
-		}
-	}
-
-	return false;
-}
 #endif

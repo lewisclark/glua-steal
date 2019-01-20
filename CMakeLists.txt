@@ -9,8 +9,8 @@ include_directories(fmt/include)
 add_subdirectory(fmt)
 
 # Sources to compile
-set(sources main.cpp)
+set(sources main.cpp init.cpp)
 
 add_library(gluatake SHARED ${sources})
 target_link_libraries(gluatake fmt)
-set_target_properties(gluatake PROPERTIES COMPILE_FLAGS "-Wall -Werror -Wextra -g" LINK_FLAGS "")
+set_target_properties(gluatake PROPERTIES COMPILE_FLAGS "-Wall -Werror -Wextra -g" LINK_FLAGS "-pthread")
