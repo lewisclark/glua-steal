@@ -17,8 +17,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "init.h"
 
 std::uintptr_t* glt::Init(std::uintptr_t*) {
-	g_logger = std::make_unique<Logger>("gluatake.log");
-	g_logger->LogString("Initializing\n");
+	auto workdir = glt::file::GetWorkDirectory();
+
+	if (workdir.empty()) {
+		return nullptr;
+	}
+
+	if (!std::filesystem::create_directories(workdir)) {
+		return nullptr;
+	}
+
+	g_logger = std::make_unique<Logger>((workdir / "log.txt").string());
+	g_logger->LogString("Initializing...\n");
 
 	while (true) {
 		std::this_thread::sleep_for(std::chrono::seconds(1)); // Keep alive

@@ -21,6 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <thread>
 
 #include "logger.h"
+#include "file.h"
 
 namespace glt {
 	std::uintptr_t* Init(std::uintptr_t*);
