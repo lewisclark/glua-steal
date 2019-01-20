@@ -41,3 +41,11 @@ std::filesystem::path glt::file::GetHomeDirectory() {
 
 	return path;
 }
+
+std::filesystem::path glt::file::GetLogFilePath() {
+	return (GetWorkDirectory() / "log.txt");
+}
+
+std::filesystem::path glt::file::GetServerStorePath() {
+	return (GetWorkDirectory() / "servers");
+}

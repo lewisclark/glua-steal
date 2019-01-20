@@ -27,7 +27,7 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 		return nullptr;
 	}
 
-	g_logger = std::make_unique<Logger>((workdir / "log.txt").string());
+	g_logger = std::make_unique<Logger>(glt::file::GetLogFilePath().string());
 	g_logger->LogString("Initializing...\n");
 
 	while (true) {

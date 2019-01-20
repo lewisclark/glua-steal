@@ -28,6 +28,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #endif
 
 namespace glt::file {
-	std::filesystem::path GetWorkDirectory(); // Returns a path to the directory where everything is saved/logged
+	std::filesystem::path GetWorkDirectory(); // Returns a path where everything is stored
 	std::filesystem::path GetHomeDirectory();
+	std::filesystem::path GetLogFilePath();
+	std::filesystem::path GetServerStorePath();
 }
