@@ -17,7 +17,7 @@ include_directories(subhook)
 add_subdirectory(subhook)
 
 # Sources to compile
-set(sources main.cpp init.cpp logger.cpp file.cpp)
+set(sources main.cpp init.cpp logger.cpp file.cpp library.cpp)
 
 add_library(gluatake SHARED ${sources})
 target_link_libraries(gluatake fmt subhook)
@@ -27,7 +27,5 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	target_link_options(gluatake PRIVATE -pthread -m32)
 	set_target_properties(gluatake PROPERTIES PREFIX "")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	message("Identified that you are using MSVC")
-
-	target_compile_options(gluatake PRIVATE /W4)
+	target_compile_options(gluatake PRIVATE /W4 /arch:IA32)
 endif()
