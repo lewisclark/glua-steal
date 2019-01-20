@@ -14,18 +14,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef INIT_H
-#define INIT_H
-
-#include <cinttypes>
-#include <thread>
-
-#include "logger.h"
-#include "file.h"
 #include "hook.h"
 
-namespace glt {
-	std::uintptr_t* Init(std::uintptr_t*);
+bool glt::hook::Init() {
+	return true;
 }
-
-#endif

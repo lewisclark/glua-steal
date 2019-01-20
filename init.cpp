@@ -30,6 +30,12 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 	g_logger = std::make_unique<Logger>(glt::file::GetLogFilePath().string());
 	g_logger->LogString("Initializing...\n");
 
+	if (!hook::Init()) {
+		return nullptr;
+	}
+
+	g_logger->LogString("Successfully initialized\n");
+
 	while (true) {
 		std::this_thread::sleep_for(std::chrono::seconds(1)); // Keep alive
 	}

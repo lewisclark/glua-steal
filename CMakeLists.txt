@@ -17,7 +17,7 @@ include_directories(subhook)
 add_subdirectory(subhook)
 
 # Sources to compile
-set(sources main.cpp init.cpp logger.cpp file.cpp library.cpp)
+set(sources main.cpp init.cpp logger.cpp file.cpp library.cpp hook.cpp)
 
 add_library(gluatake SHARED ${sources})
 target_link_libraries(gluatake fmt subhook)
