@@ -19,6 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include <cinttypes>
 
+#include "logger.h"
+
 namespace glt {
 	std::uintptr_t* Init(std::uintptr_t*);
 }

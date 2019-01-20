@@ -17,5 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "init.h"
 
 std::uintptr_t* glt::Init(std::uintptr_t*) {
+	g_logger = std::make_unique<Logger>("gluatake.log");
+	g_logger->LogString("Initializing\n");
+
 	return nullptr;
 }
