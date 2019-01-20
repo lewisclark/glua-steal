@@ -20,5 +20,9 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 	g_logger = std::make_unique<Logger>("gluatake.log");
 	g_logger->LogString("Initializing\n");
 
+	while (true) {
+		std::this_thread::sleep_for(std::chrono::seconds(1)); // Keep alive
+	}
+
 	return nullptr;
 }

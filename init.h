@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #define INIT_H
 
 #include <cinttypes>
+#include <thread>
 
 #include "logger.h"
 
