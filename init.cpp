@@ -20,16 +20,10 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 	auto workdir = glt::file::GetWorkDirectory();
 
 	if (workdir.empty()) {
-		g_logger->LogString("Failed to get work directory!\n");
-
 		return nullptr;
 	}
 
-	if (!std::filesystem::create_directories(workdir)) {
-		g_logger->LogString("Failed to create work directory!\n");
-
-		return nullptr;
-	}
+	std::filesystem::create_directories(workdir);
 
 	g_logger = std::make_unique<Logger>(glt::file::GetLogFilePath().string());
 	g_logger->LogString("Initializing...\n");
