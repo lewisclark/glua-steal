@@ -11,7 +11,7 @@ include_directories(fmt/include)
 add_subdirectory(fmt)
 
 # Sources to compile
-set(sources main.cpp init.cpp logger.cpp)
+set(sources main.cpp init.cpp logger.cpp file.cpp)
 
 add_library(gluatake SHARED ${sources})
 target_link_libraries(gluatake fmt)
