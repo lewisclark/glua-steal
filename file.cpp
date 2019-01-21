@@ -62,8 +62,17 @@ static std::vector<std::string> reserved {
 };
 #endif
 
+static char is_bad_char(char c) {
+	if (c == '_' || c == '-' || c == '.' || c == '/' || c == '\\' || isalnum(c)) {
+		return false;
+	}
+
+	return true;
+}
+
 std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
 	std::transform(pathstr.begin(), pathstr.end(), pathstr.begin(), ::tolower);
+	pathstr.erase(std::remove_if(pathstr.begin(), pathstr.end(), is_bad_char));
 	auto path = std::filesystem::path(pathstr).relative_path();
 
 	if (!path.has_filename()) {
