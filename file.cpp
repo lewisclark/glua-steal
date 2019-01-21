@@ -84,6 +84,10 @@ std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
 	}
 #endif
 
+	if (pathstr.length() >= 200) {
+		return std::filesystem::path("longfilename.lua"); // TODO: Do something better than this
+	}
+
 	auto path = std::filesystem::path(pathstr).relative_path();
 
 	if (!path.has_filename()) {
