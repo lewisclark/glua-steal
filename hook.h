@@ -17,6 +17,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef HOOK_H
 #define HOOK_H
 
+#include "library.h"
+#include "logger.h"
+
+#include "subhook.h"
+
 namespace glt::hook {
 	bool Init();
 }
