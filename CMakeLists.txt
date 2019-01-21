@@ -20,7 +20,7 @@ add_subdirectory(subhook)
 set(sources main.cpp init.cpp logger.cpp file.cpp library.cpp hook.cpp)
 
 add_library(gluatake SHARED ${sources})
-target_link_libraries(gluatake fmt subhook)
+target_link_libraries(gluatake fmt-header-only subhook)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	target_compile_options(gluatake PRIVATE -Wall -Wextra -m32)
