@@ -29,7 +29,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #endif
 
 namespace glt::lib {
-	std::uintptr_t* GetSymbol(const std::string& lib_name, const std::string& sym_name);
+	std::uintptr_t* GetSymbol(std::string lib_name, const std::string& sym_name);
+	std::string GetSharedExtension(); // Get the shared library extension for this OS
 }
 
 #endif

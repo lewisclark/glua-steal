@@ -16,7 +16,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "library.h"
 
-std::uintptr_t* glt::lib::GetSymbol(const std::string& lib_name, const std::string& sym_name) {
+std::uintptr_t* glt::lib::GetSymbol(std::string lib_name, const std::string& sym_name) {
+	lib_name += GetSharedExtension();
+
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	void* lib = dlopen(lib_name.c_str(), RTLD_NOLOAD);
 
@@ -32,4 +34,16 @@ std::uintptr_t* glt::lib::GetSymbol(const std::string& lib_name, const std::stri
 #endif
 
 	return nullptr;
+}
+
+std::string glt::lib::GetSharedExtension() {
+#if (defined(OS_LINUX))
+	return ".so";
+#elif (defined(OS_MAC))
+	return ".dylib"
+#elif (defined(OS_WINDOWS))
+	return ".dll";
+#else
+	return "";
+#endif
 }
