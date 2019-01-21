@@ -49,7 +49,7 @@ namespace glt::ssdk {
 		virtual void pad_24() = 0;
 		virtual void pad_25() = 0;
 		virtual void pad_26() = 0;
-		virtual void pad_27() = 0;
+		virtual bool IsConnected() = 0;
 		virtual void pad_28() = 0;
 		virtual void pad_29() = 0;
 		virtual void pad_30() = 0;
