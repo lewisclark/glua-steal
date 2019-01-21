@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include <filesystem>
 #include <string>
+#include <algorithm>
 
 #include "os.h"
 
@@ -32,5 +33,5 @@ namespace glt::file {
 	std::filesystem::path GetHomeDirectory();
 	std::filesystem::path GetLogFilePath();
 	std::filesystem::path GetServerStorePath();
-	std::filesystem::path SanitizeLuaFilePath(const std::string& pathstr);
+	std::filesystem::path SanitizeLuaFilePath(std::string pathstr);
 }

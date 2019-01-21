@@ -50,7 +50,8 @@ std::filesystem::path glt::file::GetServerStorePath() {
 	return (GetWorkDirectory() / "servers");
 }
 
-std::filesystem::path glt::file::SanitizeLuaFilePath(const std::string& pathstr) {
+std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
+	std::transform(pathstr.begin(), pathstr.end(), pathstr.begin(), ::tolower);
 	auto path = std::filesystem::path(pathstr).relative_path();
 
 	if (!path.has_filename()) {
