@@ -62,7 +62,7 @@ void loadbufferx_hk(std::uintptr_t* luastate, const char* buff,
 }
 
 bool glt::hook::Init() {
-	std::uintptr_t* loadbufferx = lib::GetSymbol("lua_shared", "luaL_loadbufferx");
+	std::uintptr_t* loadbufferx = lib::GetSymbol("garrysmod/bin/lua_shared", "luaL_loadbufferx");
 
 	if (!loadbufferx) {
 		return false;
