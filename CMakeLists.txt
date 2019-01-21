@@ -25,7 +25,7 @@ target_link_libraries(gluasteal fmt-header-only subhook)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	target_compile_options(gluasteal PRIVATE -Wall -Wextra -m32)
-	target_link_options(gluasteal PRIVATE -pthread -m32)
+	target_link_options(gluasteal PRIVATE -pthread -lstdc++fs -m32)
 	set_target_properties(gluasteal PROPERTIES PREFIX "")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	target_compile_options(gluasteal PRIVATE /W4 /arch:IA32)
