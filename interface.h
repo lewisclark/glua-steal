@@ -14,21 +14,25 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef INIT_H
-#define INIT_H
+#ifndef INTERFACE_H
+#define INTERFACE_H
 
-#include <cinttypes>
-#include <thread>
+#include "library.h"
 
-#include "logger.h"
-#include "file.h"
-#include "hook.h"
-#include "interface.h"
+namespace glt::ssdk {
+	typedef std::uintptr_t*(* CreateInterfaceFn)(const char*, int*);
 
-#include "sourcesdk/IVEngineClient.h"
+	template <typename T>
+	T* GetInterface(const std::string& lib_name, const std::string& iface_name) {
+		CreateInterfaceFn factory = reinterpret_cast<CreateInterfaceFn>(
+			lib::GetSymbol(lib_name, "CreateInterface"));
 
-namespace glt {
-	std::uintptr_t* Init(std::uintptr_t*);
+		if (!factory) {
+			return nullptr;
+		}
+
+		return reinterpret_cast<T*>(factory(iface_name.c_str(), nullptr));
+	}
 }
 
 #endif

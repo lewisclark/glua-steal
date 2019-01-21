@@ -28,6 +28,14 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 	g_logger = std::make_unique<Logger>(glt::file::GetLogFilePath().string());
 	g_logger->LogString("Initializing...\n");
 
+	ssdk::g_engineclient = ssdk::GetInterface<ssdk::IVEngineClient>("engine", "VEngineClient015");
+
+	if (!ssdk::g_engineclient) {
+		g_logger->LogString("Failed to grab VEngineClient interface\n");
+
+		return nullptr;
+	}
+
 	if (!hook::Init()) {
 		g_logger->LogString("Failed to initialize hooks!\n");
 
