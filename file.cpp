@@ -50,6 +50,18 @@ std::filesystem::path glt::file::GetServerStorePath() {
 	return (GetWorkDirectory() / "servers");
 }
 
+#if (defined(OS_LINUX) || defined(OS_MAC))
+static std::vector<std::string> reserved {
+
+};
+#elif (defined(OS_WINDOWS))
+static std::vector<std::string> reserved {
+	"con", "prn", "aux", "nul", "com1", "com2", "com3", "com4", "com5",
+	"com6", "com7", "com8", "com9", "com10", "lpt1", "lpt2", "lpt3",
+	"lpt4", "lpt5", "lpt6", "lpt7", "lpt8", "lpt9", "lpt10"
+};
+#endif
+
 std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
 	std::transform(pathstr.begin(), pathstr.end(), pathstr.begin(), ::tolower);
 	auto path = std::filesystem::path(pathstr).relative_path();
@@ -65,7 +77,9 @@ std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
 	auto newpath = std::filesystem::path();
 
 	for (auto& e : path) {
-		if (e.filename() == ".." || e.filename() == ".") {
+		if (e.filename() == ".." || e.filename() == "." ||
+			std::find(reserved.begin(), reserved.end(), e.string()) != reserved.end()) {
+
 			continue;
 		}
 
