@@ -24,10 +24,10 @@ std::uintptr_t* glt::lib::GetSymbol(const std::string& lib_name, const std::stri
 		return reinterpret_cast<std::uintptr_t*>(dlsym(lib, sym_name.c_str()));
 	}
 #elif (defined(OS_WINDOWS))
-	HMODULE lib = GetModuleHandleA(lib_name.c_str());
+	HMODULE lib = GetModuleHandle(lib_name.c_str());
 
 	if (lib) {
-		reinterpret_cast<std::uintptr_t*>(GetProcAddress(lib, sym_name.c_str()));
+		return reinterpret_cast<std::uintptr_t*>(GetProcAddress(lib, sym_name.c_str()));
 	}
 #endif
 
