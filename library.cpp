@@ -23,8 +23,13 @@ std::uintptr_t* glt::lib::GetSymbol(std::string lib_name, const std::string& sym
 	void* lib = dlopen(lib_name.c_str(), RTLD_NOLOAD);
 
 	if (lib) {
-		return reinterpret_cast<std::uintptr_t*>(dlsym(lib, sym_name.c_str()));
+		auto sym = reinterpret_cast<std::uintptr_t*>(dlsym(lib, sym_name.c_str()));
+
+		dlclose(lib);
+
+		return sym;
 	}
+
 #elif (defined(OS_WINDOWS))
 	HMODULE lib = GetModuleHandle(lib_name.c_str());
 
