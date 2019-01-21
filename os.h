@@ -23,6 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #define OS_LINUX
 #elif (defined(__APPLE__) || defined(__MACH__))
 #define OS_MAC
+#else
 #error "Operating system not found!"
 #endif
 
