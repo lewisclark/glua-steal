@@ -17,8 +17,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef HOOK_H
 #define HOOK_H
 
+#include <algorithm>
+#include <string>
+
 #include "library.h"
 #include "logger.h"
+#include "file.h"
+
+#include "sourcesdk/IVEngineClient.h"
 
 #include "subhook.h"
 
