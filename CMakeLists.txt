@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.11)
-project(gluatake CXX)
+project(gluasteal CXX)
 
 # For Vim YCM
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -20,13 +20,13 @@ add_subdirectory(subhook)
 set(sources main.cpp init.cpp logger.cpp file.cpp library.cpp hook.cpp
 	sourcesdk/IVEngineClient.cpp)
 
-add_library(gluatake SHARED ${sources})
-target_link_libraries(gluatake fmt-header-only subhook)
+add_library(gluasteal SHARED ${sources})
+target_link_libraries(gluasteal fmt-header-only subhook)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	target_compile_options(gluatake PRIVATE -Wall -Wextra -m32)
-	target_link_options(gluatake PRIVATE -pthread -m32)
-	set_target_properties(gluatake PROPERTIES PREFIX "")
+	target_compile_options(gluasteal PRIVATE -Wall -Wextra -m32)
+	target_link_options(gluasteal PRIVATE -pthread -m32)
+	set_target_properties(gluasteal PROPERTIES PREFIX "")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	target_compile_options(gluatake PRIVATE /W4 /arch:IA32)
+	target_compile_options(gluasteal PRIVATE /W4 /arch:IA32)
 endif()

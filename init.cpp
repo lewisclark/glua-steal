@@ -42,7 +42,8 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 		return nullptr;
 	}
 
-	g_logger->LogString("Successfully initialized\n");
+	g_logger->LogString("Successfully initialized.\nJoin a server to retrieve the lua files.\n");
+	g_logger->LogFormat("Lua files will be saved to '{}'\n", file::GetServerStorePath().string());
 
 	while (true) {
 		std::this_thread::sleep_for(std::chrono::seconds(1)); // Keep alive

@@ -23,7 +23,7 @@ std::filesystem::path glt::file::GetWorkDirectory() {
 		return std::filesystem::path();
 	}
 
-	return (home / "gluatake");
+	return (home / "gluasteal");
 }
 
 std::filesystem::path glt::file::GetHomeDirectory() {
