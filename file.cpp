@@ -63,6 +63,10 @@ static std::vector<std::string> reserved {
 #endif
 
 static char is_bad_char(char c) {
+	if (c >= 0x0 && c <= 0x1f) {
+		return true;
+	}
+
 	if (c == '_' || c == '-' || c == '.' || c == '/' || c == '\\' || isalnum(c)) {
 		return false;
 	}
@@ -87,7 +91,7 @@ std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
 
 	for (auto& e : path) {
 		if (e.filename() == ".." || e.filename() == "." ||
-			std::find(reserved.begin(), reserved.end(), e.string()) != reserved.end()) {
+			std::find(reserved.begin(), reserved.end(), e.filename().string()) != reserved.end()) {
 
 			continue;
 		}
