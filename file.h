@@ -32,4 +32,5 @@ namespace glt::file {
 	std::filesystem::path GetHomeDirectory();
 	std::filesystem::path GetLogFilePath();
 	std::filesystem::path GetServerStorePath();
+	std::filesystem::path SanitizeLuaFilePath(const std::string& pathstr);
 }

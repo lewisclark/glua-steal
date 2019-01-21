@@ -49,3 +49,27 @@ std::filesystem::path glt::file::GetLogFilePath() {
 std::filesystem::path glt::file::GetServerStorePath() {
 	return (GetWorkDirectory() / "servers");
 }
+
+std::filesystem::path glt::file::SanitizeLuaFilePath(const std::string& pathstr) {
+	auto path = std::filesystem::path(pathstr).relative_path();
+
+	if (!path.has_filename()) {
+		path.replace_filename("noname");
+	}
+
+	if (path.extension() != ".lua") {
+		path.replace_extension(".lua");
+	}
+
+	auto newpath = std::filesystem::path();
+
+	for (auto& e : path) {
+		if (e.filename() == ".." || e.filename() == ".") {
+			continue;
+		}
+
+		newpath /= e;
+	}
+
+	return newpath;
+}
