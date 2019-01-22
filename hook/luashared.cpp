@@ -20,6 +20,9 @@ typedef glt::ssdk::ILuaInterface* (__THISCALL__* CreateLuaInterfaceFn)(glt::ssdk
 	std::uint8_t, bool);
 static CreateLuaInterfaceFn CreateLuaInterfaceOrig = nullptr;
 
+typedef void (__THISCALL__* CloseLuaInterfaceFn)(glt::ssdk::ILuaShared*, glt::ssdk::ILuaInterface*);
+static CloseLuaInterfaceFn CloseLuaInterfaceOrig = nullptr;
+
 static glt::ssdk::ILuaInterface* __FASTCALL__ CreateLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr,
 		std::uintptr_t*, std::uint8_t c, bool b) {
 
@@ -29,7 +32,23 @@ static glt::ssdk::ILuaInterface* __FASTCALL__ CreateLuaInterfaceHk(glt::ssdk::IL
 		glt::ssdk::g_clientluainterface = lua;
 	}
 
+	glt::g_logger->LogFormat("Lua interface {} (0x{:02x}) created\n",
+		c, reinterpret_cast<std::uintptr_t>(lua));
+
 	return lua;
+}
+
+static void __FASTCALL__ CloseLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr, std::uintptr_t*,
+	glt::ssdk::ILuaInterface* lua) {
+
+	if (lua == glt::ssdk::g_clientluainterface) {
+		glt::ssdk::g_clientluainterface = nullptr;
+	}
+
+	glt::g_logger->LogFormat("Lua interface 0x{:02x} closing\n",
+		reinterpret_cast<std::uintptr_t>(lua));
+
+	CloseLuaInterfaceOrig(thisptr, lua);
 }
 
 bool glt::hook::LuaSharedHooker::Hook() {
@@ -44,5 +63,8 @@ bool glt::hook::LuaSharedHooker::Hook() {
 	CreateLuaInterfaceOrig = vt->HookMethod<CreateLuaInterfaceFn>(
 		reinterpret_cast<std::uintptr_t>(CreateLuaInterfaceHk), 4);
 
-	return CreateLuaInterfaceOrig;
+	CloseLuaInterfaceOrig = vt->HookMethod<CloseLuaInterfaceFn>(
+		reinterpret_cast<std::uintptr_t>(CloseLuaInterfaceHk), 5);
+
+	return (CreateLuaInterfaceOrig && CloseLuaInterfaceOrig);
 }
