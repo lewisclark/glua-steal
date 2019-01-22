@@ -15,11 +15,8 @@ find_package(Threads)
 include_directories(fmt/include)
 add_subdirectory(fmt)
 
-# subhook
-set(SUBHOOK_STATIC ON)
-set(SUBHOOK_FORCE_32BIT ON)
-include_directories(subhook)
-add_subdirectory(subhook)
+# glua headers
+include_directories(glua_headers/include)
 
 # Sources to compile
 set(sources main.cpp init.cpp logger.cpp file.cpp library.cpp hook.cpp

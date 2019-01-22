@@ -1,3 +1,6 @@
 [submodule "fmt"]
 	path = fmt
 	url = https://github.com/fmtlib/fmt
+[submodule "glua_headers"]
+	path = glua_headers
+	url = https://github.com/Facepunch/gmod-module-base
