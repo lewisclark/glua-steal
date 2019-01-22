@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
-project(gluasteal CXX)
+project(gluasteal LANGUAGES CXX VERSION 1.0)
+
+add_definitions(-DGLUASTEAL_VERSION=${gluasteal_VERSION})
 
 # For Vim YCM
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

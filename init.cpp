@@ -26,6 +26,7 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 	std::filesystem::create_directories(workdir);
 
 	g_logger = std::make_unique<Logger>(glt::file::GetLogFilePath().string());
+	g_logger->LogFormat("gluasteal v{:.1f}\n", GLUASTEAL_VERSION);
 	g_logger->LogString("Initializing...\n");
 
 	ssdk::g_engineclient = ssdk::GetInterface<ssdk::IVEngineClient>("engine", "VEngineClient015");
