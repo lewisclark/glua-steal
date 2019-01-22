@@ -26,8 +26,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "sourcesdk/IVEngineClient.h"
 
-#include "subhook.h"
-
 namespace glt::hook {
 	bool Init();
 }

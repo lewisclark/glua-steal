@@ -25,11 +25,11 @@ set(sources main.cpp init.cpp logger.cpp file.cpp library.cpp hook.cpp
 add_library(gluasteal SHARED ${sources})
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only subhook stdc++fs)
+	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only stdc++fs)
 	target_compile_options(gluasteal PRIVATE -Wall -Wextra -pedantic -m32)
 	target_link_options(gluasteal PRIVATE -m32)
 	set_target_properties(gluasteal PROPERTIES PREFIX "")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only subhook)
+	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only )
 	target_compile_options(gluasteal PRIVATE /W4 /arch:IA32)
 endif()

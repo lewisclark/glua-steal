@@ -16,6 +16,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "hook.h"
 
+/*
+
 typedef int(* loadbufferx_fn)(std::uintptr_t*, const char*, size_t, const char*, const char*);
 
 static subhook::Hook loadbufferx_hook;
@@ -62,12 +64,8 @@ void loadbufferx_hk(std::uintptr_t* lua, const char* buf,
 	((loadbufferx_fn)(loadbufferx_hook.GetTrampoline()))(lua, buf, bufsize, name, mode);
 }
 
+*/
+
 bool glt::hook::Init() {
-	std::uintptr_t* loadbufferx = lib::GetSymbol("garrysmod/bin/lua_shared", "luaL_loadbufferx");
-
-	if (!loadbufferx) {
-		return false;
-	}
-
-	return loadbufferx_hook.Install((void*)loadbufferx, (void*)loadbufferx_hk);
+	return true;
 }
