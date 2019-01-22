@@ -16,6 +16,33 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "luashared.h"
 
+typedef glt::ssdk::ILuaInterface* (__thiscall* CreateLuaInterfaceFn)(glt::ssdk::ILuaShared*,
+	std::uint8_t, bool);
+static CreateLuaInterfaceFn CreateLuaInterfaceOrig = nullptr;
+
+static glt::ssdk::ILuaInterface* __fastcall CreateLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr,
+		std::uintptr_t*, std::uint8_t c, bool b) {
+
+	glt::ssdk::ILuaInterface* lua = CreateLuaInterfaceOrig(thisptr, c, b);
+
+	if (c == 0) {
+		glt::ssdk::g_clientluainterface = lua;
+	}
+
+	return lua;
+}
+
 bool glt::hook::LuaSharedHooker::Hook() {
-	return true;
+	auto luashared = reinterpret_cast<std::uintptr_t**>(ssdk::g_luashared);
+
+	if (!luashared) {
+		return false;
+	}
+
+	auto vt = CreateVTHook(luashared);
+
+	CreateLuaInterfaceOrig = vt->HookMethod<CreateLuaInterfaceFn>(
+		reinterpret_cast<std::uintptr_t>(CreateLuaInterfaceHk), 4);
+
+	return CreateLuaInterfaceOrig;
 }

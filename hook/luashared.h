@@ -17,7 +17,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef HOOK_LUASHARED_H
 #define HOOK_LUASHARED_H
 
+#include "../logger.h"
+
 #include "hooker.h"
+
+#include "../gamesdk/ILuaShared.h"
+#include "../gamesdk/ILuaInterface.h"
 
 namespace glt::hook {
 	class LuaSharedHooker : public Hooker {
