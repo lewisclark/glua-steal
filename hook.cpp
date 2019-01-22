@@ -20,13 +20,15 @@ typedef int(* loadbufferx_fn)(std::uintptr_t*, const char*, size_t, const char*,
 
 static subhook::Hook loadbufferx_hook;
 
-// cannot allocate these inside loadbufferx_hk for some reason (subhook?)
+// cannot allocate these inside loadbufferx_hk for some reason (subhook issue?)
 static std::string servaddr; 
 static std::filesystem::path luapath;
 static std::ofstream ofluafile;
 
 void loadbufferx_hk(std::uintptr_t* lua, const char* buf,
 	size_t bufsize, const char* name, const char* mode) {
+
+	luapath = glt::file::GetServerStorePath();
 
 	if (glt::ssdk::g_engineclient->IsConnected()) {
 		glt::ssdk::NetChannel* netchannel = glt::ssdk::g_engineclient->GetNetChannelInfo();
@@ -36,17 +38,24 @@ void loadbufferx_hk(std::uintptr_t* lua, const char* buf,
 			std::replace(servaddr.begin(), servaddr.end(), '.', '-');
 			std::replace(servaddr.begin(), servaddr.end(), ':', '_');
 
-			luapath = glt::file::GetServerStorePath();
 			luapath /= servaddr;
-			luapath /= glt::file::SanitizeLuaFilePath(name + 1); // +1 to skip @ char
-
-			std::filesystem::create_directories(luapath.parent_path());
-
-			ofluafile.open(luapath);
-			ofluafile << buf;
-			ofluafile.close();
 		}
+		else {
+			luapath /= "unknown";
+		}
+
+		luapath /= glt::file::SanitizeLuaFilePath(name + 1); // +1 to skip @ char
 	}
+	else {
+		luapath /= "menustate";
+		luapath /= glt::file::SanitizeLuaFilePath(name + 1);
+	}
+
+	std::filesystem::create_directories(luapath.parent_path());
+
+	ofluafile.open(luapath);
+	ofluafile << buf;
+	ofluafile.close();
 
 	((loadbufferx_fn)(loadbufferx_hook.GetTrampoline()))(lua, buf, bufsize, name, mode);
 }
