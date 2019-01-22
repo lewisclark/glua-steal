@@ -38,7 +38,7 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 		return nullptr;
 	}
 
-	auto libluashared = std::make_unique<lib::Library>("lua_shared");
+	auto libluashared = std::make_unique<lib::Library>("garrysmod/bin/lua_shared");
 	ssdk::g_luashared = libluashared->GetInterface<ssdk::ILuaShared>("LUASHARED003");
 
 	auto luasharedhooker = std::make_unique<hook::LuaSharedHooker>();
