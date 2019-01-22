@@ -7,7 +7,7 @@ gluasteal downloads clientside & shared lua files from Garry's Mod servers that 
 ### How to use
 
 1. Either Download pre-built from the [Releases section](https://github.com/lewez/glua-steal/releases) or [build from source](#Building-from-source).
-2. [Inject](How-to-inject) library into Garry's Mod, at the main menu.
+2. [Inject](#How-to-inject) library into Garry's Mod, at the main menu.
 3. Join a server.
 
 Logs and lua files will be written to the gluasteal folder, in your home directory.
