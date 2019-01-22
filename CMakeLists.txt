@@ -20,7 +20,7 @@ include_directories(glua_headers/include)
 
 # Sources to compile
 set(sources main.cpp init.cpp logger.cpp file.cpp library.cpp hook.cpp
-	sourcesdk/IVEngineClient.cpp)
+	gamesdk/IVEngineClient.cpp)
 
 add_library(gluasteal SHARED ${sources})
 

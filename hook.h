@@ -24,7 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "logger.h"
 #include "file.h"
 
-#include "sourcesdk/IVEngineClient.h"
+#include "gamesdk/IVEngineClient.h"
 
 namespace glt::hook {
 	bool Init();

@@ -25,7 +25,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "hook.h"
 #include "interface.h"
 
-#include "sourcesdk/IVEngineClient.h"
+#include "gamesdk/IVEngineClient.h"
 
 namespace glt {
 	std::uintptr_t* Init(std::uintptr_t*);
