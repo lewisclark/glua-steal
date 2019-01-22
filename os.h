@@ -27,4 +27,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #error "Operating system not found!"
 #endif
 
+
+// Calling conventions
+#if (defined(__GNUC__))
+#define __FASTCALL__ __attribute__((fastcall))
+#define __THISCALL__ __attribute__((thiscall))
+#elif defined(_MSC_VER)
+#define __FASTCALL__ __fastcall
+#define __THISCALL__ __thiscall
+#endif
+
+
 #endif
