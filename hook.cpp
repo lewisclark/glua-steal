@@ -25,40 +25,30 @@ static std::string servaddr;
 static std::filesystem::path luapath;
 static std::ofstream ofluafile;
 
-void loadbufferx_hk(std::uintptr_t* luastate, const char* buff,
+void loadbufferx_hk(std::uintptr_t* lua, const char* buf,
 	size_t bufsize, const char* name, const char* mode) {
 
-	if (!glt::ssdk::g_engineclient->IsConnected()) {
-		((loadbufferx_fn)(loadbufferx_hook.GetTrampoline()))(luastate, buff, bufsize, name, mode);
+	if (glt::ssdk::g_engineclient->IsConnected()) {
+		glt::ssdk::NetChannel* netchannel = glt::ssdk::g_engineclient->GetNetChannelInfo();
 
-		return;
+		if (netchannel) {
+			servaddr = std::string(netchannel->GetAddress());
+			std::replace(servaddr.begin(), servaddr.end(), '.', '-');
+			std::replace(servaddr.begin(), servaddr.end(), ':', '_');
+
+			luapath = glt::file::GetServerStorePath();
+			luapath /= servaddr;
+			luapath /= glt::file::SanitizeLuaFilePath(name + 1); // +1 to skip @ char
+
+			std::filesystem::create_directories(luapath.parent_path());
+
+			ofluafile.open(luapath);
+			ofluafile << buf;
+			ofluafile.close();
+		}
 	}
 
-	glt::ssdk::NetChannel* netchannel = glt::ssdk::g_engineclient->GetNetChannelInfo();
-
-	if (!netchannel) {
-		glt::g_logger->LogFormat("Netchannel was null! {}\n", name);
-
-		((loadbufferx_fn)(loadbufferx_hook.GetTrampoline()))(luastate, buff, bufsize, name, mode);
-
-		return;
-	}
-
-	servaddr = std::string(netchannel->GetAddress());
-	std::replace(servaddr.begin(), servaddr.end(), '.', '-');
-	std::replace(servaddr.begin(), servaddr.end(), ':', '_');
-
-	luapath = glt::file::GetServerStorePath();
-	luapath /= servaddr;
-	luapath /= glt::file::SanitizeLuaFilePath(name + 1); // +1 to skip @ at the start of the path
-
-	std::filesystem::create_directories(luapath.parent_path());
-
-	ofluafile.open(luapath);
-	ofluafile << buff;
-	ofluafile.close();
-
-	((loadbufferx_fn)(loadbufferx_hook.GetTrampoline()))(luastate, buff, bufsize, name, mode);
+	((loadbufferx_fn)(loadbufferx_hook.GetTrampoline()))(lua, buf, bufsize, name, mode);
 }
 
 bool glt::hook::Init() {
