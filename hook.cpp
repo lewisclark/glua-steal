@@ -58,7 +58,5 @@ bool glt::hook::Init() {
 		return false;
 	}
 
-	loadbufferx_hook.Install((void*)loadbufferx, (void*)loadbufferx_hk);
-
-	return true;
+	return loadbufferx_hook.Install((void*)loadbufferx, (void*)loadbufferx_hk);
 }
