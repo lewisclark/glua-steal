@@ -36,6 +36,7 @@ static glt::ssdk::ILuaInterface* __FASTCALL__ CreateLuaInterfaceHk(glt::ssdk::IL
 		luainterfacehooker = new glt::hook::LuaInterfaceHooker();
 		if (!luainterfacehooker->Hook()) {
 			glt::g_logger->LogString("Failed to hook lua interface\n");
+			delete luainterfacehooker;
 		}
 
 	}

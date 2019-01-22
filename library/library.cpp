@@ -41,7 +41,5 @@ std::string glt::lib::Library::GetExtension() {
 	return ".dylib"
 #elif (defined(OS_WINDOWS))
 	return ".dll";
-#else
-	return "";
 #endif
 }
