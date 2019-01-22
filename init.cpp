@@ -41,8 +41,9 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 	auto libluashared = std::make_unique<lib::Library>("lua_shared");
 	ssdk::g_luashared = libluashared->GetInterface<ssdk::ILuaShared>("LUASHARED003");
 
-	if (!hook::Init()) {
-		g_logger->LogString("Failed to initialize hooks!\n");
+	auto luasharedhooker = std::make_unique<hook::LuaSharedHooker>();
+	if (!luasharedhooker->Hook()) {
+		g_logger->LogString("Failed to hook luashared\n");
 
 		return nullptr;
 	}

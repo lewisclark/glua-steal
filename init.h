@@ -22,11 +22,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "logger.h"
 #include "file.h"
-#include "hook.h"
 #include "library/library.h"
 
 #include "gamesdk/IVEngineClient.h"
 #include "gamesdk/ILuaShared.h"
+
+#include "hook/luashared.h"
 
 namespace glt {
 	std::uintptr_t* Init(std::uintptr_t*);
