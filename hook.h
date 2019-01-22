@@ -22,9 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "library.h"
 #include "logger.h"
-#include "file.h"
-
-#include "gamesdk/IVEngineClient.h"
+#include "vtable.h"
 
 namespace glt::hook {
 	bool Init();
