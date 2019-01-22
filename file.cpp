@@ -75,7 +75,6 @@ static char is_bad_char(char c) {
 }
 
 std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
-	std::transform(pathstr.begin(), pathstr.end(), pathstr.begin(), ::tolower);
 	pathstr.erase(std::remove_if(pathstr.begin(), pathstr.end(), is_bad_char));
 
 #if (defined(OS_WINDOWS))
