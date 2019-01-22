@@ -24,6 +24,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "../gamesdk/ILuaShared.h"
 #include "../gamesdk/ILuaInterface.h"
 
+#include "../os.h"
+
 namespace glt::hook {
 	class LuaSharedHooker : public Hooker {
 		public:

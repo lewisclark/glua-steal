@@ -16,11 +16,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "luashared.h"
 
-typedef glt::ssdk::ILuaInterface* (__thiscall* CreateLuaInterfaceFn)(glt::ssdk::ILuaShared*,
+typedef glt::ssdk::ILuaInterface* (__THISCALL__* CreateLuaInterfaceFn)(glt::ssdk::ILuaShared*,
 	std::uint8_t, bool);
 static CreateLuaInterfaceFn CreateLuaInterfaceOrig = nullptr;
 
-static glt::ssdk::ILuaInterface* __fastcall CreateLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr,
+static glt::ssdk::ILuaInterface* __FASTCALL__ CreateLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr,
 		std::uintptr_t*, std::uint8_t c, bool b) {
 
 	glt::ssdk::ILuaInterface* lua = CreateLuaInterfaceOrig(thisptr, c, b);
