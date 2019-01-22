@@ -29,7 +29,8 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 	g_logger->LogFormat("gluasteal v{:.1f}\n", GLUASTEAL_VERSION);
 	g_logger->LogString("Initializing...\n");
 
-	ssdk::g_engineclient = ssdk::GetInterface<ssdk::IVEngineClient>("engine", "VEngineClient015");
+	auto libengine = std::make_unique<lib::Library>("engine");
+	ssdk::g_engineclient = libengine->GetInterface<ssdk::IVEngineClient>("VEngineClient015");
 
 	if (!ssdk::g_engineclient) {
 		g_logger->LogString("Failed to grab VEngineClient interface\n");

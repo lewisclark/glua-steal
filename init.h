@@ -23,7 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "logger.h"
 #include "file.h"
 #include "hook.h"
-#include "interface.h"
+#include "library/library.h"
 
 #include "gamesdk/IVEngineClient.h"
 

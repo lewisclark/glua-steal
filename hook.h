@@ -20,7 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <algorithm>
 #include <string>
 
-#include "library.h"
+#include "library/library.h"
 #include "logger.h"
 #include "vtable.h"
 

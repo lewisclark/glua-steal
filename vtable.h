@@ -17,8 +17,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef VTABLE_H
 #define VTABLE_H
 
-#include "interface.h"
-
 class VTHook {
 	public:
 	VTHook(std::uintptr_t** vt_base) { // Double pointer to base of vt

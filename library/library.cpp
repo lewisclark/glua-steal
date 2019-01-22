@@ -16,32 +16,25 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "library.h"
 
-std::uintptr_t* glt::lib::GetSymbol(std::string lib_name, const std::string& sym_name) {
-	lib_name += GetSharedExtension();
+glt::lib::Library::Library(const std::string& pathname) {
+	std::string pathnamext(pathname + GetExtension());
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
-	void* lib = dlopen(lib_name.c_str(), RTLD_NOLOAD);
-
-	if (lib) {
-		auto sym = reinterpret_cast<std::uintptr_t*>(dlsym(lib, sym_name.c_str()));
-
-		dlclose(lib);
-
-		return sym;
-	}
-
+	m_handle = reinterpret_cast<std::uintptr_t*>(dlopen(pathnamext.c_str(), RTLD_NOLOAD));
 #elif (defined(OS_WINDOWS))
-	HMODULE lib = GetModuleHandle(lib_name.c_str());
-
-	if (lib) {
-		return reinterpret_cast<std::uintptr_t*>(GetProcAddress(lib, sym_name.c_str()));
-	}
+	m_handle = reinterpret_cast<std::uintptr_t*>(GetModuleHandle(pathnamext.c_str()));
 #endif
-
-	return nullptr;
 }
 
-std::string glt::lib::GetSharedExtension() {
+glt::lib::Library::~Library() {
+#if (defined(OS_LINUX) || defined(OS_MAC))
+	if (m_handle) {
+		dlclose(m_handle);
+	}
+#endif
+}
+
+std::string glt::lib::Library::GetExtension() {
 #if (defined(OS_LINUX))
 	return ".so";
 #elif (defined(OS_MAC))
