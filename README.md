@@ -6,8 +6,8 @@ gluasteal downloads clientside & shared lua files from Garry's Mod servers that 
 
 ### How to use
 
-1. Either Download pre-built from the 'Releases' section or build from source.
-2. Inject library into Garry's Mod, at the main menu.
+1. Either Download pre-built from the [Releases section](https://github.com/lewez/glua-steal/releases) or [build from source](#Building-from-source).
+2. [Inject](How-to-inject) library into Garry's Mod, at the main menu.
 3. Join a server.
 
 Logs and lua files will be written to the gluasteal folder, in your home directory.
@@ -22,7 +22,7 @@ Logs and lua files will be written to the gluasteal folder, in your home directo
 
 #### Windows
 
-1. Get an injector (e.g. Extreme Injector)
+1. Get an injector
 2. Add the dll to the injector
 3. Select the Garry's Mod process
 4. Inject at the main menu
@@ -31,7 +31,7 @@ Logs and lua files will be written to the gluasteal folder, in your home directo
 
 ##### Method 1
 
-Using [linux-inject](https://github.com/gaffe23/linux-inject)
+Injection using [linux-inject](https://github.com/gaffe23/linux-inject)
 
 ##### Method 2
 
