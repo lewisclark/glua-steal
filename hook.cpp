@@ -53,8 +53,10 @@ void loadbufferx_hk(std::uintptr_t* lua, const char* buf,
 
 	std::filesystem::create_directories(luapath.parent_path());
 
-	ofluafile.open(luapath);
-	ofluafile << buf;
+	ofluafile.open(luapath,	std::ofstream::app);
+	ofluafile << "-- " << name << "\n";
+	ofluafile << "-- Retrieved by https://github.com/lewez/glua-steal\n";
+	ofluafile << buf << "\n\n";
 	ofluafile.close();
 
 	((loadbufferx_fn)(loadbufferx_hook.GetTrampoline()))(lua, buf, bufsize, name, mode);
