@@ -17,11 +17,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef HOOK_LUAINTERFACE_H
 #define HOOK_LUAINTERFACE_H
 
+#include <fstream>
+#include <filesystem>
+
 #include "../logger.h"
+#include "../file.h"
 
 #include "hooker.h"
 
 #include "../gamesdk/ILuaInterface.h"
+#include "../gamesdk/IVEngineClient.h"
 
 #include "../os.h"
 
