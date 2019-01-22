@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "../logger.h"
 
 #include "hooker.h"
+#include "luainterface.h"
 
 #include "../gamesdk/ILuaShared.h"
 #include "../gamesdk/ILuaInterface.h"
