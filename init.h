@@ -26,6 +26,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "library/library.h"
 
 #include "gamesdk/IVEngineClient.h"
+#include "gamesdk/ILuaShared.h"
 
 namespace glt {
 	std::uintptr_t* Init(std::uintptr_t*);
