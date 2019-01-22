@@ -51,6 +51,17 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 	g_logger->LogString("Successfully initialized.\nJoin a server to retrieve the lua files.\n");
 	g_logger->LogFormat("Lua files will be saved to '{}'\n", file::GetServerStorePath().string());
 
+	while (!ssdk::g_clientluainterface) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	}
+
+	auto luainterfacehooker = std::make_unique<hook::LuaInterfaceHooker>();
+	if (!luainterfacehooker->Hook()) {
+		g_logger->LogString("Failed to hook lua interface\n");
+
+		return nullptr;
+	}
+
 	while (true) {
 		std::this_thread::sleep_for(std::chrono::seconds(1)); // Keep alive
 	}
