@@ -25,7 +25,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "library/library.h"
 
 #include "luaexports.h"
-#include "lualoader.h"
 
 #include "gamesdk/IVEngineClient.h"
 #include "gamesdk/ILuaShared.h"

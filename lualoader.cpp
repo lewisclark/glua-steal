@@ -16,12 +16,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "lualoader.h"
 
-bool glt::lua::LuaLoader::LoadLua(glt::ssdk::ILuaInterface* lua, const std::string&) {
-	if (m_env == -1 || m_envmt == -1) {
-		CreateTables(lua);
-	}
-
-	auto ifluafile = std::ifstream(glt::file::GetWorkDirectory() / "run.lua", std::ifstream::binary);
+bool glt::lua::LoadLua(glt::ssdk::ILuaInterface* lua, const std::string& filename) {
+	auto ifluafile = std::ifstream(glt::file::GetWorkDirectory() / "gluasteal.lua", std::ifstream::binary);
 	
 	if (!ifluafile.is_open()) { // file doesn't exist
 		return true;
@@ -29,26 +25,39 @@ bool glt::lua::LuaLoader::LoadLua(glt::ssdk::ILuaInterface* lua, const std::stri
 
 	std::stringstream luacodess;
 	luacodess << ifluafile.rdbuf();
+	ifluafile.close();
 	const auto& luacode = luacodess.str();
 
-	luaL_loadbuffer(lua->GetLuaState(), luacode.c_str(), luacode.length(), "weewoo");
-	lua->ReferencePush(m_env);
-	lua->ReferencePush(m_envmt);
-	lua->SetMetaTable(-2);
-	lua_setfenv(lua->GetLuaState(), -2);
-	lua->Call(0, 0);
+	luaL_loadbuffer(lua->GetLuaState(), luacode.c_str(), luacode.length(), "gluasteal");
 
-	return true;
-}
+	lua->CreateTable();
 
-void glt::lua::LuaLoader::CreateTables(glt::ssdk::ILuaInterface* lua) {
+	lua->PushString(filename.c_str(), filename.length());
+	lua->SetField(-2, "__FILENAME__");
+
 	lua->CreateTable();
 		lua->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
 		lua->SetField(-2, "__index");
-	m_envmt = lua->ReferenceCreate();
+	lua->SetMetaTable(-2);
 
-	lua->CreateTable();
-	m_env = lua->ReferenceCreate();
+	lua_setfenv(lua->GetLuaState(), -2);
+
+	if (lua->PCall(0, 1, 0)) {
+		g_logger->LogFormat("Lua loader script error\n{}\n\n", lua->GetString(-1));
+
+		lua->Pop(1);
+	}
+	else {
+		if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL)) {
+			bool shouldloadfile = lua->GetBool(-1);
+
+			lua->Pop(1);
+
+			return shouldloadfile;
+		}
+
+		lua->Pop(1);
+	}
+
+	return true;
 }
-
-std::unique_ptr<glt::lua::LuaLoader> glt::lua::g_lualoader = nullptr;

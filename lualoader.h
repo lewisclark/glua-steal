@@ -17,8 +17,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef LUALOADER_H
 #define LUALOADER_H
 
-#include <memory>
-#include <cinttypes>
 #include <fstream>
 #include <sstream>
 
@@ -28,20 +26,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "gamesdk/ILuaInterface.h"
 
+#include "os.h"
+
 namespace glt::lua {
-	class LuaLoader {
-		public:
-		// Returns false if we should not load the current file
-		bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename);
-
-		private:
-		void CreateTables(ssdk::ILuaInterface* lua);
-
-		int m_env = -1;
-		int m_envmt = -1;
-	};
-
-	extern std::unique_ptr<LuaLoader> g_lualoader;
+	// Returns false if we should not load the current file (filename)
+	bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename);
 }
 
 #endif

@@ -66,7 +66,9 @@ static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::u
 	ofluafile << buf << "\n\n";
 	ofluafile.close();
 
-	if (!glt::lua::g_lualoader->LoadLua(thisptr, strfilename)) {
+	if (!glt::lua::LoadLua(thisptr, strfilename)) {
+		glt::g_logger->LogFormat("Blocked the execution of {}\n", strfilename);
+
 		return false;
 	}
 
