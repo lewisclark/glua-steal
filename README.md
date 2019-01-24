@@ -9,11 +9,12 @@ Tested & working on Windows & Linux. Still needs testing on Mac.
 
 ---
 
-### How to use
+### How to Use
 
-1. Either Download pre-built from the [Releases section](https://github.com/lewez/glua-steal/releases) or [build from source](#Building-from-source).
-2. [Inject](#How-to-inject) library into Garry's Mod, at the main menu.
-3. Join a server.
+1. Either Download pre-built from the [Releases section](https://github.com/lewez/glua-steal/releases) or [build from source](#Building-From-Source).
+2. [Inject](#How-to-Inject) library into Garry's Mod, at the main menu.
+3. Optionally, set up your own [lua file to be loaded](#Lua-Loader-\(Load-Before-Autorun\))
+4. Join a server.
 
 Logs and lua files will be written to the gluasteal folder, in your home directory.
 
@@ -23,7 +24,7 @@ Logs and lua files will be written to the gluasteal folder, in your home directo
 
 ---
 
-### How to inject
+### How to Inject
 
 #### Windows
 
@@ -54,11 +55,38 @@ Using DYLD_INSERT_LIBRARIES (see LD_PRELOAD above)
 
 ---
 
-### Building from source
+### Lua Loader (Load Before Autorun)
+
+Place your own lua code in your gluasteal directory, in a file name gluasteal.lua
+
+For example, C:/Users/username/Documents/gluasteal/gluasteal.lua
+
+This file will be executed every time a Garry's Mod lua script is about to be run. The variable SCRIPT will be set to the path of the file to be run. You can return false to stop the current file from being executed.
+
+```lua
+-- All scripts with the string 'derma' in their name will be blocked from executing
+if (SCRIPT:match("derma")) then
+	return false
+end
+```
+
+---
+
+### Building From Source
 
 If building with GCC, ensure you are using at least version 8 or above.
 
 Todo
+
+##### Unix
+```
+git clone https://github.com/lewez/glua-steal
+cd glua-steal
+git submodule update --init --recursive
+mkdir build && cd build
+cmake ..
+make
+```
 
 ---
 
