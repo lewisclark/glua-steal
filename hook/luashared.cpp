@@ -16,18 +16,24 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "luashared.h"
 
-typedef glt::ssdk::ILuaInterface* (__THISCALL__* CreateLuaInterfaceFn)(glt::ssdk::ILuaShared*,
+#if (defined(OS_LINUX) || defined(OS_MAC))
+#define CREATELUAINTERFACE_INDEX 5
+#define CLOSELUAINTERFACE_INDEX 6
+#elif (defined(OS_WINDOWS))
+#define CREATELUAINTERFACE_INDEX 4
+#define CLOSELUAINTERFACE_INDEX 5
+#endif
+
+typedef glt::ssdk::ILuaInterface* (* CreateLuaInterfaceFn)(glt::ssdk::ILuaShared*,
 	std::uint8_t, bool);
 static CreateLuaInterfaceFn CreateLuaInterfaceOrig = nullptr;
 
-typedef void (__THISCALL__* CloseLuaInterfaceFn)(glt::ssdk::ILuaShared*, glt::ssdk::ILuaInterface*);
+typedef void (* CloseLuaInterfaceFn)(glt::ssdk::ILuaShared*, glt::ssdk::ILuaInterface*);
 static CloseLuaInterfaceFn CloseLuaInterfaceOrig = nullptr;
 
 glt::hook::LuaInterfaceHooker* luainterfacehooker;
 
-static glt::ssdk::ILuaInterface* __FASTCALL__ CreateLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr,
-		std::uintptr_t*, std::uint8_t c, bool b) {
-
+static glt::ssdk::ILuaInterface* CreateLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr, std::uint8_t c, bool b) {
 	glt::ssdk::ILuaInterface* lua = CreateLuaInterfaceOrig(thisptr, c, b);
 
 	if (c == 0) {
@@ -47,8 +53,7 @@ static glt::ssdk::ILuaInterface* __FASTCALL__ CreateLuaInterfaceHk(glt::ssdk::IL
 	return lua;
 }
 
-static void __FASTCALL__ CloseLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr, std::uintptr_t*,
-	glt::ssdk::ILuaInterface* lua) {
+static void CloseLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr, glt::ssdk::ILuaInterface* lua) {
 
 	if (lua == glt::ssdk::g_clientluainterface) {
 		glt::ssdk::g_clientluainterface = nullptr;
@@ -74,10 +79,10 @@ bool glt::hook::LuaSharedHooker::Hook() {
 	auto vt = CreateVTHook(luashared);
 
 	CreateLuaInterfaceOrig = vt->HookMethod<CreateLuaInterfaceFn>(
-		reinterpret_cast<std::uintptr_t>(CreateLuaInterfaceHk), 4);
+		reinterpret_cast<std::uintptr_t>(CreateLuaInterfaceHk), CREATELUAINTERFACE_INDEX);
 
 	CloseLuaInterfaceOrig = vt->HookMethod<CloseLuaInterfaceFn>(
-		reinterpret_cast<std::uintptr_t>(CloseLuaInterfaceHk), 5);
+		reinterpret_cast<std::uintptr_t>(CloseLuaInterfaceHk), CLOSELUAINTERFACE_INDEX);
 
 	return (CreateLuaInterfaceOrig && CloseLuaInterfaceOrig);
 }

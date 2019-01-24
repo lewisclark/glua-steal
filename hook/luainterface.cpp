@@ -16,12 +16,25 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "luainterface.h"
 
-typedef bool (__THISCALL__* RunStringExFn)(glt::ssdk::ILuaInterface*, const char*, const char*,
-	const char*, bool, bool, bool, bool);
+// TODO: Tidy this up
+#if (defined(OS_LINUX) || defined(OS_MAC))
+typedef bool (* RunStringExFn)(glt::ssdk::ILuaInterface*, const char*, const char*, const char*,
+	bool, bool, bool, bool);
+#elif (defined(OS_WINDOWS))
+typedef bool (__THISCALL__* RunStringExFn)(glt::ssdk::ILuaInterface*, const char*, const char*, const char*,
+	bool, bool, bool, bool);
+#endif
 static RunStringExFn RunStringExOrig = nullptr;
 
-static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::uintptr_t*,
+// TODO: Tidy this up
+#if (defined(OS_LINUX) || defined(OS_MAC))
+static bool RunStringExHk(glt::ssdk::ILuaInterface* thisptr,
+#elif (defined(OS_WINDOWS))
+static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::uintptr_t*
+#endif
 	const char* filename, const char* path, const char* buf, bool b1, bool b2, bool b3, bool b4) {
+
+	glt::g_logger->LogFormat("RunStringExHk ({})\n", filename);
 
 	auto luapath = glt::file::GetServerStorePath();
 
