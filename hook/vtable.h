@@ -19,57 +19,34 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include <cstring>
 
-#include "../os.h"
-
-#if (defined(OS_LINUX) || defined(OS_MAC)) 
-#include <unistd.h>
-#include <sys/mman.h>
-#elif (defined(OS_WINDOWS))
-
-#endif
-
 class VTHook {
 	public:
 	VTHook(std::uintptr_t** vt_base) { // Double pointer to base of vt
-		bInitialize(vt_base);
+		Initialize(vt_base);
 	}
 
 	~VTHook() {
 		UnHook();
 	}
 
-	bool bInitialize(std::uintptr_t** vt_base) {
+	bool Initialize(std::uintptr_t** vt_base) {
 		m_vtbase = vt_base;
 		m_oldvt = *vt_base;
 		m_vtsize = GetVTCount(*vt_base);
 		m_newvt = new std::uintptr_t[m_vtsize];
 		memcpy(m_newvt, m_oldvt, sizeof(std::uintptr_t) * m_vtsize);
 
-		Hook();
+		*m_vtbase = m_newvt;
 
 		return true;
 	}
 
 	void UnHook() {
 		if (m_vtbase) {
-			MemoryUnprotect(*m_vtbase);
 			*m_vtbase = m_oldvt;
-			MemoryProtect(*m_vtbase);
 		}
 
 		delete[] m_newvt;
-	}
-
-	void Hook() {
-		if (m_vtbase) {
-			MemoryUnprotect(*m_vtbase);
-			*m_vtbase = m_newvt;
-			MemoryProtect(*m_vtbase);
-		}
-	}
-
-	int iGetFuncCount() {
-		return m_vtsize;
 	}
 
 	std::uintptr_t GetFuncAddress(int index) {
@@ -109,28 +86,6 @@ class VTHook {
 		}
 
 		return i;
-	}
-
-	bool MemoryUnprotect(std::uintptr_t* addr) {
-#if (defined(OS_LINUX) || defined(OS_MAC))
-		std::uintmax_t page_size = sysconf(_SC_PAGE_SIZE);
-		std::uintptr_t page_start = (std::uintptr_t)addr & ~(page_size - 1);
-
-		return !mprotect((void*)page_start, page_size, PROT_READ | PROT_WRITE | PROT_EXEC);
-#elif (defined(OS_WINDOWS))
-		return true;
-#endif
-	}
-
-	bool MemoryProtect(std::uintptr_t* addr) {
-#if (defined(OS_LINUX) || defined(OS_MAC))
-		std::uintmax_t page_size = sysconf(_SC_PAGE_SIZE);
-		std::uintptr_t page_start = (std::uintptr_t)addr & ~(page_size - 1);
-
-		return !mprotect((void*)page_start, page_size, PROT_READ | PROT_EXEC);
-#elif (defined(OS_WINDOWS))
-		return true;
-#endif
 	}
 
 	private:
