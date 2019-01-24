@@ -45,28 +45,26 @@ class VTHook {
 		m_newvt = new std::uintptr_t[m_vtsize];
 		memcpy(m_newvt, m_oldvt, sizeof(std::uintptr_t) * m_vtsize);
 
-		if (!MemoryUnprotect(*vt_base)) {
-			glt::g_logger->LogString("Failed to MemoryUnprotect vtable\n");
-
-			return false;
-		}
-
-		*vt_base = m_newvt;
+		Hook();
 
 		return true;
 	}
 
 	void UnHook() {
 		if (m_vtbase) {
+			MemoryUnprotect(*m_vtbase);
 			*m_vtbase = m_oldvt;
+			MemoryProtect(*m_vtbase);
 		}
 
 		delete[] m_newvt;
 	}
 
-	void ReHook() {
+	void Hook() {
 		if (m_vtbase) {
+			MemoryUnprotect(*m_vtbase);
 			*m_vtbase = m_newvt;
+			MemoryProtect(*m_vtbase);
 		}
 	}
 
@@ -119,6 +117,17 @@ class VTHook {
 		std::uintptr_t page_start = (std::uintptr_t)addr & ~(page_size - 1);
 
 		return !mprotect((void*)page_start, page_size, PROT_READ | PROT_WRITE | PROT_EXEC);
+#elif (defined(OS_WINDOWS))
+		return true;
+#endif
+	}
+
+	bool MemoryProtect(std::uintptr_t* addr) {
+#if (defined(OS_LINUX) || defined(OS_MAC))
+		std::uintmax_t page_size = sysconf(_SC_PAGE_SIZE);
+		std::uintptr_t page_start = (std::uintptr_t)addr & ~(page_size - 1);
+
+		return !mprotect((void*)page_start, page_size, PROT_READ | PROT_EXEC);
 #elif (defined(OS_WINDOWS))
 		return true;
 #endif
