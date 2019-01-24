@@ -17,9 +17,9 @@ Tested & working on Windows & Linux. Still needs testing on Mac.
 
 Logs and lua files will be written to the gluasteal folder, in your home directory.
 
-* Windows: C:/Users/Lewis/Documents/gluasteal/
-* Linux: /home/lewis/gluasteal/
-* Mac: /Users/lewis/gluasteal/
+* Windows: C:/Users/username/Documents/gluasteal/
+* Linux: /home/username/gluasteal/
+* Mac: /Users/username/gluasteal/
 
 ---
 
