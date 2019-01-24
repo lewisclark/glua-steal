@@ -83,9 +83,6 @@ bool glt::hook::LuaSharedHooker::Hook() {
 		return false;
 	}
 
-	g_logger->LogFormat("LUASHARED003 -> 0x{:02x}\n",
-		reinterpret_cast<std::uintptr_t>(luashared));
-
 	auto vt = CreateVTHook(luashared);
 
 	CreateLuaInterfaceOrig = vt->HookMethod<CreateLuaInterfaceFn>(
