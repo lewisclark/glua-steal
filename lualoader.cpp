@@ -33,7 +33,7 @@ bool glt::lua::LoadLua(glt::ssdk::ILuaInterface* lua, const std::string& filenam
 	lua->CreateTable();
 
 	lua->PushString(filename.c_str(), filename.length());
-	lua->SetField(-2, "__FILENAME__");
+	lua->SetField(-2, "SCRIPT");
 
 	lua->CreateTable();
 		lua->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
