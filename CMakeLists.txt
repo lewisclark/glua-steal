@@ -27,7 +27,7 @@ add_library(gluasteal SHARED ${sources})
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only stdc++fs -m32)
-	target_compile_options(gluasteal PRIVATE -Wall -Wextra -pedantic -m32)
+	target_compile_options(gluasteal PRIVATE -Wall -Wextra -pedantic -m32 -Wno-unused-variable -Wno-attributes)
 	set_target_properties(gluasteal PROPERTIES PREFIX "")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only )
