@@ -34,8 +34,6 @@ static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::u
 #endif
 	const char* filename, const char* path, const char* buf, bool b1, bool b2, bool b3, bool b4) {
 
-	glt::g_logger->LogFormat("RunStringExHk ({})\n", filename);
-
 	auto luapath = glt::file::GetServerStorePath();
 
 	if (glt::ssdk::g_engineclient->IsConnected()) {
