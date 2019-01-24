@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.10)
 project(gluasteal LANGUAGES CXX VERSION 1.0)
 
 add_definitions(-DGLUASTEAL_VERSION=${gluasteal_VERSION})
@@ -26,9 +26,8 @@ set(sources main.cpp init.cpp logger.cpp file.cpp library/library.cpp
 add_library(gluasteal SHARED ${sources})
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only stdc++fs)
+	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only stdc++fs -m32)
 	target_compile_options(gluasteal PRIVATE -Wall -Wextra -pedantic -m32)
-	target_link_options(gluasteal PRIVATE -m32)
 	set_target_properties(gluasteal PROPERTIES PREFIX "")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only )
