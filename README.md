@@ -2,6 +2,9 @@
 
 gluasteal downloads clientside & shared lua files from Garry's Mod servers that you join.
 
+![Windows usage](https://i.imgur.com/3udyeAr.png)
+![Linux usage](https://i.imgur.com/9lU1Ie5.png)
+
 Tested & working on Windows & Linux. Still needs testing on Mac.
 
 ---
