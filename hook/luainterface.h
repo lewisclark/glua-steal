@@ -23,7 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "../logger.h"
 #include "../file.h"
 
-#include "hooker.h"
+#include "ihooker.h"
 
 #include "../gamesdk/ILuaInterface.h"
 #include "../gamesdk/IVEngineClient.h"
@@ -31,7 +31,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "../os.h"
 
 namespace glt::hook {
-	class LuaInterfaceHooker : public Hooker {
+	class LuaInterfaceHooker : public IHooker {
 		public:
 		bool Hook();
 	};

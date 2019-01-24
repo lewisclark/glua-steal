@@ -14,8 +14,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef HOOKER_H
-#define HOOKER_H
+#ifndef IHOOKER_H
+#define IHOOKER_H
 
 #include <vector>
 #include <memory>
@@ -23,12 +23,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "vtable.h"
 
-// Purpose: Resource management of VTHooks. Makes sure hooked vtables are unhooked when destroyed
-
 namespace glt::hook {
-	class Hooker {
+	class IHooker {
 		public:
-		virtual ~Hooker() {
+		virtual ~IHooker() {
 			
 		}
 
