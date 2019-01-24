@@ -32,9 +32,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #if (defined(__GNUC__))
 #define __FASTCALL__ __attribute__((fastcall))
 #define __THISCALL__ __attribute__((thiscall))
+#define __CDECL__ __attribute__((cdecl))
+#define __STDCALL__ __attribute__((stdcall))
 #elif defined(_MSC_VER)
 #define __FASTCALL__ __fastcall
 #define __THISCALL__ __thiscall
+#define __CDECL__ __cdecl
+#define __STDCALL__ __stdcall
 #endif
 
 
