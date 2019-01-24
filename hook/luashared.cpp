@@ -24,16 +24,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #define CLOSELUAINTERFACE_INDEX 5
 #endif
 
-typedef glt::ssdk::ILuaInterface* (* CreateLuaInterfaceFn)(glt::ssdk::ILuaShared*,
-	std::uint8_t, bool);
-static CreateLuaInterfaceFn CreateLuaInterfaceOrig = nullptr;
-
+#if (defined(OS_LINUX) || defined(OS_MAC))
+typedef glt::ssdk::ILuaInterface* (* CreateLuaInterfaceFn)(glt::ssdk::ILuaShared*, std::uint8_t, bool);
 typedef void (* CloseLuaInterfaceFn)(glt::ssdk::ILuaShared*, glt::ssdk::ILuaInterface*);
+#elif (defined(OS_WINDOWS))
+typedef glt::ssdk::ILuaInterface* (__THISCALL__* CreateLuaInterfaceFn)(glt::ssdk::ILuaShared*, std::uint8_t, bool);
+typedef void (__THISCALL__* CloseLuaInterfaceFn)(glt::ssdk::ILuaShared*, glt::ssdk::ILuaInterface*);
+#endif
+static CreateLuaInterfaceFn CreateLuaInterfaceOrig = nullptr;
 static CloseLuaInterfaceFn CloseLuaInterfaceOrig = nullptr;
 
 glt::hook::LuaInterfaceHooker* luainterfacehooker;
 
+#if (defined(OS_LINUX) || defined(OS_MAC))
 static glt::ssdk::ILuaInterface* CreateLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr, std::uint8_t c, bool b) {
+#elif (defined(OS_WINDOWS))
+static glt::ssdk::ILuaInterface* __FASTCALL__ CreateLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr, std::uintptr_t*, std::uint8_t c, bool b) {
+#endif
 	glt::ssdk::ILuaInterface* lua = CreateLuaInterfaceOrig(thisptr, c, b);
 
 	if (c == 0) {
@@ -53,8 +60,11 @@ static glt::ssdk::ILuaInterface* CreateLuaInterfaceHk(glt::ssdk::ILuaShared* thi
 	return lua;
 }
 
+#if (defined(OS_LINUX) || defined(OS_MAC))
 static void CloseLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr, glt::ssdk::ILuaInterface* lua) {
-
+#elif (defined(OS_WINDOWS))
+static void __FASTCALL__ CloseLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr, std::uintptr_t*, glt::ssdk::ILuaInterface* lua) {
+#endif
 	if (lua == glt::ssdk::g_clientluainterface) {
 		glt::ssdk::g_clientluainterface = nullptr;
 		delete luainterfacehooker;
