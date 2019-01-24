@@ -19,6 +19,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include <cstring>
 
+#include "../os.h"
+
+#if (defined(OS_LINUX) || defined(OS_MAC)) 
+#include <unistd.h>
+#include <sys/mman.h>
+#elif (defined(OS_WINDOWS))
+
+#endif
+
 class VTHook {
 	public:
 	VTHook(std::uintptr_t** vt_base) { // Double pointer to base of vt
@@ -35,6 +44,8 @@ class VTHook {
 		m_vtsize = GetVTCount(*vt_base);
 		m_newvt = new std::uintptr_t[m_vtsize];
 		memcpy(m_newvt, m_oldvt, sizeof(std::uintptr_t) * m_vtsize);
+
+		MemoryUnprotect(*vt_base);
 		*vt_base = m_newvt;
 
 		return true;
@@ -95,6 +106,17 @@ class VTHook {
 		}
 
 		return i;
+	}
+
+	bool MemoryUnprotect(std::uintptr_t* addr) {
+#if (defined(OS_LINUX) || defined(OS_MAC))
+		std::uintmax_t page_size = sysconf(_SC_PAGE_SIZE);
+		std::uintptr_t page_start = (std::uintptr_t)addr & ~(page_size - 1);
+
+		return !mprotect((void*)page_start, page_size, PROT_READ | PROT_WRITE | PROT_EXEC);
+#elif (defined(OS_WINDOWS))
+		return true;
+#endif
 	}
 
 	private:
