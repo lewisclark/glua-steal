@@ -17,10 +17,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef ILUAINTERFACE_H
 #define ILUAINTERFACE_H
 
+#include <cinttypes>
+
 #include "GarrysMod/Lua/Interface.h"
 
 namespace glt::ssdk {
-	typedef GarrysMod::Lua::ILuaBase ILuaInterface;
+	class lua_State;
+
+	class ILuaInterface : public GarrysMod::Lua::ILuaBase {
+		public:
+		lua_State* GetLuaState() {
+			return *reinterpret_cast<lua_State**>(reinterpret_cast<std::uint8_t*>(this) + 0x4);
+		}
+	};
 
 	extern ILuaInterface* g_clientluainterface;
 }
