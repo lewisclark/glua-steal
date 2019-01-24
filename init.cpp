@@ -48,6 +48,14 @@ std::uintptr_t* glt::Init(std::uintptr_t*) {
 		return nullptr;
 	}
 
+	if (!lua::GetExports()) {
+		g_logger->LogString("Failed to get all lua exports\n");
+
+		return nullptr;
+	}
+
+	lua::g_lualoader = std::make_unique<lua::LuaLoader>();
+
 	g_logger->LogString("Successfully initialized.\nJoin a server to retrieve the lua files.\n");
 	g_logger->LogFormat("Lua files will be saved to '{}'\n", file::GetServerStorePath().string());
 

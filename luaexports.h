@@ -14,28 +14,24 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef INIT_H
-#define INIT_H
+#ifndef LUAEXPORTS_H
+#define LUAEXPORTS_H
 
 #include <cinttypes>
-#include <thread>
 
-#include "logger.h"
-#include "file.h"
+#include "os.h"
 #include "library/library.h"
 
-#include "luaexports.h"
-#include "lualoader.h"
-
-#include "gamesdk/IVEngineClient.h"
-#include "gamesdk/ILuaShared.h"
 #include "gamesdk/ILuaInterface.h"
 
-#include "hook/luashared.h"
-#include "hook/luainterface.h"
+namespace glt::lua {
+	bool GetExports();
 
-namespace glt {
-	std::uintptr_t* Init(std::uintptr_t*);
+	typedef int (__CDECL__* luaL_loadbufferfn)(glt::ssdk::lua_State*, const char*, size_t, const char*);
+	typedef int (__CDECL__* lua_setfenvfn)(glt::ssdk::lua_State*, int);
+
+	extern luaL_loadbufferfn luaL_loadbuffer;
+	extern lua_setfenvfn lua_setfenv;
 }
 
 #endif

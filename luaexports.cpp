@@ -14,28 +14,16 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef INIT_H
-#define INIT_H
-
-#include <cinttypes>
-#include <thread>
-
-#include "logger.h"
-#include "file.h"
-#include "library/library.h"
-
 #include "luaexports.h"
-#include "lualoader.h"
 
-#include "gamesdk/IVEngineClient.h"
-#include "gamesdk/ILuaShared.h"
-#include "gamesdk/ILuaInterface.h"
+bool glt::lua::GetExports() {
+	auto libluashared = lib::Library("garrysmod/bin/lua_shared");
 
-#include "hook/luashared.h"
-#include "hook/luainterface.h"
+	luaL_loadbuffer = libluashared.GetSymbol<luaL_loadbufferfn>("luaL_loadbuffer");
+	lua_setfenv = libluashared.GetSymbol<lua_setfenvfn>("lua_setfenv");
 
-namespace glt {
-	std::uintptr_t* Init(std::uintptr_t*);
+	return (luaL_loadbuffer && lua_setfenv);
 }
 
-#endif
+glt::lua::luaL_loadbufferfn glt::lua::luaL_loadbuffer = nullptr;
+glt::lua::lua_setfenvfn glt::lua::lua_setfenv = nullptr;
