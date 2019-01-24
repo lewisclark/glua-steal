@@ -45,7 +45,12 @@ class VTHook {
 		m_newvt = new std::uintptr_t[m_vtsize];
 		memcpy(m_newvt, m_oldvt, sizeof(std::uintptr_t) * m_vtsize);
 
-		MemoryUnprotect(*vt_base);
+		if (!MemoryUnprotect(*vt_base)) {
+			glt::g_logger->LogString("Failed to MemoryUnprotect vtable\n");
+
+			return false;
+		}
+
 		*vt_base = m_newvt;
 
 		return true;
