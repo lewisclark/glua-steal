@@ -41,6 +41,10 @@ Editing the Garry's Mod launch script (hl2.sh) to preload the gluasteal library.
 
 `LD_PRELOAD=$LD_PRELOAD:/home/lewis/gluasteal.so`
 
+##### Method 3
+
+[Using gdb](https://github.com/AimTuxOfficial/AimTux/blob/master/load)
+
 #### Mac
 
 Using DYLD_INSERT_LIBRARIES (see LD_PRELOAD above)
