@@ -43,6 +43,8 @@ Editing the Garry's Mod launch script (hl2.sh) to preload the gluasteal library.
 
 ### Building from source
 
+If building with GCC, ensure you are using at least version 8 or above.
+
 Todo
 
 ---
