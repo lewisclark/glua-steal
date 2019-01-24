@@ -62,7 +62,7 @@ static std::vector<std::string> reserved {
 };
 #endif
 
-static char is_bad_char(char c) {
+static char is_bad_char(const char& c) {
 	if (c >= 0x0 && c <= 0x1f) {
 		return true;
 	}
@@ -75,7 +75,7 @@ static char is_bad_char(char c) {
 }
 
 std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
-	pathstr.erase(std::remove_if(pathstr.begin(), pathstr.end(), is_bad_char));
+	pathstr.erase(std::remove_if(pathstr.begin(), pathstr.end(), is_bad_char), pathstr.end());
 
 #if (defined(OS_WINDOWS))
 	while (!pathstr.empty() && (pathstr.back() == ' ' || pathstr.back() == '.')) {
