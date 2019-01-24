@@ -35,6 +35,7 @@ static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::u
 	const char* filename, const char* path, const char* buf, bool b1, bool b2, bool b3, bool b4) {
 
 	auto luapath = glt::file::GetServerStorePath();
+	std::string strfilename = std::string(filename);
 
 	if (glt::ssdk::g_engineclient->IsConnected()) {
 		glt::ssdk::NetChannel* netchannel = glt::ssdk::g_engineclient->GetNetChannelInfo();
@@ -50,20 +51,24 @@ static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::u
 			luapath /= "unknown";
 		}
 
-		luapath /= glt::file::SanitizeLuaFilePath(filename);
+		luapath /= glt::file::SanitizeLuaFilePath(strfilename);
 	}
 	else {
 		luapath /= "menustate";
-		luapath /= glt::file::SanitizeLuaFilePath(filename);
+		luapath /= glt::file::SanitizeLuaFilePath(strfilename);
 	}
 
 	std::filesystem::create_directories(luapath.parent_path());
 
 	auto ofluafile = std::ofstream(luapath, std::ofstream::app);
-	ofluafile << "-- " << filename << "\n";
+	ofluafile << "-- " << strfilename << "\n";
 	ofluafile << "-- Retrieved by https://github.com/lewez/glua-steal\n";
 	ofluafile << buf << "\n\n";
 	ofluafile.close();
+
+	if (!glt::lua::g_lualoader->LoadLua(thisptr, strfilename)) {
+		return false;
+	}
 
 	return RunStringExOrig(thisptr, filename, path, buf, b1, b2, b3, b4);
 }

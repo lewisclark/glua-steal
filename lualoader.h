@@ -14,29 +14,34 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef HOOK_LUAINTERFACE_H
-#define HOOK_LUAINTERFACE_H
+#ifndef LUALOADER_H
+#define LUALOADER_H
 
+#include <memory>
+#include <cinttypes>
 #include <fstream>
-#include <filesystem>
+#include <sstream>
 
-#include "../logger.h"
-#include "../file.h"
+#include "logger.h"
+#include "luaexports.h"
+#include "file.h"
 
-#include "../lualoader.h"
+#include "gamesdk/ILuaInterface.h"
 
-#include "ihooker.h"
-
-#include "../gamesdk/ILuaInterface.h"
-#include "../gamesdk/IVEngineClient.h"
-
-#include "../os.h"
-
-namespace glt::hook {
-	class LuaInterfaceHooker : public IHooker {
+namespace glt::lua {
+	class LuaLoader {
 		public:
-		bool Hook();
+		// Returns false if we should not load the current file
+		bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename);
+
+		private:
+		void CreateTables(ssdk::ILuaInterface* lua);
+
+		int m_env = -1;
+		int m_envmt = -1;
 	};
+
+	extern std::unique_ptr<LuaLoader> g_lualoader;
 }
 
 #endif

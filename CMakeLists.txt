@@ -19,7 +19,7 @@ add_subdirectory(fmt)
 include_directories(glua_headers/include)
 
 # Sources to compile
-set(sources main.cpp init.cpp logger.cpp file.cpp library/library.cpp
+set(sources main.cpp init.cpp logger.cpp file.cpp library/library.cpp lualoader.cpp luaexports.cpp
 	gamesdk/IVEngineClient.cpp gamesdk/ILuaShared.cpp gamesdk/ILuaInterface.cpp
 	hook/luashared.cpp hook/luainterface.cpp)
 
