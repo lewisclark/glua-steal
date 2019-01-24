@@ -2,6 +2,8 @@
 
 gluasteal downloads clientside & shared lua files from Garry's Mod servers that you join.
 
+Tested & working on Windows & Linux. Still needs testing on Mac.
+
 ---
 
 ### How to use
@@ -27,17 +29,21 @@ Logs and lua files will be written to the gluasteal folder, in your home directo
 3. Select the Garry's Mod process
 4. Inject at the main menu
 
-#### Unix
+#### Linux
 
 ##### Method 1
 
-Injection using [linux-inject](https://github.com/gaffe23/linux-inject)
+[linux-inject](https://github.com/gaffe23/linux-inject)
 
 ##### Method 2
 
 Editing the Garry's Mod launch script (hl2.sh) to preload the gluasteal library.
 
 `LD_PRELOAD=$LD_PRELOAD:/home/lewis/gluasteal.so`
+
+#### Mac
+
+Using DYLD_INSERT_LIBRARIES (see LD_PRELOAD above)
 
 ---
 
