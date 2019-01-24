@@ -30,7 +30,7 @@ static RunStringExFn RunStringExOrig = nullptr;
 #if (defined(OS_LINUX) || defined(OS_MAC))
 static bool RunStringExHk(glt::ssdk::ILuaInterface* thisptr,
 #elif (defined(OS_WINDOWS))
-static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::uintptr_t*
+static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::uintptr_t*,
 #endif
 	const char* filename, const char* path, const char* buf, bool b1, bool b2, bool b3, bool b4) {
 
