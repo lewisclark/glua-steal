@@ -77,11 +77,9 @@ static char is_bad_char(const char& c) {
 std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
 	pathstr.erase(std::remove_if(pathstr.begin(), pathstr.end(), is_bad_char), pathstr.end());
 
-#if (defined(OS_WINDOWS))
 	while (!pathstr.empty() && (pathstr.back() == ' ' || pathstr.back() == '.')) {
 		pathstr.pop_back();
 	}
-#endif
 
 	if (pathstr.length() >= 200) {
 		return std::filesystem::path("longfilename.lua"); // TODO: Do something better than this
@@ -93,13 +91,11 @@ std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
 		path.replace_filename("noname");
 	}
 
-	if (path.extension() != ".lua") {
-		path.replace_extension(".lua");
-	}
+	path.replace_extension(".lua");
 
 	auto newpath = std::filesystem::path();
 
-	for (auto& e : path) {
+	for (const auto& e : path) {
 		if (e.filename() == ".." || e.filename() == "." ||
 			std::find(reserved.begin(), reserved.end(), e.filename().string()) != reserved.end()) {
 
