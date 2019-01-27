@@ -17,16 +17,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "lualoader.h"
 
 bool glt::lua::LoadLua(glt::ssdk::ILuaInterface* lua, const std::string& filename) {
-	auto ifluafile = std::ifstream(glt::file::GetWorkDirectory() / "gluasteal.lua", std::ifstream::binary);
-	
-	if (!ifluafile.is_open()) { // file doesn't exist
+	const std::string& luacode = GetLuaFileContents();
+
+	if (luacode.empty()) {
 		return true;
 	}
-
-	std::stringstream luacodess;
-	luacodess << ifluafile.rdbuf();
-	ifluafile.close();
-	const auto& luacode = luacodess.str();
 
 	luaL_loadbuffer(lua->GetLuaState(), luacode.c_str(), luacode.length(), "gluasteal");
 
@@ -44,8 +39,6 @@ bool glt::lua::LoadLua(glt::ssdk::ILuaInterface* lua, const std::string& filenam
 
 	if (lua->PCall(0, 1, 0)) {
 		g_logger->LogFormat("Lua loader script error\n{}\n\n", lua->GetString(-1));
-
-		lua->Pop(1);
 	}
 	else {
 		if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL)) {
@@ -55,9 +48,23 @@ bool glt::lua::LoadLua(glt::ssdk::ILuaInterface* lua, const std::string& filenam
 
 			return shouldloadfile;
 		}
-
-		lua->Pop(1);
 	}
 
+	lua->Pop(1);
+
 	return true;
+}
+
+std::string glt::lua::GetLuaFileContents() {
+	auto ifluafile = std::ifstream(glt::file::GetWorkDirectory() / "gluasteal.lua", std::ifstream::binary);
+	
+	if (!ifluafile.is_open()) { // file doesn't exist
+		return "";
+	}
+
+	std::stringstream luacodess;
+	luacodess << ifluafile.rdbuf();
+	ifluafile.close();
+
+	return luacodess.str();
 }
