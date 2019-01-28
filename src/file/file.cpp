@@ -87,7 +87,7 @@ std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
 
 	auto path = std::filesystem::path(pathstr).relative_path();
 
-	if (!path.has_filename()) {
+	if (!path.has_filename() || path.filename().string().front() == '.') {
 		path.replace_filename("noname");
 	}
 
