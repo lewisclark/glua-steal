@@ -68,6 +68,8 @@ This file will be executed every time a Garry's Mod lua script is about to be ru
 if (SCRIPT:match("derma")) then
 	return false
 end
+
+This file is executed in its own environment, not in \_G. You are still able to access everything stored in _G though.
 ```
 
 ---
