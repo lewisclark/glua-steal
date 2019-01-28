@@ -11,4 +11,5 @@ TEST_CASE("file", "[file]") {
 	REQUIRE(SanitizeLuaFilePath("") == "noname.lua");
 	REQUIRE(SanitizeLuaFilePath(".lua") == "noname.lua");
 	REQUIRE(SanitizeLuaFilePath(".") == "noname.lua");
+	REQUIRE(SanitizeLuaFilePath("../dir/////test//./../././myfile.txt") == "dir/test/myfile.txt");
 }
