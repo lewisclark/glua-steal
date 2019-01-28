@@ -23,7 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "../logger.h"
 #include "../file.h"
 
-#include "../lualoader.h"
+#include "../lua/lualoader.h"
 
 #include "ihooker.h"
 

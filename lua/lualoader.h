@@ -14,24 +14,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef LUAEXPORTS_H
-#define LUAEXPORTS_H
+#ifndef LUALOADER_H
+#define LUALOADER_H
 
-#include <cinttypes>
+#include <fstream>
+#include <sstream>
 
-#include "os.h"
-#include "library/library.h"
-
-#include "gamesdk/ILuaInterface.h"
+#include "luaexports.h"
+#include "../logger.h"
+#include "../file.h"
 
 namespace glt::lua {
-	bool GetExports();
-
-	typedef int (__CDECL__* luaL_loadbufferfn)(glt::ssdk::lua_State*, const char*, size_t, const char*);
-	typedef int (__CDECL__* lua_setfenvfn)(glt::ssdk::lua_State*, int);
-
-	extern luaL_loadbufferfn luaL_loadbuffer;
-	extern lua_setfenvfn lua_setfenv;
+	// Returns false if we should not load the current file (filename)
+	bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename);
+	std::string GetLuaFileContents(); // Returns the lua code to run
 }
 
 #endif
