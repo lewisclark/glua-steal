@@ -7,17 +7,18 @@ include_directories(.)
 # file
 add_subdirectory(file)
 
-#lua
+# lua
 add_subdirectory(lua)
+
+# gamesdk
+add_subdirectory(gamesdk)
 
 # tests
 enable_testing()
 add_subdirectory(tests)
 
 # Sources to compile
-set(sources main.cpp init.cpp logger.cpp library/library.cpp
-	gamesdk/IVEngineClient.cpp gamesdk/ILuaShared.cpp gamesdk/ILuaInterface.cpp
-	hook/luashared.cpp hook/luainterface.cpp)
+set(sources main.cpp init.cpp logger.cpp library/library.cpp hook/luashared.cpp hook/luainterface.cpp)
 
 add_library(gluasteal SHARED ${sources})
 
