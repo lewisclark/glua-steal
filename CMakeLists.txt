@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(gluasteal VERSION 1.2)
+project(gluasteal LANGUAGES CXX VERSION 1.2)
 
 add_definitions(-DGLUASTEAL_VERSION=${gluasteal_VERSION})
 
