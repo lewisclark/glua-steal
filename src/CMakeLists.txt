@@ -13,19 +13,20 @@ add_subdirectory(lua)
 # gamesdk
 add_subdirectory(gamesdk)
 
+# hook
+add_subdirectory(hook)
+
+# library
+add_subdirectory(library)
+
 # tests
-enable_testing()
 add_subdirectory(tests)
 
-# Sources to compile
-set(sources main.cpp init.cpp logger.cpp library/library.cpp hook/luashared.cpp hook/luainterface.cpp)
-
-add_library(gluasteal SHARED ${sources})
+add_library(gluasteal SHARED main.cpp init.cpp logger.cpp)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only file lua -m32)
+	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only file lua hook gamesdk library -m32)
 	target_compile_options(gluasteal PRIVATE -Wall -Wextra -pedantic -m32 -Wno-unused-variable)
-	set_target_properties(gluasteal PROPERTIES PREFIX "")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} fmt-header-only)
 	target_compile_options(gluasteal PRIVATE /W4 /arch:IA32)
