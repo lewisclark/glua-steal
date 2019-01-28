@@ -69,8 +69,9 @@ if (SCRIPT:match("derma")) then
 	return false
 end
 
-This file is executed in its own environment, not in \_G. You are still able to access everything stored in _G though.
 ```
+
+This file is executed in its own environment, not in \_G. You are still able to access everything stored in _G though.
 
 ---
 
