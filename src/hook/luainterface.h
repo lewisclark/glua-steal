@@ -14,27 +14,29 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef INIT_H
-#define INIT_H
+#ifndef HOOK_LUAINTERFACE_H
+#define HOOK_LUAINTERFACE_H
 
-#include <cinttypes>
-#include <thread>
+#include <fstream>
+#include <filesystem>
 
 #include "logger.h"
-#include "file.h"
-#include "library/library.h"
+#include "file/file.h"
 
-#include "lua/luaexports.h"
+#include "lua/lualoader.h"
 
-#include "gamesdk/IVEngineClient.h"
-#include "gamesdk/ILuaShared.h"
+#include "ihooker.h"
+
 #include "gamesdk/ILuaInterface.h"
+#include "gamesdk/IVEngineClient.h"
 
-#include "hook/luashared.h"
-#include "hook/luainterface.h"
+#include "os.h"
 
-namespace glt {
-	std::uintptr_t* Init(std::uintptr_t*);
+namespace glt::hook {
+	class LuaInterfaceHooker : public IHooker {
+		public:
+		bool Hook();
+	};
 }
 
 #endif

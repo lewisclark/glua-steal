@@ -14,20 +14,27 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef LUALOADER_H
-#define LUALOADER_H
+#ifndef INIT_H
+#define INIT_H
 
-#include <fstream>
-#include <sstream>
+#include <cinttypes>
+#include <thread>
 
-#include "luaexports.h"
-#include "../logger.h"
-#include "../file.h"
+#include "logger.h"
+#include "file/file.h"
+#include "library/library.h"
 
-namespace glt::lua {
-	// Returns false if we should not load the current file (filename)
-	bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename);
-	std::string GetLuaFileContents(); // Returns the lua code to run
+#include "lua/luaexports.h"
+
+#include "gamesdk/IVEngineClient.h"
+#include "gamesdk/ILuaShared.h"
+#include "gamesdk/ILuaInterface.h"
+
+#include "hook/luashared.h"
+#include "hook/luainterface.h"
+
+namespace glt {
+	std::uintptr_t* Init(std::uintptr_t*);
 }
 
 #endif
