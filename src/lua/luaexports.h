@@ -19,10 +19,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include <cinttypes>
 
-#include "../os.h"
-#include "../library/library.h"
+#include "os.h"
+#include "library/library.h"
 
-#include "../gamesdk/ILuaInterface.h"
+#include "gamesdk/ILuaInterface.h"
 
 namespace glt::lua {
 	bool GetExports();
