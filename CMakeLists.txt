@@ -6,7 +6,11 @@ add_definitions(-DGLUASTEAL_VERSION=${gluasteal_VERSION})
 # For Vim YCM
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# C++ standard
 set(CMAKE_CXX_STANDARD 17)
+
+# include self
+include_directories(.)
 
 # threads
 find_package(Threads)
@@ -14,6 +18,10 @@ find_package(Threads)
 # libfmt
 include_directories(fmt/include)
 add_subdirectory(fmt)
+
+# tests
+enable_testing()
+add_subdirectory(tests)
 
 # glua headers
 include_directories(glua_headers/include)
