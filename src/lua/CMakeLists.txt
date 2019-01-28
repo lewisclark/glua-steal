@@ -1,0 +1,9 @@
+add_library(lua luaexports.cpp lualoader.cpp)
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	target_link_libraries(lua PRIVATE -m32)
+	target_compile_options(lua PRIVATE -Wall -Wextra -pedantic -m32 -Wno-unused-variable)
+	set_target_properties(lua PROPERTIES PREFIX "")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+	target_compile_options(lua PRIVATE /W4 /arch:IA32)
+endif()
