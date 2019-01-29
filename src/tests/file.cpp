@@ -1,5 +1,4 @@
 /* Copyright (C) 2019 Lewis Clark
-
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -20,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "os.hpp"
 
 using namespace glt::file;
-using std::filesystem::path;
 
 TEST_CASE("Filename sanitization", "[file]") {
 	REQUIRE(SanitizeLuaFilePath("../../../hello.lua") == "hello.lua");
@@ -36,6 +34,9 @@ TEST_CASE("Filename sanitization", "[file]") {
 	REQUIRE(SanitizeLuaFilePath("dir/dir2/file.lua   ") == "dir/dir2/file.lua");
 	REQUIRE(SanitizeLuaFilePath("dir/dir2/file.lua...") == "dir/dir2/file.lua");
 	REQUIRE(SanitizeLuaFilePath("dir/dir2/file.lua   ...") == "dir/dir2/file.lua");
+	REQUIRE(SanitizeLuaFilePath("...") == "noname.lua");
+	REQUIRE(SanitizeLuaFilePath("...@") == "noname.lua");
+	REQUIRE(SanitizeLuaFilePath("@...@") == "noname.lua");
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	REQUIRE(SanitizeLuaFilePath("/tmp/file.lua") == "tmp/file.lua");
@@ -47,5 +48,8 @@ TEST_CASE("Filename sanitization", "[file]") {
 	REQUIRE(SanitizeLuaFilePath("dir/com9.lua") == "dir/_com9.lua");
 	REQUIRE(SanitizeLuaFilePath("dir/Com9.lua") == "dir/_Com9.lua");
 	REQUIRE(SanitizeLuaFilePath("dir/Com9") == "dir/_Com9.lua");
+	REQUIRE(SanitizeLuaFilePath("dir2/Com9/AuX.aUx") == "dir2/_Com9/_AuX.lua");
+	REQUIRE(SanitizeLuaFilePath("a@u@x.lua") == "_aux.lua");
+	REQUIRE(SanitizeLuaFilePath("c;o;n.lua") == "_con.lua");
 #endif
 }
