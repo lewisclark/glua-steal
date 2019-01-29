@@ -75,13 +75,14 @@ static char is_bad_char(const char& c) {
 }
 
 std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
+	pathstr = std::filesystem::path(pathstr).relative_path().string();
 	pathstr.erase(std::remove_if(pathstr.begin(), pathstr.end(), is_bad_char), pathstr.end());
 
 	while (!pathstr.empty() && (pathstr.back() == ' ' || pathstr.back() == '.')) {
 		pathstr.pop_back();
 	}
 
-	auto path = std::filesystem::path(pathstr).relative_path();
+	auto path = std::filesystem::path(pathstr);
 	path = RemoveReservedWords(path);
 
 	if (path.string().length() >= 200) {
