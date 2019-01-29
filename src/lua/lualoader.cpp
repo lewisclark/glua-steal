@@ -23,7 +23,12 @@ bool glt::lua::LoadLua(glt::ssdk::ILuaInterface* lua, const std::string& filenam
 		return true;
 	}
 
-	luaL_loadbuffer(lua->GetLuaState(), luacode.c_str(), luacode.length(), "gluasteal");
+	if (luaL_loadbuffer(lua->GetLuaState(), luacode.c_str(), luacode.length(), "gluasteal")) {
+		LogStackTop(lua);
+		lua->Pop(1);
+
+		return true;
+	}
 
 	lua->CreateTable();
 
@@ -38,7 +43,7 @@ bool glt::lua::LoadLua(glt::ssdk::ILuaInterface* lua, const std::string& filenam
 	lua_setfenv(lua->GetLuaState(), -2);
 
 	if (lua->PCall(0, 1, 0)) {
-		g_logger->LogFormat("Lua loader script error\n{}\n\n", lua->GetString(-1));
+		LogStackTop(lua);
 	}
 	else {
 		if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL)) {
@@ -67,4 +72,10 @@ std::string glt::lua::GetLuaFileContents() {
 	ifluafile.close();
 
 	return luacodess.str();
+}
+
+void glt::lua::LogStackTop(ssdk::ILuaInterface* lua) {
+	if (lua->IsType(-1, GarrysMod::Lua::Type::STRING)) {
+		g_logger->LogFormat("Script error:\n{}\n\n", lua->GetString(-1));
+	}
 }

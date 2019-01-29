@@ -28,6 +28,7 @@ namespace glt::lua {
 	// Returns false if we should not load the current file (filename)
 	bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename);
 	std::string GetLuaFileContents(); // Returns the lua code to run
+	void LogStackTop(ssdk::ILuaInterface* lua); // Logs the string at the top of the lua stack
 }
 
 #endif
