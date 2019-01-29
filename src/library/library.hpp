@@ -20,7 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <cinttypes>
 #include <string>
 
-#include "os.h"
+#include "os.hpp"
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 #include <dlfcn.h>

@@ -14,6 +14,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "ILuaInterface.h"
+#include "ILuaInterface.hpp"
 
 glt::ssdk::ILuaInterface* glt::ssdk::g_clientluainterface = nullptr;

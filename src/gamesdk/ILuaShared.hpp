@@ -17,7 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef ILUASHARED_H
 #define ILUASHARED_H
 
-#include "ILuaInterface.h"
+#include "ILuaInterface.hpp"
 
 namespace glt::ssdk {
 	class ILuaShared {

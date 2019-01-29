@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <cinttypes>
 #include <algorithm>
 
-#include "os.h"
+#include "os.hpp"
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	#include <unistd.h>

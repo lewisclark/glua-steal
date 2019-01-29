@@ -17,7 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef IVENGINECLIENT_H
 #define IVENGINECLIENT_H
 
-#include "NetChannel.h"
+#include "NetChannel.hpp"
 
 namespace glt::ssdk {
 	class IVEngineClient {

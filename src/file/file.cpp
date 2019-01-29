@@ -14,7 +14,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "file.h"
+#include "file.hpp"
 
 std::filesystem::path glt::file::GetWorkDirectory() {
 	auto home = GetHomeDirectory();

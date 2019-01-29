@@ -20,17 +20,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <fstream>
 #include <filesystem>
 
-#include "logger.h"
-#include "file/file.h"
+#include "logger.hpp"
+#include "file/file.hpp"
 
-#include "lua/lualoader.h"
+#include "lua/lualoader.hpp"
 
-#include "ihooker.h"
+#include "ihooker.hpp"
 
-#include "gamesdk/ILuaInterface.h"
-#include "gamesdk/IVEngineClient.h"
+#include "gamesdk/ILuaInterface.hpp"
+#include "gamesdk/IVEngineClient.hpp"
 
-#include "os.h"
+#include "os.hpp"
 
 namespace glt::hook {
 	class LuaInterfaceHooker : public IHooker {

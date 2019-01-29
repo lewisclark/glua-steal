@@ -14,7 +14,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "library.h"
+#include "library.hpp"
 
 glt::lib::Library::Library(const std::string& pathname) {
 	std::string pathnamext(pathname + GetExtension());

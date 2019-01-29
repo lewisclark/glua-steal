@@ -14,7 +14,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "lualoader.h"
+#include "lualoader.hpp"
 
 bool glt::lua::LoadLua(glt::ssdk::ILuaInterface* lua, const std::string& filename) {
 	const std::string& luacode = GetLuaFileContents();

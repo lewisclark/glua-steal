@@ -14,9 +14,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "catch.h"
+#include "catch.hpp"
 
-#include "file/file.h"
+#include "file/file.hpp"
 
 using namespace glt::file;
 

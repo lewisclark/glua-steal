@@ -21,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <memory>
 #include <cinttypes>
 
-#include "vtable.h"
+#include "vtable.hpp"
 
 namespace glt::hook {
 	class IHooker {

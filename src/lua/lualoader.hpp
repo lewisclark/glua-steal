@@ -20,9 +20,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <fstream>
 #include <sstream>
 
-#include "luaexports.h"
-#include "logger.h"
-#include "file/file.h"
+#include "luaexports.hpp"
+#include "logger.hpp"
+#include "file/file.hpp"
 
 namespace glt::lua {
 	// Returns false if we should not load the current file (filename)

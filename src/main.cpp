@@ -14,8 +14,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "os.h"
-#include "init.h"
+#include "os.hpp"
+#include "init.hpp"
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 #include <pthread.h>

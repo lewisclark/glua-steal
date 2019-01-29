@@ -14,7 +14,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "init.h"
+#include "init.hpp"
 
 std::uintptr_t* glt::Init(std::uintptr_t*) {
 	auto workdir = glt::file::GetWorkDirectory();

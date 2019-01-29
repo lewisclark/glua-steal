@@ -20,18 +20,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <cinttypes>
 #include <thread>
 
-#include "logger.h"
-#include "file/file.h"
-#include "library/library.h"
+#include "logger.hpp"
+#include "file/file.hpp"
+#include "library/library.hpp"
 
-#include "lua/luaexports.h"
+#include "lua/luaexports.hpp"
 
-#include "gamesdk/IVEngineClient.h"
-#include "gamesdk/ILuaShared.h"
-#include "gamesdk/ILuaInterface.h"
+#include "gamesdk/IVEngineClient.hpp"
+#include "gamesdk/ILuaShared.hpp"
+#include "gamesdk/ILuaInterface.hpp"
 
-#include "hook/luashared.h"
-#include "hook/luainterface.h"
+#include "hook/luashared.hpp"
+#include "hook/luainterface.hpp"
 
 namespace glt {
 	std::uintptr_t* Init(std::uintptr_t*);

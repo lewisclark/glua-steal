@@ -14,7 +14,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "luainterface.h"
+#include "luainterface.hpp"
 
 // TODO: Tidy this up
 #if (defined(OS_LINUX) || defined(OS_MAC))

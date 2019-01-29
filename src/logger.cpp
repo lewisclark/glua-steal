@@ -14,7 +14,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "logger.h"
+#include "logger.hpp"
 
 glt::Logger::Logger(const std::string& filename) {
 	m_ofstream = std::ofstream(filename, std::ios_base::app);

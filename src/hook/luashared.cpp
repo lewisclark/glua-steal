@@ -14,7 +14,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#include "luashared.h"
+#include "luashared.hpp"
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 #define CREATELUAINTERFACE_INDEX 5
