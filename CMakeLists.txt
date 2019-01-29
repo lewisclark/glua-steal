@@ -13,5 +13,8 @@ add_subdirectory(fmt)
 # glua headers
 include_directories(glua_headers/include)
 
+# catch2
+include_directories(catch2/single_include)
+
 # gluasteal src
 add_subdirectory(src)
