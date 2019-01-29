@@ -35,4 +35,7 @@ namespace glt::file {
 	std::filesystem::path GetLogFilePath();
 	std::filesystem::path GetServerStorePath();
 	std::filesystem::path SanitizeLuaFilePath(std::string pathstr);
+
+	bool IsReserved(const std::filesystem::path& path);
+	std::filesystem::path RemoveReservedWords(const std::filesystem::path& path);
 }

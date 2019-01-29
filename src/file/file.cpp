@@ -81,11 +81,12 @@ std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
 		pathstr.pop_back();
 	}
 
-	if (pathstr.length() >= 200) {
+	auto path = std::filesystem::path(pathstr).relative_path();
+	path = RemoveReservedWords(path);
+
+	if (path.string().length() >= 200) {
 		return std::filesystem::path("longfilename.lua"); // TODO: Do something better than this
 	}
-
-	auto path = std::filesystem::path(pathstr).relative_path();
 
 	if (!path.has_filename() || path.filename().string().front() == '.') {
 		path.replace_filename("noname");
@@ -93,16 +94,36 @@ std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
 
 	path.replace_extension(".lua");
 
+	return path;
+}
+
+bool glt::file::IsReserved(const std::filesystem::path& path) {
+	std::string pathstr = path.string();
+	std::transform(pathstr.begin(), pathstr.end(), pathstr.begin(), ::tolower);
+
+	return (std::find(reserved.begin(), reserved.end(), pathstr) != reserved.end());
+}
+
+std::filesystem::path glt::file::RemoveReservedWords(const std::filesystem::path& path) {
 	auto newpath = std::filesystem::path();
 
 	for (const auto& e : path) {
-		if (e.filename() == ".." || e.filename() == "." ||
-			std::find(reserved.begin(), reserved.end(), e.filename().string()) != reserved.end()) {
+		const auto& filename = e.filename();
 
+		if (filename == ".." || filename == ".") {
 			continue;
 		}
 
-		newpath /= e;
+		if (IsReserved(filename)) {
+			newpath /= ("_" + e.string());
+		}
+		else {
+			newpath /= e;
+		}
+	}
+
+	if (IsReserved(newpath.stem())) {
+		newpath.replace_filename("_" + newpath.filename().string());
 	}
 
 	return newpath;
