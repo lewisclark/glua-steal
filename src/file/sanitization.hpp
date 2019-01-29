@@ -14,30 +14,16 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef HOOK_LUAINTERFACE_H
-#define HOOK_LUAINTERFACE_H
-
-#include <fstream>
 #include <filesystem>
-
-#include "logger.hpp"
-#include "file/file.hpp"
-#include "file/sanitization.hpp"
-
-#include "lua/lualoader.hpp"
-
-#include "ihooker.hpp"
-
-#include "gamesdk/ILuaInterface.hpp"
-#include "gamesdk/IVEngineClient.hpp"
+#include <string>
+#include <cinttypes>
+#include <algorithm>
 
 #include "os.hpp"
 
-namespace glt::hook {
-	class LuaInterfaceHooker : public IHooker {
-		public:
-		bool Hook();
-	};
-}
+namespace glt::file {
+	std::filesystem::path SanitizeLuaFilePath(std::string pathstr);
 
-#endif
+	bool IsReserved(const std::filesystem::path& path);
+	std::filesystem::path RemoveReservedWords(const std::filesystem::path& path);
+}

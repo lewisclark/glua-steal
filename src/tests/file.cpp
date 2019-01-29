@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "catch2/catch.hpp"
 
 #include "file/file.hpp"
+#include "file/sanitization.hpp"
 #include "os.hpp"
 
 using namespace glt::file;
