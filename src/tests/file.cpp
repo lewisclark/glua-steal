@@ -17,8 +17,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "catch2/catch.hpp"
 
 #include "file/file.hpp"
+#include "os.hpp"
 
 using namespace glt::file;
+using std::filesystem::path;
 
 TEST_CASE("Filename sanitization", "[file]") {
 	REQUIRE(SanitizeLuaFilePath("../../../hello.lua") == "hello.lua");
@@ -34,4 +36,16 @@ TEST_CASE("Filename sanitization", "[file]") {
 	REQUIRE(SanitizeLuaFilePath("dir/dir2/file.lua   ") == "dir/dir2/file.lua");
 	REQUIRE(SanitizeLuaFilePath("dir/dir2/file.lua...") == "dir/dir2/file.lua");
 	REQUIRE(SanitizeLuaFilePath("dir/dir2/file.lua   ...") == "dir/dir2/file.lua");
+
+#if (defined(OS_LINUX) || defined(OS_MAC))
+	REQUIRE(SanitizeLuaFilePath("/tmp/file.lua") == "tmp/file.lua");
+	REQUIRE(SanitizeLuaFilePath("..//tmp/file.lua") == "tmp/file.lua");
+#elif (defined(OS_WINDOWS))
+	REQUIRE(SanitizeLuaFilePath("C:/test/file.lua") == "test/file.lua");
+	REQUIRE(SanitizeLuaFilePath("con/lpt8/nultest/nul/aux.lua") == "_con/_lpt8/nultest/_nul/_aux.lua");
+	REQUIRE(SanitizeLuaFilePath("dir/com9") == "dir/_com9.lua");
+	REQUIRE(SanitizeLuaFilePath("dir/com9.lua") == "dir/_com9.lua");
+	REQUIRE(SanitizeLuaFilePath("dir/Com9.lua") == "dir/_Com9.lua");
+	REQUIRE(SanitizeLuaFilePath("dir/Com9") == "dir/_Com9.lua");
+#endif
 }
