@@ -4,3 +4,6 @@
 [submodule "glua_headers"]
 	path = glua_headers
 	url = https://github.com/Facepunch/gmod-module-base
+[submodule "catch2"]
+	path = catch2
+	url = https://github.com/catchorg/Catch2
