@@ -38,10 +38,17 @@ TEST_CASE("Filename sanitization", "[file]") {
 	REQUIRE(SanitizeLuaFilePath("...") == "noname.lua");
 	REQUIRE(SanitizeLuaFilePath("...@") == "noname.lua");
 	REQUIRE(SanitizeLuaFilePath("@...@") == "noname.lua");
+	REQUIRE(SanitizeLuaFilePath("-") == "-.lua");
+	REQUIRE(SanitizeLuaFilePath(".a.") == "noname.lua");
+	REQUIRE(SanitizeLuaFilePath("_._.") == "_.lua");
+	REQUIRE(SanitizeLuaFilePath("..././test.lua") == "test.lua");
+	REQUIRE(SanitizeLuaFilePath("..././dir/.../.../../dir2/test.lua") == "dir/dir2/test.lua");
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	REQUIRE(SanitizeLuaFilePath("/tmp/file.lua") == "tmp/file.lua");
 	REQUIRE(SanitizeLuaFilePath("..//tmp/file.lua") == "tmp/file.lua");
+	REQUIRE(SanitizeLuaFilePath("./tmp/file.lua") == "tmp/file.lua");
+	REQUIRE(SanitizeLuaFilePath("./tmp/./file.lua") == "tmp/file.lua");
 #elif (defined(OS_WINDOWS))
 	REQUIRE(SanitizeLuaFilePath("C:/test/file.lua") == "test/file.lua");
 	REQUIRE(SanitizeLuaFilePath("con/lpt8/nultest/nul/aux.lua") == "_con/_lpt8/nultest/_nul/_aux.lua");
@@ -52,5 +59,6 @@ TEST_CASE("Filename sanitization", "[file]") {
 	REQUIRE(SanitizeLuaFilePath("dir2/Com9/AuX.aUx") == "dir2/_Com9/_AuX.lua");
 	REQUIRE(SanitizeLuaFilePath("a@u@x.lua") == "_aux.lua");
 	REQUIRE(SanitizeLuaFilePath("c;o;n.lua") == "_con.lua");
+	REQUIRE(SanitizeLuaFilePath("...\\.\\test.lua") == "test.lua");
 #endif
 }
