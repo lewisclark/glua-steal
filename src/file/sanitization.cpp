@@ -91,9 +91,5 @@ std::filesystem::path glt::file::RemoveReservedWords(const std::filesystem::path
 		}
 	}
 
-	if (IsReserved(newpath.stem())) {
-		newpath.replace_filename("_" + newpath.filename().string());
-	}
-
 	return newpath;
 }
