@@ -75,17 +75,19 @@ std::filesystem::path glt::file::RemoveReservedWords(const std::filesystem::path
 	auto newpath = std::filesystem::path();
 
 	for (const auto& e : path) {
-		const auto& filename = e.filename();
+		const auto& stem = e.stem();
 
-		if (filename == ".." || filename == ".") {
+		if ((std::find(stem.begin(), stem.end(), "..") != stem.end()) ||
+			stem == ".") {
+
 			continue;
 		}
 
-		if (IsReserved(filename)) {
-			newpath /= ("_" + e.string());
+		if (IsReserved(stem)) {
+			newpath /= ("_" + stem.string());
 		}
 		else {
-			newpath /= e;
+			newpath /= stem.string();
 		}
 	}
 
