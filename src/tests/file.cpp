@@ -43,6 +43,10 @@ TEST_CASE("Filename sanitization", "[file]") {
 	REQUIRE(SanitizeLuaFilePath("_._.") == "_.lua");
 	REQUIRE(SanitizeLuaFilePath("..././test.lua") == "test.lua");
 	REQUIRE(SanitizeLuaFilePath("..././dir/.../.../../dir2/test.lua") == "dir/dir2/test.lua");
+	REQUIRE(SanitizeLuaFilePath("..\xc1\x1c./test.lua") == "test.lua");
+	REQUIRE(SanitizeLuaFilePath("..\xc0\xaf./test.lua") == "test.lua");
+	REQUIRE(SanitizeLuaFilePath("dir1/..\xc1\x1c./dir2/test.lua") == "dir1/dir2/test.lua");
+	REQUIRE(SanitizeLuaFilePath("dir1/..\xc0\xaf./dir2/test.lua") == "dir1/dir2/test.lua");
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	REQUIRE(SanitizeLuaFilePath("/tmp/file.lua") == "tmp/file.lua");
