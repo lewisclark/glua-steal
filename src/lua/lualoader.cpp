@@ -16,20 +16,41 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "lualoader.hpp"
 
-bool glt::lua::LoadLua(glt::ssdk::ILuaInterface* lua, const std::string& filename) {
+bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename) {
 	const std::string& luacode = GetLuaFileContents();
 
-	if (luacode.empty()) {
-		return true;
+	if (luaL_loadbuffer(lua->GetLuaState(), luacode.c_str(), luacode.length(), "gluasteal")) {
+		throw std::runtime_error(fmt::format("syntax error '{}'", lua->GetString(-1)));
 	}
 
-	if (luaL_loadbuffer(lua->GetLuaState(), luacode.c_str(), luacode.length(), "gluasteal")) {
-		LogStackTop(lua);
+	CreateEnvironment(lua, filename);
+
+	if (lua->PCall(0, 1, 0)) {
+		throw std::runtime_error(fmt::format("execution error '{}'", lua->GetString(-1)));
+	}
+	else if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL)) {
+		bool shouldloadfile = lua->GetBool(-1);
+
 		lua->Pop(1);
 
-		return true;
+		return shouldloadfile;
 	}
 
+	lua->Pop(1);
+
+	return true;
+}
+
+std::string glt::lua::GetLuaFileContents() {
+	try {
+		return file::ReadFile("gluasteal.lua");
+	}
+	catch (const std::exception&) {
+		return "--";
+	}
+}
+
+void glt::lua::CreateEnvironment(ssdk::ILuaInterface* lua, const std::string& filename) {
 	lua->CreateTable();
 
 	lua->PushString(filename.c_str(), filename.length());
@@ -41,41 +62,4 @@ bool glt::lua::LoadLua(glt::ssdk::ILuaInterface* lua, const std::string& filenam
 	lua->SetMetaTable(-2);
 
 	lua_setfenv(lua->GetLuaState(), -2);
-
-	if (lua->PCall(0, 1, 0)) {
-		LogStackTop(lua);
-	}
-	else {
-		if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL)) {
-			bool shouldloadfile = lua->GetBool(-1);
-
-			lua->Pop(1);
-
-			return shouldloadfile;
-		}
-	}
-
-	lua->Pop(1);
-
-	return true;
-}
-
-std::string glt::lua::GetLuaFileContents() {
-	auto ifluafile = std::ifstream(glt::file::GetWorkDirectory() / "gluasteal.lua", std::ifstream::binary);
-	
-	if (!ifluafile.is_open()) { // file doesn't exist
-		return "";
-	}
-
-	std::stringstream luacodess;
-	luacodess << ifluafile.rdbuf();
-	ifluafile.close();
-
-	return luacodess.str();
-}
-
-void glt::lua::LogStackTop(ssdk::ILuaInterface* lua) {
-	if (lua->IsType(-1, GarrysMod::Lua::Type::STRING)) {
-		g_logger->LogFormat("Script error:\n{}\n\n", lua->GetString(-1));
-	}
 }
