@@ -7,7 +7,7 @@ add_definitions(-DGLUASTEAL_VERSION=${gluasteal_VERSION})
 set(CMAKE_CXX_STANDARD 17)
 
 # spdlog
-include_directories(spdlog)
+include_directories(spdlog/include)
 
 # glua headers
 include_directories(glua_headers/include)
