@@ -16,7 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "init.hpp"
 
-std::uintptr_t* glt::Init(std::uintptr_t*) {
+void glt::Init() {
 	auto workdir = glt::file::GetWorkDirectory();
 
 	if (workdir.empty()) {

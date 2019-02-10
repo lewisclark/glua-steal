@@ -20,9 +20,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #if (defined(OS_LINUX) || defined(OS_MAC))
 #include <pthread.h>
 
+void* InitWrap(void*) {
+	glt::Init();
+
+	return nullptr;
+}
+
 int __attribute__((constructor)) main() {
 	pthread_t th;
-	pthread_create(&th, NULL, (void*(*)(void*))glt::Init, NULL);
+	pthread_create(&th, NULL, InitWrap, NULL);
 
 	return 0;
 }

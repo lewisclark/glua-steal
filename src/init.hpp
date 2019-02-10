@@ -34,7 +34,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "hook/luainterface.hpp"
 
 namespace glt {
-	std::uintptr_t* Init(std::uintptr_t*);
+	void Init();
 }
 
 #endif
