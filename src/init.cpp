@@ -16,42 +16,29 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "init.hpp"
 
+static glt::hook::LuaSharedHooker luasharedhooker;
+
 void glt::Init() {
-	auto workdir = glt::file::GetWorkDirectory();
-
-	if (workdir.empty()) {
-		return nullptr;
-	}
-
+	const auto& workdir = glt::file::GetWorkDirectory();
 	std::filesystem::create_directories(workdir);
 
 	g_logger = std::make_unique<Logger>(glt::file::GetLogFilePath().string());
-	g_logger->LogFormat("gluasteal v{:.1f}\n", GLUASTEAL_VERSION);
-	g_logger->LogString("Initializing...\n");
+	g_logger->LogFormat("Initializing gluasteal v{:.1f}\n", GLUASTEAL_VERSION);
 
-	auto libengine = std::make_unique<lib::Library>("engine");
-	ssdk::g_engineclient = libengine->GetInterface<ssdk::IVEngineClient>("VEngineClient015");
+	try {
+		const auto& libengine = lib::Library("engine");
+		const auto& libluashared = lib::Library("garrysmod/bin/lua_shared");
 
-	if (!ssdk::g_engineclient) {
-		g_logger->LogString("Failed to grab VEngineClient interface\n");
+		ssdk::g_engineclient = libengine.GetInterface<ssdk::IVEngineClient>("VEngineClient015");
+		ssdk::g_luashared = libluashared.GetInterface<ssdk::ILuaShared>("LUASHARED003");
 
-		return nullptr;
+		lua::GetExports();
+
+		luasharedhooker.Hook();
 	}
-
-	auto libluashared = std::make_unique<lib::Library>("garrysmod/bin/lua_shared");
-	ssdk::g_luashared = libluashared->GetInterface<ssdk::ILuaShared>("LUASHARED003");
-
-	auto luasharedhooker = std::make_unique<hook::LuaSharedHooker>();
-	if (!luasharedhooker->Hook()) {
-		g_logger->LogString("Failed to hook luashared\n");
-
-		return nullptr;
-	}
-
-	if (!lua::GetExports()) {
-		g_logger->LogString("Failed to get all lua exports\n");
-
-		return nullptr;
+	catch (const std::exception& ex) {
+		g_logger->LogFormat("Failed to initialize: {}", ex.what());
+		return;
 	}
 
 	g_logger->LogString("Successfully initialized.\nJoin a server to retrieve the lua files.\n");
@@ -60,6 +47,4 @@ void glt::Init() {
 	while (true) {
 		std::this_thread::sleep_for(std::chrono::seconds(1)); // Keep alive
 	}
-
-	return nullptr;
 }
