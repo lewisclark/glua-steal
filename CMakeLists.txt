@@ -6,9 +6,8 @@ add_definitions(-DGLUASTEAL_VERSION=${gluasteal_VERSION})
 # C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
-# libfmt
-include_directories(fmt/include)
-add_subdirectory(fmt)
+# spdlog
+include_directories(spdlog)
 
 # glua headers
 include_directories(glua_headers/include)
