@@ -21,9 +21,11 @@ static glt::hook::LuaSharedHooker luasharedhooker;
 void glt::Init() {
 	const auto& workdir = glt::file::GetWorkDirectory();
 	std::filesystem::create_directories(workdir);
+	InitLogger();
 
-	g_logger = std::make_unique<Logger>(glt::file::GetLogFilePath().string());
-	g_logger->LogFormat("Initializing gluasteal v{:.1f}\n", GLUASTEAL_VERSION);
+	const auto& logger = GetLogger();
+
+	logger->info("Initializing gluasteal v{:.1f}", GLUASTEAL_VERSION);
 
 	try {
 		const auto& libengine = lib::Library("engine");
@@ -37,12 +39,12 @@ void glt::Init() {
 		luasharedhooker.Hook();
 	}
 	catch (const std::exception& ex) {
-		g_logger->LogFormat("Failed to initialize: {}", ex.what());
+		logger->critical("Failed to initialize: {}", ex.what());
 		return;
 	}
 
-	g_logger->LogString("Successfully initialized.\nJoin a server to retrieve the lua files.\n");
-	g_logger->LogFormat("Lua files will be saved to '{}'\n", file::GetServerStorePath().string());
+	logger->info("Successfully initialized.\nJoin a server to retrieve the lua files.");
+	logger->info("Lua files will be saved to '{}'", file::GetServerStorePath().string());
 
 	while (true) {
 		std::this_thread::sleep_for(std::chrono::seconds(1)); // Keep alive

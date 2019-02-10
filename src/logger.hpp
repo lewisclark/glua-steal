@@ -17,28 +17,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <memory>
-#include <fstream>
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/basic_file_sink.h"
 
-#include "fmt/format.h"
+#include "file/file.hpp"
 
 namespace glt {
-	class Logger {
-		public:
-		Logger(const std::string& filename);
-
-		void LogString(const std::string& s);
-
-		template <typename... Args>
-		void LogFormat(const std::string& fmt, const Args&... args) {
-			LogString(fmt::format(fmt.c_str(), args...));
-		}
-
-		private:
-		std::ofstream m_ofstream;
-	};
-
-	extern std::unique_ptr<Logger> g_logger;
+	void InitLogger();
+	spdlog::logger* GetLogger();
 }
 
 #endif

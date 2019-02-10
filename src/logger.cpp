@@ -16,13 +16,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "logger.hpp"
 
-glt::Logger::Logger(const std::string& filename) {
-	m_ofstream = std::ofstream(filename, std::ios_base::app);
+static std::shared_ptr<spdlog::logger> logger = nullptr;
+
+void glt::InitLogger() {
+	spdlog::flush_every(std::chrono::seconds(1));
+	spdlog::set_pattern("[%d-%m-%C - %T.%e] [%l] %v");
+
+	const auto& logpath = file::GetLogFilePath();
+
+	logger = spdlog::basic_logger_mt("lewproxy", logpath.string());
 }
 
-void glt::Logger::LogString(const std::string& s) {
-	m_ofstream << s;
-	m_ofstream.flush();
+spdlog::logger* glt::GetLogger() {
+	return logger.get();
 }
-
-std::unique_ptr<glt::Logger> glt::g_logger = nullptr;

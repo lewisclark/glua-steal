@@ -50,7 +50,7 @@ static glt::ssdk::ILuaInterface* __FASTCALL__ CreateLuaInterfaceHk(glt::ssdk::IL
 		luainterfacehooker->Hook();
 	}
 
-	glt::g_logger->LogFormat("Lua interface {} (0x{:02x}) created\n", c, (std::uintptr_t)lua);
+	glt::GetLogger()->info("Lua interface {} (0x{:02x}) created", c, (std::uintptr_t)lua);
 
 	return lua;
 }
@@ -65,7 +65,7 @@ static void __FASTCALL__ CloseLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr, std
 		delete luainterfacehooker;
 	}
 
-	glt::g_logger->LogFormat("Lua interface 0x{:02x} closing\n", (std::uintptr_t)lua);
+	glt::GetLogger()->info("Lua interface 0x{:02x} closing", (std::uintptr_t)lua);
 
 	CloseLuaInterfaceOrig(thisptr, lua);
 }
