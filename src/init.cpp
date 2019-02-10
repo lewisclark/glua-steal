@@ -19,12 +19,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 static glt::hook::LuaSharedHooker luasharedhooker;
 
 void glt::Init() {
-	const auto& workdir = glt::file::GetWorkDirectory();
-	std::filesystem::create_directories(workdir);
+	std::filesystem::create_directories(glt::file::GetWorkDirectory());
 	InitLogger();
 
 	const auto& logger = GetLogger();
-
 	logger->info("Initializing gluasteal v{:.1f}", GLUASTEAL_VERSION);
 
 	try {
