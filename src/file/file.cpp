@@ -17,10 +17,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "file.hpp"
 
 std::filesystem::path glt::file::GetWorkDirectory() {
-	auto home = GetHomeDirectory();
+	const auto& home = GetHomeDirectory();
 
 	if (home.empty()) {
-		return std::filesystem::path();
+		throw std::runtime_error("home directory path is empty");
 	}
 
 	return (home / "gluasteal");
