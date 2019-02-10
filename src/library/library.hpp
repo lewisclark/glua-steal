@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include <cinttypes>
 #include <string>
+#include <stdexcept>
 
 #include "os.hpp"
 
@@ -36,32 +37,44 @@ namespace glt::lib {
 		Library(const std::string& pathname);
 		~Library();
 
+		std::string GetPathName() const;
+
 		template <typename T>
-		T GetSymbol(const std::string& symname) {
+		T GetSymbol(const std::string& symname) const {
+			std::uintptr_t* sym;
+
 #if (defined(OS_LINUX) || defined(OS_MAC)) 
-			return reinterpret_cast<T>(dlsym(reinterpret_cast<void*>(m_handle),
+			sym = reinterpret_cast<std::uintptr_t*>(dlsym(reinterpret_cast<void*>(m_handle),
 				symname.c_str()));
 #elif (defined(OS_WINDOWS))
-			return reinterpret_cast<T>(GetProcAddress(reinterpret_cast<HMODULE>(m_handle),
+			sym = reinterpret_cast<std::uintptr_t*>(GetProcAddress(reinterpret_cast<HMODULE>(m_handle),
 				symname.c_str()));
 #endif
+
+			if (!sym) {
+				throw std::runtime_error("failed to get symbol " + symname + " from " + m_pathname);
+			}
+
+			return reinterpret_cast<T>(sym);
 		}
 
 		template <typename T>
-		T* GetInterface(const std::string& ifacename) {
-			auto createinterface = GetSymbol<CreateInterfaceFn>("CreateInterface");
+		T* GetInterface(const std::string& ifacename) const {
+			const auto& createinterface = GetSymbol<CreateInterfaceFn>("CreateInterface");
+			T* iface = reinterpret_cast<T*>(createinterface(ifacename.c_str(), nullptr));
 
-			if (createinterface) {
-				return reinterpret_cast<T*>(createinterface(ifacename.c_str(), nullptr));
+			if (!iface) {
+				throw std::runtime_error("failed to get interface " + ifacename + " from " + m_pathname);
 			}
 			
-			return nullptr;
+			return iface;
 		}
 		
 		private:
-		std::string GetExtension();
+		std::string GetExtension() const;
 
 		std::uintptr_t* m_handle = nullptr;
+		std::string m_pathname;
 	};
 }
 

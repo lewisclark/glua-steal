@@ -16,7 +16,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "library.hpp"
 
-glt::lib::Library::Library(const std::string& pathname) {
+glt::lib::Library::Library(const std::string& pathname) :
+	m_pathname(pathname) {
+
 	std::string pathnamext(pathname + GetExtension());
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
@@ -24,6 +26,10 @@ glt::lib::Library::Library(const std::string& pathname) {
 #elif (defined(OS_WINDOWS))
 	m_handle = reinterpret_cast<std::uintptr_t*>(GetModuleHandle(pathnamext.c_str()));
 #endif
+
+	if (!m_handle) {
+		throw std::runtime_error("failed to grab handle for library " + pathname);
+	}
 }
 
 glt::lib::Library::~Library() {
@@ -34,7 +40,11 @@ glt::lib::Library::~Library() {
 #endif
 }
 
-std::string glt::lib::Library::GetExtension() {
+std::string glt::lib::Library::GetPathName() const {
+	return m_pathname;
+}
+
+std::string glt::lib::Library::GetExtension() const {
 #if (defined(OS_LINUX))
 	return ".so";
 #elif (defined(OS_MAC))
