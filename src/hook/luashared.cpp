@@ -47,15 +47,10 @@ static glt::ssdk::ILuaInterface* __FASTCALL__ CreateLuaInterfaceHk(glt::ssdk::IL
 		glt::ssdk::g_clientluainterface = lua;
 
 		luainterfacehooker = new glt::hook::LuaInterfaceHooker();
-		if (!luainterfacehooker->Hook()) {
-			glt::g_logger->LogString("Failed to hook lua interface\n");
-			delete luainterfacehooker;
-		}
-
+		luainterfacehooker->Hook();
 	}
 
-	glt::g_logger->LogFormat("Lua interface {} (0x{:02x}) created\n",
-		c, reinterpret_cast<std::uintptr_t>(lua));
+	glt::g_logger->LogFormat("Lua interface {} (0x{:02x}) created\n", c, (std::uintptr_t)lua);
 
 	return lua;
 }
@@ -70,19 +65,13 @@ static void __FASTCALL__ CloseLuaInterfaceHk(glt::ssdk::ILuaShared* thisptr, std
 		delete luainterfacehooker;
 	}
 
-	glt::g_logger->LogFormat("Lua interface 0x{:02x} closing\n",
-		reinterpret_cast<std::uintptr_t>(lua));
+	glt::g_logger->LogFormat("Lua interface 0x{:02x} closing\n", (std::uintptr_t)lua);
 
 	CloseLuaInterfaceOrig(thisptr, lua);
 }
 
-bool glt::hook::LuaSharedHooker::Hook() {
+void glt::hook::LuaSharedHooker::Hook() {
 	auto luashared = reinterpret_cast<std::uintptr_t**>(ssdk::g_luashared);
-
-	if (!luashared) {
-		return false;
-	}
-
 	auto vt = CreateVTHook(luashared);
 
 	CreateLuaInterfaceOrig = vt->HookMethod<CreateLuaInterfaceFn>(
@@ -91,5 +80,7 @@ bool glt::hook::LuaSharedHooker::Hook() {
 	CloseLuaInterfaceOrig = vt->HookMethod<CloseLuaInterfaceFn>(
 		reinterpret_cast<std::uintptr_t>(CloseLuaInterfaceHk), CLOSELUAINTERFACE_INDEX);
 
-	return (CreateLuaInterfaceOrig && CloseLuaInterfaceOrig);
+	if (!CreateLuaInterfaceOrig || !CloseLuaInterfaceOrig) {
+		throw std::runtime_error("failed to hook CreateLuaInterface/CloseLuaInterface");
+	}
 }

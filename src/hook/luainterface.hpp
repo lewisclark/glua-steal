@@ -36,7 +36,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 namespace glt::hook {
 	class LuaInterfaceHooker : public IHooker {
 		public:
-		bool Hook();
+		void Hook();
 	};
 }
 

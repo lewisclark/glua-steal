@@ -30,7 +30,7 @@ namespace glt::hook {
 			
 		}
 
-		virtual bool Hook() = 0;
+		virtual void Hook() = 0;
 
 		protected:
 		VTHook* CreateVTHook(std::uintptr_t** ppvtbase) {

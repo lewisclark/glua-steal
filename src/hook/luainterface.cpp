@@ -75,16 +75,13 @@ static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::u
 	return RunStringExOrig(thisptr, filename, path, buf, b1, b2, b3, b4);
 }
 
-bool glt::hook::LuaInterfaceHooker::Hook() {
+void glt::hook::LuaInterfaceHooker::Hook() {
 	auto luainterface = reinterpret_cast<std::uintptr_t**>(ssdk::g_clientluainterface);
-
-	if (!luainterface) {
-		return false;
-	}
-
 	auto vt = CreateVTHook(luainterface);
 
 	RunStringExOrig = vt->HookMethod<RunStringExFn>(reinterpret_cast<std::uintptr_t>(RunStringExHk), 111);
 
-	return RunStringExOrig;
+	if (!RunStringExOrig) {
+		throw std::runtime_error("failed to hook RunStringEx");
+	}
 }
