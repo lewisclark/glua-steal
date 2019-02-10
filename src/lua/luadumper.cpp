@@ -44,9 +44,9 @@ void glt::lua::DumpLua(const std::string& filename, const std::string& code) {
 	try {
 		std::filesystem::create_directories(storepath.parent_path());
 	}
-	catch (const std::exception& ex) {
-		GetLogger()->critical("Failed to create_directories for {}: {}",
-			storepath.parent_path().string(), ex.what());
+	catch (const std::filesystem::filesystem_error& ex) {
+		GetLogger()->critical("Failed to create_directories ({})\tpath1 -> {}\tpath2 -> {}",
+			ex.what(), ex.path1().string(), ex.path2().string());
 		return;
 	}
 
