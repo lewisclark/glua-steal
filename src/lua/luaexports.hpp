@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #define LUAEXPORTS_H
 
 #include <cinttypes>
+#include <stdexcept>
 
 #include "os.hpp"
 #include "library/library.hpp"
@@ -25,7 +26,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "gamesdk/ILuaInterface.hpp"
 
 namespace glt::lua {
-	bool GetExports();
+	void GetExports();
 
 	typedef int (__CDECL__* luaL_loadbufferfn)(glt::ssdk::lua_State*, const char*, size_t, const char*);
 	typedef int (__CDECL__* lua_setfenvfn)(glt::ssdk::lua_State*, int);
