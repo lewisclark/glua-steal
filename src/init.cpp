@@ -41,7 +41,8 @@ void glt::Init() {
 		return;
 	}
 
-	logger->info("Successfully initialized.\nJoin a server to retrieve the lua files.");
+	logger->info("Successfully initialized");
+	logger->info("Join a server to retrieve the lua files");
 	logger->info("Lua files will be saved to '{}'", file::GetServerStorePath().string());
 
 	while (true) {
