@@ -15,6 +15,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
 #include <filesystem>
+#include <fstream>
 
 #include "os.hpp"
 
@@ -31,4 +32,5 @@ namespace glt::file {
 	std::filesystem::path GetHomeDirectory();
 	std::filesystem::path GetLogFilePath();
 	std::filesystem::path GetServerStorePath();
+	std::string ReadFile(const std::string& path); // Relative to work directory
 }

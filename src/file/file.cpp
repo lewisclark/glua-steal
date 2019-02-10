@@ -49,3 +49,17 @@ std::filesystem::path glt::file::GetLogFilePath() {
 std::filesystem::path glt::file::GetServerStorePath() {
 	return (GetWorkDirectory() / "servers");
 }
+
+std::string glt::file::ReadFile(const std::string& path) {
+	auto iff = std::ifstream(GetWorkDirectory() / path);
+
+	if (!iff.is_open()) {
+		throw std::runtime_error("file does not exist");
+	}
+
+	std::stringstream ss;
+	ss << iff.rdbuf();
+	iff.close();
+
+	return ss.str();
+}
