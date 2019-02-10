@@ -41,7 +41,14 @@ void glt::lua::DumpLua(const std::string& filename, const std::string& code) {
 		storepath /= glt::file::SanitizeLuaFilePath(strfilename);
 	}
 
-	std::filesystem::create_directories(storepath.parent_path());
+	try {
+		std::filesystem::create_directories(storepath.parent_path());
+	}
+	catch (const std::exception& ex) {
+		GetLogger()->critical("Failed to create_directories for {}: {}",
+			storepath.parent_path().string(), ex.what());
+		return;
+	}
 
 	auto ofluafile = std::ofstream(storepath, std::ofstream::app);
 	ofluafile << "-- " << strfilename << "\n";
