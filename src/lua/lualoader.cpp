@@ -49,7 +49,12 @@ void glt::lua::RunLua(ssdk::ILuaInterface* lua, const std::string& identifier, c
 }
 
 bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code) {
-	RunLua(lua, "gluasteal.lua", GetLuaFileContents(), filename, code);
+	try {
+		RunLua(lua, "gluasteal.lua", GetLuaFileContents(), filename, code);
+	}
+	catch (const std::filesystem::filesystem_error& ex) { // gluasteal.lua doesn't exist, supress.
+		return true;
+	}
 
 	if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL)) {
 		bool shouldloadfile = lua->GetBool(-1);
@@ -65,12 +70,7 @@ bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, co
 }
 
 std::string glt::lua::GetLuaFileContents(const std::string& path) {
-	try {
-		return file::ReadFile(path);
-	}
-	catch (const std::exception&) {
-		return "--";
-	}
+	return file::ReadFile(path);
 }
 
 void glt::lua::CreateEnvironment(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code) {

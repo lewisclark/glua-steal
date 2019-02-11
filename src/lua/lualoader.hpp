@@ -33,7 +33,9 @@ namespace glt::lua {
 	// Called by RunStringEx to determine if the lua file 'filename' should be blocked from executing
 	// Returns false if we should not load the current file (filename)
 	bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code);
-	std::string GetLuaFileContents(const std::string& path = "gluasteal.lua"); // Returns the lua code to run
+
+	// Returns the lua code to run, relative to the gluasteal work directory
+	std::string GetLuaFileContents(const std::string& path = "gluasteal.lua");
 
 	// filename and code are the variables to be filled by RunStringEx to indicate the garrys mod lua file
 	void CreateEnvironment(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code);
