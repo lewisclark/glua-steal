@@ -52,7 +52,7 @@ bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, co
 	try {
 		RunLua(lua, "gluasteal.lua", GetLuaFileContents(), filename, code);
 	}
-	catch (const std::filesystem::filesystem_error& ex) { // gluasteal.lua doesn't exist, supress.
+	catch (const std::filesystem::filesystem_error&) { // gluasteal.lua doesn't exist, supress.
 		return true;
 	}
 
