@@ -20,7 +20,7 @@ std::filesystem::path glt::file::GetWorkDirectory() {
 	const auto& home = GetHomeDirectory();
 
 	if (home.empty()) {
-		throw std::runtime_error("home directory path is empty");
+		throw std::filesystem::filesystem_error("home directory path is empty", std::error_code());
 	}
 
 	return (home / "gluasteal");
@@ -54,7 +54,7 @@ std::string glt::file::ReadFile(const std::string& path) {
 	auto iff = std::ifstream(GetWorkDirectory() / path);
 
 	if (!iff.is_open()) {
-		throw std::runtime_error("file does not exist");
+		throw std::filesystem::filesystem_error("file does not exist", std::error_code());
 	}
 
 	std::stringstream ss;
