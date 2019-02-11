@@ -16,6 +16,8 @@ Tested & working on Windows & Linux. Still needs testing on Mac.
 3. Optionally, set up your own [lua file to be loaded](#lua-loader-load-before-autorun).
 4. Join a server.
 
+##### The gluasteal Directory
+
 Logs and lua files will be written to the gluasteal folder, in your home directory.
 
 * Windows: C:/Users/username/Documents/gluasteal/
@@ -57,20 +59,25 @@ Using DYLD\_INSERT\_LIBRARIES (see LD\_PRELOAD above)
 
 ### Lua Loader (Load Before Autorun)
 
-Place your own lua code in your gluasteal directory, in a file named gluasteal.lua
+Place your own lua code in your [gluasteal directory](#The-gluasteal-Directory), in a file named gluasteal.lua
+This file is executed in its own environment, not in \_G. You are still able to access everything stored in \_G.
 
-For example, C:/Users/username/Documents/gluasteal/gluasteal.lua
-
-This file will be executed every time a Garry's Mod lua script is about to be run. The global variable SCRIPT will be set to the path of the file to be run. You can return false to stop the current file from being executed.
+This file will be executed every time a Garry's Mod lua script is about to be run. You can return false to stop the current file (gluasteal.SCRIPT) from being executed.
 
 ```lua
 -- All scripts with the string 'derma' in their name will be blocked from executing
-if (SCRIPT:match("derma")) then
+if (gluasteal.SCRIPT:match("derma")) then
 	return false
 end
 ```
+```
+gluasteal.SCRIPT -- The path of the Garry's Mod lua script that is about to be executed (e.g. "init.lua")
+gluasteal.SOURCE -- The source code of the script that is about to be executed (e.g. "do return end")
+gluasteal.VERSION -- The version of gluasteal being used
+gluasteal.include -- A function to include other gluasteal lua files, relative to the [gluasteal directory](#The-gluasteal-Directory) - e.g. gluasteal.include("other.lua")
+```
 
-This file is executed in its own environment, not in \_G. You are still able to access everything stored in \_G though.
+Note: gluasteal.SCRIPT and gluasteal.SOURCE will be an empty string in files included by gluasteal.include
 
 ---
 
