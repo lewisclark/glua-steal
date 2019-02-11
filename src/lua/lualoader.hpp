@@ -25,10 +25,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "file/file.hpp"
 
 namespace glt::lua {
+	// For running our own lua in a seperate environment
+	void RunLua(ssdk::ILuaInterface* lua, const std::string& identifier, const std::string& code);
+
+	// Called by RunStringEx to determine if the lua file 'filename' should be blocked from executing
 	// Returns false if we should not load the current file (filename)
-	bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename);
-	std::string GetLuaFileContents(); // Returns the lua code to run
-	void CreateEnvironment(ssdk::ILuaInterface* lua, const std::string& filename);
+	bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code);
+	std::string GetLuaFileContents(const std::string& path = "gluasteal.lua"); // Returns the lua code to run
+	void CreateEnvironment(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code);
 }
 
 #endif

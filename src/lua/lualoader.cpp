@@ -16,17 +16,39 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "lualoader.hpp"
 
-bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename) {
-	const std::string& luacode = GetLuaFileContents();
+static int include(lua_State*) {
+	glt::ssdk::ILuaInterface* lua = glt::ssdk::g_clientluainterface;
+	const char* filename = lua->CheckString(-1);
 
-	if (luaL_loadbuffer(lua->GetLuaState(), luacode.c_str(), luacode.length(), "gluasteal")) {
-		throw std::runtime_error(fmt::format("syntax error '{}'", lua->GetString(-1)));
+	try {
+		//glt::lua::LoadLua(lua, filename, glt::lua::GetLuaFileContents(filename));
+	}
+	catch (const std::exception& ex) {
+		glt::GetLogger()->warn("Failed to include {}\t{}", filename, ex.what());
 	}
 
-	CreateEnvironment(lua, filename);
+	return 0;
+}
+
+void glt::lua::RunLua(ssdk::ILuaInterface* lua, const std::string& identifier, const std::string& code) {
+
+}
+
+bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code) {
+	const auto& luacode = GetLuaFileContents();
+
+	if (luaL_loadbuffer(lua->GetLuaState(), luacode.c_str(), luacode.length(), "gluasteal")) {
+		const char* errstr = lua->GetString(-1);
+		lua->Pop(1);
+		throw std::runtime_error(fmt::format("syntax error '{}'", errstr));
+	}
+
+	CreateEnvironment(lua, filename, code);
 
 	if (lua->PCall(0, 1, 0)) {
-		throw std::runtime_error(fmt::format("execution error '{}'", lua->GetString(-1)));
+		const char* errstr = lua->GetString(-1);
+		lua->Pop(1);
+		throw std::runtime_error(fmt::format("execution error '{}'", errstr));
 	}
 	else if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL)) {
 		bool shouldloadfile = lua->GetBool(-1);
@@ -41,22 +63,33 @@ bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename) {
 	return true;
 }
 
-std::string glt::lua::GetLuaFileContents() {
+std::string glt::lua::GetLuaFileContents(const std::string& path) {
 	try {
-		return file::ReadFile("gluasteal.lua");
+		return file::ReadFile(path);
 	}
 	catch (const std::exception&) {
 		return "--";
 	}
 }
 
-void glt::lua::CreateEnvironment(ssdk::ILuaInterface* lua, const std::string& filename) {
-	lua->CreateTable();
+void glt::lua::CreateEnvironment(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code) {
+	lua->CreateTable(); // env
 
-	lua->PushString(filename.c_str(), filename.length());
-	lua->SetField(-2, "SCRIPT");
+	lua->CreateTable(); // env.gluasteal
+		lua->PushString(filename.c_str(), filename.length());
+		lua->SetField(-2, "SCRIPT");
 
-	lua->CreateTable();
+		lua->PushString(code.c_str(), code.length());
+		lua->SetField(-2, "SOURCE");
+
+		lua->PushNumber(GLUASTEAL_VERSION);
+		lua->SetField(-2, "VERSION");
+
+		lua->PushCFunction(include);
+		lua->SetField(-2, "include");
+	lua->SetField(-2, "gluasteal");
+
+	lua->CreateTable(); // env metatable
 		lua->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
 		lua->SetField(-2, "__index");
 	lua->SetMetaTable(-2);
