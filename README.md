@@ -74,7 +74,7 @@ end
 gluasteal.SCRIPT -- The path of the Garry's Mod lua script that is about to be executed (e.g. "init.lua")
 gluasteal.SOURCE -- The source code of the script that is about to be executed (e.g. "do return end")
 gluasteal.VERSION -- The version of gluasteal being used
-gluasteal.include -- A function to include other gluasteal lua files, relative to the [gluasteal directory](#The-gluasteal-Directory) - e.g. gluasteal.include("other.lua")
+gluasteal.include -- A function to include other gluasteal lua files, relative to the gluasteal directory - e.g. gluasteal.include("other.lua")
 ```
 
 Note: gluasteal.SCRIPT and gluasteal.SOURCE will be an empty string in files included by gluasteal.include
