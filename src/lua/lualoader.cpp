@@ -21,7 +21,7 @@ static int include(lua_State*) {
 	const char* filename = lua->CheckString(-1);
 
 	try {
-		//glt::lua::LoadLua(lua, filename, glt::lua::GetLuaFileContents(filename));
+		glt::lua::RunLua(lua, filename, glt::lua::GetLuaFileContents(filename));
 	}
 	catch (const std::exception& ex) {
 		glt::GetLogger()->warn("Failed to include {}\t{}", filename, ex.what());
@@ -30,27 +30,28 @@ static int include(lua_State*) {
 	return 0;
 }
 
-void glt::lua::RunLua(ssdk::ILuaInterface* lua, const std::string& identifier, const std::string& code) {
+void glt::lua::RunLua(ssdk::ILuaInterface* lua, const std::string& identifier, const std::string& code,
+	const std::string& gfilename, const std::string& gcode) {
 
-}
-
-bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code) {
-	const auto& luacode = GetLuaFileContents();
-
-	if (luaL_loadbuffer(lua->GetLuaState(), luacode.c_str(), luacode.length(), "gluasteal")) {
+	if (luaL_loadbuffer(lua->GetLuaState(), code.c_str(), code.length(), identifier.c_str())) {
 		const char* errstr = lua->GetString(-1);
 		lua->Pop(1);
 		throw std::runtime_error(fmt::format("syntax error '{}'", errstr));
 	}
 
-	CreateEnvironment(lua, filename, code);
+	CreateEnvironment(lua, gfilename, gcode);
 
 	if (lua->PCall(0, 1, 0)) {
 		const char* errstr = lua->GetString(-1);
 		lua->Pop(1);
 		throw std::runtime_error(fmt::format("execution error '{}'", errstr));
 	}
-	else if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL)) {
+}
+
+bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code) {
+	RunLua(lua, "gluasteal.lua", GetLuaFileContents(), filename, code);
+
+	if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL)) {
 		bool shouldloadfile = lua->GetBool(-1);
 
 		lua->Pop(1);
