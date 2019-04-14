@@ -25,6 +25,17 @@ void glt::Init() {
 	const auto& logger = GetLogger();
 	logger->info("Initializing gluasteal v{:.1f}", GLUASTEAL_VERSION);
 
+	while (true) {
+		try {
+			lib::Library("engine").GetInterface<ssdk::IVEngineClient>("VEngineClient015");
+			lib::Library("garrysmod/bin/lua_shared").GetInterface<ssdk::ILuaShared>("LUASHARED003");
+			break;
+		}
+		catch (const std::exception& ex) {}
+
+		std::this_thread::sleep_for(std::chrono::seconds(3));
+	}
+
 	try {
 		const auto& libengine = lib::Library("engine");
 		const auto& libluashared = lib::Library("garrysmod/bin/lua_shared");
