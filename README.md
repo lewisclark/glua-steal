@@ -85,7 +85,19 @@ Note: gluasteal.SCRIPT and gluasteal.SOURCE will be an empty string in files inc
 
 If building with GCC, ensure you are using at least version 8 or above.
 
-Todo
+##### Windows
+
+Using the Visual Studio Developer Command Prompt (requires VS build tools)
+
+```
+git clone https://github.com/lewez/glua-steal
+cd glua-steal
+git submodule update --init --recursive
+mkdir build
+cd build
+cmake ..
+msbuild gluasteal.sln /p:Configuration=Release
+```
 
 ##### Unix
 ```
