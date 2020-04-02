@@ -1,6 +1,6 @@
 ## A cross-platform Garry's Mod tool to download a server's Lua files
 
-gluasteal downloads clientside & shared lua files from Garry's Mod servers that you join. gluasteal also allows you to run your own Lua code on any server.
+gluasteal downloads clientside & shared Lua files from Garry's Mod servers that you join. gluasteal also allows you to run your own Lua code on any server.
 
 ![Windows usage](https://i.imgur.com/j38AKQ7.png)
 ![Linux usage](https://i.imgur.com/N7reRXS.png)
@@ -60,7 +60,7 @@ Using DYLD\_INSERT\_LIBRARIES (see LD\_PRELOAD above)
 ### Lua Loader (Load Before Autorun)
 
 Place your Lua code in your [gluasteal directory](#The-gluasteal-Directory), in a file named gluasteal.lua
-This file is executed in its own environment, not in \_G. You are still able to access everything stored in \_G.
+This file is executed in a separate environment, not in \_G. You are still able to access everything stored in \_G.
 
 This file will be executed every time a Garry's Mod Lua script is about to be executed. You can return false to stop the current file (gluasteal.SCRIPT) from being executed.
 
