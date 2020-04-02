@@ -1,6 +1,6 @@
-## A cross-platform tool for downloading lua files from servers on Garry's Mod.
+## A cross-platform Garry's Mod tool to download a server's Lua files
 
-gluasteal downloads clientside & shared lua files from Garry's Mod servers that you join.
+gluasteal downloads clientside & shared lua files from Garry's Mod servers that you join. gluasteal also allows you to run your own Lua code on any server.
 
 ![Windows usage](https://i.imgur.com/j38AKQ7.png)
 ![Linux usage](https://i.imgur.com/N7reRXS.png)
@@ -13,12 +13,12 @@ Tested & working on Windows & Linux. Still needs testing on Mac.
 
 1. Either Download pre-built from the [Releases section](https://github.com/lewez/glua-steal/releases) or [build from source](#Building-From-Source).
 2. [Inject](#How-to-Inject) library into Garry's Mod, at the main menu.
-3. Optionally, set up your own [lua file to be loaded](#lua-loader-load-before-autorun).
+3. Optionally, set up your [Lua file to be loaded](#lua-loader-load-before-autorun).
 4. Join a server.
 
 ##### The gluasteal Directory
 
-Logs and lua files will be written to the gluasteal folder, in your home directory.
+Logs and Lua files will be written to the gluasteal folder, in your home directory.
 
 * Windows: C:/Users/username/Documents/gluasteal/
 * Linux: /home/username/gluasteal/
@@ -59,10 +59,10 @@ Using DYLD\_INSERT\_LIBRARIES (see LD\_PRELOAD above)
 
 ### Lua Loader (Load Before Autorun)
 
-Place your own lua code in your [gluasteal directory](#The-gluasteal-Directory), in a file named gluasteal.lua
+Place your Lua code in your [gluasteal directory](#The-gluasteal-Directory), in a file named gluasteal.lua
 This file is executed in its own environment, not in \_G. You are still able to access everything stored in \_G.
 
-This file will be executed every time a Garry's Mod lua script is about to be run. You can return false to stop the current file (gluasteal.SCRIPT) from being executed.
+This file will be executed every time a Garry's Mod Lua script is about to be executed. You can return false to stop the current file (gluasteal.SCRIPT) from being executed.
 
 ```lua
 -- All scripts with the string 'derma' in their name will be blocked from executing
@@ -71,10 +71,10 @@ if (gluasteal.SCRIPT:match("derma")) then
 end
 ```
 ```
-gluasteal.SCRIPT -- The path of the Garry's Mod lua script that is about to be executed (e.g. "init.lua")
+gluasteal.SCRIPT -- The path of the Garry's Mod Lua script that is about to be executed (e.g. "init.lua")
 gluasteal.SOURCE -- The source code of the script that is about to be executed (e.g. "do return end")
 gluasteal.VERSION -- The version of gluasteal being used
-gluasteal.include -- A function to include other gluasteal lua files, relative to the gluasteal directory - e.g. gluasteal.include("other.lua")
+gluasteal.include -- A function to include other gluasteal Lua files, relative to the gluasteal directory - e.g. gluasteal.include("other.lua")
 ```
 
 Note: gluasteal.SCRIPT and gluasteal.SOURCE will be an empty string in files included by gluasteal.include
