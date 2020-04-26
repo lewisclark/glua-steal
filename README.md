@@ -95,7 +95,8 @@ cd glua-steal
 git submodule update --init --recursive
 mkdir build
 cd build
-cmake ..
+cmake --help	Find a suitable generator, such as "Visual Studio 15 2017"
+cmake -G <GENERATOR> ..
 msbuild gluasteal.sln /p:Configuration=Release
 ```
 
