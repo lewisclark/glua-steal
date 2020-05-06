@@ -41,7 +41,7 @@ glt::lib::Library::Library(const std::string& pathname) :
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	library_entry entry;
-	entry.name = pathname.c_str();
+	entry.name = pathnamext.c_str();
 	entry.lib = nullptr;
 
 	dl_iterate_phdr(phdr_callback, (void*)&entry);
@@ -52,14 +52,13 @@ glt::lib::Library::Library(const std::string& pathname) :
 	HANDLE module_snap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
 	module_entry.dwSize = sizeof(MODULEENTRY32);
 	
-	std::string module_name;
 	if (!Module32First(module_snap, &module_entry)) {
 		throw std::runtime_error("failed to get process modules");
 	}
 
 	do {
-		module_name = module_entry.szModule;
-		std::size_t found = module_name.find(pathname);
+		std::string module_name = module_entry.szModule;
+		std::size_t found = module_name.find(pathnamext);
 
 		if (found != std::string::npos) {
 			m_handle = reinterpret_cast<std::uintptr_t*>(module_entry.hModule);
@@ -70,7 +69,7 @@ glt::lib::Library::Library(const std::string& pathname) :
 #endif
 
 	if (!m_handle) {
-		throw std::runtime_error("failed to grab handle for library " + pathname);
+		throw std::runtime_error("failed to grab handle for library " + pathnamext);
 	}
 }
 
