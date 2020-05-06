@@ -96,7 +96,7 @@ git submodule update --init --recursive
 mkdir build
 cd build
 cmake --help	Find a suitable generator, such as "Visual Studio 15 2017"
-cmake -G <GENERATOR> ..
+cmake -A Win32 -G <GENERATOR> ..
 msbuild gluasteal.sln /p:Configuration=Release
 ```
 
