@@ -17,7 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "luaexports.hpp"
 
 void glt::lua::GetExports() {
-	const auto& libluashared = lib::Library("garrysmod/bin/lua_shared");
+	const auto& libluashared = lib::Library("lua_shared");
 
 	luaL_loadbuffer = libluashared.GetSymbol<luaL_loadbufferfn>("luaL_loadbuffer");
 	lua_setfenv = libluashared.GetSymbol<lua_setfenvfn>("lua_setfenv");

@@ -24,7 +24,25 @@ glt::lib::Library::Library(const std::string& pathname) :
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	m_handle = reinterpret_cast<std::uintptr_t*>(dlopen(pathnamext.c_str(), RTLD_NOLOAD));
 #elif (defined(OS_WINDOWS))
-	m_handle = reinterpret_cast<std::uintptr_t*>(GetModuleHandle(pathnamext.c_str()));
+	MODULEENTRY32 module_entry;
+	HANDLE module_snap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
+	module_entry.dwSize = sizeof(MODULEENTRY32);
+	
+	std::string module_name;
+	if (!Module32First(module_snap, &module_entry)) {
+		throw std::runtime_error("failed to get process modules");
+	}
+
+	do {
+		module_name = module_entry.szModule;
+		std::size_t found = module_name.find(pathname);
+
+		if (found != std::string::npos) {
+			m_handle = reinterpret_cast<std::uintptr_t*>(module_entry.hModule);
+			break;
+		}
+
+	} while (Module32Next(module_snap, &module_entry));
 #endif
 
 	if (!m_handle) {

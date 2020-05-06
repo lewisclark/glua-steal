@@ -28,7 +28,7 @@ void glt::Init() {
 	while (true) {
 		try {
 			lib::Library("engine").GetInterface<ssdk::IVEngineClient>("VEngineClient015");
-			lib::Library("garrysmod/bin/lua_shared").GetInterface<ssdk::ILuaShared>("LUASHARED003");
+			lib::Library("lua_shared").GetInterface<ssdk::ILuaShared>("LUASHARED003");
 			break;
 		}
 		catch (const std::exception& ex) {}
@@ -38,7 +38,7 @@ void glt::Init() {
 
 	try {
 		const auto& libengine = lib::Library("engine");
-		const auto& libluashared = lib::Library("garrysmod/bin/lua_shared");
+		const auto& libluashared = lib::Library("lua_shared");
 
 		ssdk::g_engineclient = libengine.GetInterface<ssdk::IVEngineClient>("VEngineClient015");
 		ssdk::g_luashared = libluashared.GetInterface<ssdk::ILuaShared>("LUASHARED003");
