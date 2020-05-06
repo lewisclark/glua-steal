@@ -27,6 +27,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <dlfcn.h>
 #elif (defined(OS_WINDOWS))
 #include <windows.h>
+#include <tlhelp32.h>
 #endif
 
 namespace glt::lib {
