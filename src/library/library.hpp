@@ -20,11 +20,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <cinttypes>
 #include <string>
 #include <stdexcept>
+#include <cstring>
 
 #include "os.hpp"
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 #include <dlfcn.h>
+#include <link.h>
 #elif (defined(OS_WINDOWS))
 #include <windows.h>
 #include <tlhelp32.h>
