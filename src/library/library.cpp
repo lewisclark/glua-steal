@@ -26,7 +26,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 		library_entry* entry = reinterpret_cast<library_entry*>(data);
 
 		if (strstr(info->dlpi_name, entry->name) != nullptr) {
-			entry->lib = dlopen(info->dlpi_name, RTLD_NOLOAD);
+			entry->lib = dlopen(info->dlpi_name, RTLD_NOLOAD | RTLD_NOW);
 			return 1;
 		}
 
