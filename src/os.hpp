@@ -33,7 +33,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #endif
 
 // Architecture
-#if (defined(_WIN32) || defined(_M_IX86) || defined(__i386__) || defined(i386) || defined(__i386))
+#if ((defined(_WIN32) && !defined(_WIN64)) || defined(_M_IX86) || defined(__i386__) || defined(i386) || defined(__i386))
 #define ARCH_32BIT
 #elif (defined(_WIN64) || defined(__ia64__) || defined(_IA64) || defined(__IA64__) || defined(_M_IA64))
 #define ARCH_64BIT
@@ -41,6 +41,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #if (defined(ARCH_32BIT) && defined(ARCH_64BIT))
 #error "Multiple architectures found!"
+#endif
+
+#if (!defined(ARCH_32BIT) && !defined(ARCH_64BIT))
+#error "No architecture found!"
 #endif
 
 // Calling conventions
