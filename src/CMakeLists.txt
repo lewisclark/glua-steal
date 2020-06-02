@@ -25,4 +25,3 @@ add_subdirectory(tests)
 add_library(gluasteal SHARED main.cpp init.cpp logger.cpp)
 
 target_link_libraries(gluasteal PRIVATE ${CMAKE_THREADS_LIBS_INIT} file lua hook gamesdk library)
-target_compile_options(gluasteal PRIVATE)
