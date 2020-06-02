@@ -21,13 +21,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "GarrysMod/Lua/Interface.h"
 
+#if defined(_WIN64)
+#define LUASTATE_OFFSET 0x8
+#else
+#define LUASTATE_OFFSET 0x4
+#endif
+
 namespace glt::ssdk {
 	class lua_State;
 
 	class ILuaInterface : public GarrysMod::Lua::ILuaBase {
 		public:
 		lua_State* GetLuaState() {
-			return *reinterpret_cast<lua_State**>(reinterpret_cast<std::uint8_t*>(this) + 0x4);
+			return *reinterpret_cast<lua_State**>(reinterpret_cast<std::uint8_t*>(this) + LUASTATE_OFFSET);
 		}
 	};
 
