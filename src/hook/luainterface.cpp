@@ -17,19 +17,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "luainterface.hpp"
 
 // TODO: Tidy this up
-#if (defined(OS_LINUX) || defined(OS_MAC) || defined(_WIN64))
+#if (defined(OS_LINUX) || defined(OS_MAC) || (defined(OS_WINDOWS) && defined(64BIT))
 typedef bool (* RunStringExFn)(glt::ssdk::ILuaInterface*, const char*, const char*, const char*,
 	bool, bool, bool, bool);
-#elif (defined(OS_WINDOWS))
+#elif (defined(OS_WINDOWS) && defined(32BIT))
 typedef bool (__THISCALL__* RunStringExFn)(glt::ssdk::ILuaInterface*, const char*, const char*, const char*,
 	bool, bool, bool, bool);
 #endif
 static RunStringExFn RunStringExOrig = nullptr;
 
 // TODO: Tidy this up
-#if (defined(OS_LINUX) || defined(OS_MAC) || defined(_WIN64))
+#if (defined(OS_LINUX) || defined(OS_MAC) || (defined(OS_WINDOWS) && defined(64BIT))
 static bool RunStringExHk(glt::ssdk::ILuaInterface* thisptr,
-#elif (defined(OS_WINDOWS))
+#elif (defined(OS_WINDOWS) && defined(32BIT))
 static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::uintptr_t*,
 #endif
 	const char* filename, const char* path, const char* buf, bool b1, bool b2, bool b3, bool b4) {
