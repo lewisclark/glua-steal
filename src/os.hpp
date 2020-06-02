@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef OS_H
 #define OS_H
 
+// OS
 #if (defined(_WIN32) || defined(_WIN64))
 #define OS_WINDOWS
 #elif (defined(__linux__))
@@ -27,12 +28,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #error "Operating system not found!"
 #endif
 
-#if (defined(_M_IX86) || defined(__i386__) || defined(i386) || defined(__i386))
-#define 32BIT
-#elif (defined(__ia64__) || defined(_IA64) || defined(__IA64__) || defined(_M_IA64))
-#define 64BIT
+#if ((defined(OS_WINDOWS) && (defined(OS_LINUX) || defined(OS_MAC))) || (defined(OS_LINUX) && (defined(OS_WINDOWS) || defined(OS_MAC))) || (defined(OS_MAC) && (defined(OS_WINDOWS) || defined(OS_LINUX))))
+#error "Multiple OSes found!"
 #endif
 
+// Architecture
+#if (defined(_WIN32) || defined(_M_IX86) || defined(__i386__) || defined(i386) || defined(__i386))
+#define ARCH_32BIT
+#elif (defined(_WIN64) || defined(__ia64__) || defined(_IA64) || defined(__IA64__) || defined(_M_IA64))
+#define ARCH_64BIT
+#endif
+
+#if (defined(ARCH_32BIT) && defined(ARCH_64BIT))
+#error "Multiple architectures found!"
+#endif
 
 // Calling conventions
 #if (defined(__GNUC__))
