@@ -98,7 +98,8 @@ git submodule update --init --recursive
 mkdir build
 cd build
 cmake --help	Find a suitable generator, such as "Visual Studio 15 2017"
-cmake .. -A Win32 -G <GENERATOR> -DCMAKE_TOOLCHAIN_FILE=../toolchains/msvc.cmake
+Select either Win32 or x64 below for the -A flag (32bit or 64bit)
+cmake .. -A Win32/x64 -G <GENERATOR> -DCMAKE_TOOLCHAIN_FILE=../toolchains/msvc.cmake 
 msbuild gluasteal.sln /p:Configuration=Release
 ```
 
@@ -108,7 +109,8 @@ git clone https://github.com/lewez/glua-steal
 cd glua-steal
 git submodule update --init --recursive
 mkdir build && cd build
-cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/gcc-<32bit/64bit>.cmake -- choose 32bit or 64bit toolchain here (toolchains are in toolchains/ folder)
+choose the 32bit or 64bit toolchain below (toolchains are in toolchains/ folder)
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/gcc-<32bit/64bit>.cmake
 make
 ```
 
