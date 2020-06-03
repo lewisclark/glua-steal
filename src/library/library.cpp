@@ -86,8 +86,10 @@ std::string glt::lib::Library::GetPathName() const {
 }
 
 std::string glt::lib::Library::GetExtension() const {
-#if (defined(OS_LINUX))
+#if (defined(OS_LINUX) && defined(ARCH_32BIT))
 	return ".so";
+#elif (defined(OS_LINUX) && defined(ARCH_64BIT))
+	return "_client.so"; // FIXME: This will break for libraries without _client prefix in the name
 #elif (defined(OS_MAC))
 	return ".dylib"
 #elif (defined(OS_WINDOWS))
