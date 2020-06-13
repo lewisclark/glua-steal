@@ -1,17 +1,17 @@
-## A cross-platform Garry's Mod tool to download server Lua files
+## A cross-platform Garry's Mod tool that retrieves client-side Lua files from servers
 
-gluasteal downloads clientside & shared Lua files from Garry's Mod servers that you join. gluasteal also allows you to run your own Lua code on any server.
+gluasteal retrieves client-side & shared Lua files from Garry's Mod servers that you join. gluasteal also allows you to execute your own Lua code.
 
 ![Windows usage](https://i.imgur.com/j38AKQ7.png)
 ![Linux usage](https://i.imgur.com/N7reRXS.png)
 
-Tested & working on Windows & Linux. Still needs testing on Mac.
+Works on Windows & Linux (32-bit & 64-bit). Still needs testing on macOS.
 
 ---
 
 ### How to Use
 
-1. Either Download pre-built from the [Releases section](https://github.com/lewez/glua-steal/releases) or [build from source](#Building-From-Source).
+1. Either Download pre-built from the [Releases section](https://github.com/c4fe/glua-steal/releases) or [build from source](#Building-From-Source).
 2. [Inject](#How-to-Inject) library into Garry's Mod, at the main menu.
 3. Optionally, set up your [Lua file to be loaded](#lua-loader-load-before-autorun).
 4. Join a server.
@@ -90,7 +90,7 @@ If building with GCC, ensure you are using at least version 8 or above.
 Using the Visual Studio Developer Command Prompt (requires VS build tools)
 
 ```
-git clone https://github.com/lewez/glua-steal
+git clone https://github.com/c4fe/glua-steal
 cd glua-steal
 git submodule update --init --recursive
 mkdir build
@@ -103,7 +103,7 @@ msbuild gluasteal.sln /p:Configuration=Release
 
 ##### Unix
 ```
-git clone https://github.com/lewez/glua-steal
+git clone https://github.com/c4fe/glua-steal
 cd glua-steal
 git submodule update --init --recursive
 mkdir build && cd build
