@@ -52,7 +52,7 @@ void glt::lua::DumpLua(const std::string& filename, const std::string& code) {
 
 	auto ofluafile = std::ofstream(storepath, std::ofstream::app);
 	ofluafile << "-- " << strfilename << "\n";
-	ofluafile << "-- Retrieved by https://github.com/lewez/glua-steal\n";
+	ofluafile << "-- Retrieved by https://github.com/c4fe/glua-steal\n";
 	ofluafile << code << "\n\n";
 	ofluafile.close();
 }
