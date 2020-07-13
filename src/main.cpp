@@ -46,7 +46,6 @@ int __attribute__((destructor)) kill() {
 BOOL APIENTRY DllMain(HINSTANCE lib, DWORD reason, LPVOID) {
 	switch (reason) {
 		case DLL_PROCESS_ATTACH: {
-			DisableThreadLibraryCalls(lib);
 			CreateThread(0, 0, (LPTHREAD_START_ROUTINE)glt::Init, 0, 0, 0);
 
 			return true;
