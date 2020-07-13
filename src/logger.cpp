@@ -24,7 +24,7 @@ void glt::InitLogger() {
 
 	const auto& logpath = file::GetLogFilePath();
 
-	logger = spdlog::basic_logger_mt("lewproxy", logpath.string());
+	logger = spdlog::basic_logger_mt("gluasteal", logpath.string());
 }
 
 spdlog::logger* glt::GetLogger() {
