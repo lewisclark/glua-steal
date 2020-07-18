@@ -5,7 +5,7 @@ gluasteal retrieves client-side & shared Lua files from Garry's Mod servers that
 ![Windows usage](https://i.imgur.com/j38AKQ7.png)
 ![Linux usage](https://i.imgur.com/N7reRXS.png)
 
-Works on Windows & Linux (32-bit & 64-bit). Still needs testing on macOS.
+Working on Windows & Linux (32-bit & 64-bit). Testing required on macOS.
 
 ---
 
@@ -22,7 +22,7 @@ Logs and Lua files will be written to the gluasteal folder, in your home directo
 
 * Windows: C:/Users/username/Documents/gluasteal/
 * Linux: /home/username/gluasteal/
-* Mac: /Users/username/gluasteal/
+* macOS: /Users/username/gluasteal/
 
 ---
 
@@ -51,7 +51,7 @@ Editing the Garry's Mod launch script (hl2.sh) to preload the gluasteal library.
 
 [Using gdb](https://github.com/AimTuxOfficial/AimTux/blob/master/load)
 
-#### Mac
+#### macOS
 
 Using DYLD\_INSERT\_LIBRARIES (see LD\_PRELOAD above)
 
