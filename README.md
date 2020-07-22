@@ -9,6 +9,17 @@ Working on Windows & Linux (32-bit & 64-bit). Testing required on macOS.
 
 ---
 
+### Features
+
+* Lua Dumper - Saves Lua files that are executed
+* Lua Exector - Allows you to execute your own Lua scripts
+* Lua Blocker - Block Lua scripts of your choosing
+* Concurrent IO - The Lua dumper does IO in its own thread to eliminate bottleneck and ensure maximum in-game performance
+* Supports the 32-bit and 64-bit versions of the game
+* Supports Linux and Windows
+
+---
+
 ### How to Use
 
 1. Either Download pre-built from the [Releases section](https://github.com/c4fe/glua-steal/releases) or [build from source](#Building-From-Source).
