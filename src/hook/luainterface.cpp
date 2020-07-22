@@ -34,20 +34,28 @@ static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::u
 #endif
 	const char* filename, const char* path, const char* buf, bool b1, bool b2, bool b3, bool b4) {
 
-	glt::lua::DumpLua(filename, buf);
+	std::string strfilename = filename;
+	std::string strcode = buf;
 
+	bool load = true;
 	try {
-		if (!glt::lua::LoadLua(thisptr, filename, buf)) {
-			glt::GetLogger()->info("Blocked the execution of {}", filename);
-
-			return false;
+		if (!glt::lua::LoadLua(thisptr, strfilename, strcode)) {
+			glt::GetLogger()->info("Blocked the execution of {}", strfilename);
+			load = false;
 		}
 	}
 	catch (const std::exception& ex) {
 		glt::GetLogger()->warn("Failed to run lua file\t{}", ex.what());
 	}
 
-	return RunStringExOrig(thisptr, filename, path, buf, b1, b2, b3, b4);
+	bool ret = false;
+	if (load) {
+		ret = RunStringExOrig(thisptr, filename, path, buf, b1, b2, b3, b4);
+	}
+
+	glt::lua::DumpLua(std::move(strfilename), std::move(strcode));
+
+	return ret;
 }
 
 void glt::hook::LuaInterfaceHooker::Hook() {

@@ -17,13 +17,25 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef LUADUMPER_H
 #define LUADUMPER_H
 
+#include <mutex>
 #include "logger.hpp"
 #include "file/file.hpp"
 #include "file/sanitization.hpp"
 #include "gamesdk/IVEngineClient.hpp"
 
 namespace glt::lua {
-	void DumpLua(const std::string& filename, const std::string& code);
+	struct LuaDumperEntry {
+		LuaDumperEntry(std::string server_name, std::string filename, std::string code) :
+			server_name(server_name), filename(filename), code(code) {}
+
+		std::string server_name;
+		std::string filename;
+		std::string code;
+	};
+
+	std::thread Init();
+	void DumpLua(std::string filename, std::string code);
+	void IoThread();
 }
 
 #endif
