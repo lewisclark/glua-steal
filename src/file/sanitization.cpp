@@ -28,7 +28,7 @@ static std::vector<std::string> reserved {
 };
 #endif
 
-static char is_bad_char(const char& c) {
+static bool is_bad_char(const char& c) {
 	if (c >= 0x0 && c <= 0x1f) {
 		return true;
 	}
@@ -52,7 +52,7 @@ std::filesystem::path glt::file::SanitizeLuaFilePath(std::string pathstr) {
 	path = RemoveReservedWords(path);
 
 	if (path.string().length() >= 200) {
-		return std::filesystem::path("longfilename.lua"); // TODO: Do something better than this
+		return std::filesystem::path("longfilename.lua"); // FIXME: Do something better than this
 	}
 
 	if (!path.has_filename() || path.filename().string().front() == '.') {
