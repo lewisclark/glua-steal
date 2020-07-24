@@ -58,9 +58,11 @@ void glt::lua::IoThread() {
 				std::replace(server_name.begin(), server_name.end(), '.', '-');
 				std::replace(server_name.begin(), server_name.end(), ':', '_');
 
+				auto sanitized_filename = glt::file::SanitizeLuaFilePath(entry.filename);
+
 				auto path = storepath;
 				path /= server_name;
-				path /= glt::file::SanitizeLuaFilePath(entry.filename);
+				path /= sanitized_filename;
 
 				try {
 					std::filesystem::create_directories(path.parent_path());
@@ -72,9 +74,9 @@ void glt::lua::IoThread() {
 				}
 
 				auto of = std::ofstream(path, std::ofstream::app);
-				of << "-- " << entry.filename << "\n";
+				of << "-- " << sanitized_filename << "\n";
 				of << "-- Retrieved by https://github.com/c4fe/glua-steal\n";
-				of << entry.code;
+				of << entry.code << "\n\n";
 			}
 
 			shared_entries.clear();
