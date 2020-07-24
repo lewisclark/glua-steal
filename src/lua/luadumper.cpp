@@ -50,38 +50,40 @@ void glt::lua::IoThread() {
 	const auto& storepath = glt::file::GetServerStorePath();
 
 	while (true) {
-		if (!shared_entries.empty()) {
+		{
 			std::lock_guard<std::mutex> lock{mtx};
 
-			for (auto& entry : shared_entries) {
-				auto& server_name = entry.server_name;
-				std::replace(server_name.begin(), server_name.end(), '.', '-');
-				std::replace(server_name.begin(), server_name.end(), ':', '_');
+			if (!shared_entries.empty()) {
+				for (auto& entry : shared_entries) {
+					auto& server_name = entry.server_name;
+					std::replace(server_name.begin(), server_name.end(), '.', '-');
+					std::replace(server_name.begin(), server_name.end(), ':', '_');
 
-				auto sanitized_filename = glt::file::SanitizeLuaFilePath(entry.filename);
+					auto sanitized_filename = glt::file::SanitizeLuaFilePath(entry.filename);
 
-				auto path = storepath;
-				path /= server_name;
-				path /= sanitized_filename;
+					auto path = storepath;
+					path /= server_name;
+					path /= sanitized_filename;
 
-				try {
-					std::filesystem::create_directories(path.parent_path());
+					try {
+						std::filesystem::create_directories(path.parent_path());
+					}
+					catch (const std::filesystem::filesystem_error& ex) {
+						GetLogger()->critical("Failed to create_directories ({})\tpath1 -> {}\tpath2 -> {}",
+							ex.what(), ex.path1().string(), ex.path2().string());
+						continue;
+					}
+
+					auto of = std::ofstream(path, std::ofstream::app);
+					of << "-- " << sanitized_filename << "\n";
+					of << "-- Retrieved by https://github.com/c4fe/glua-steal\n";
+					of << entry.code << "\n\n";
 				}
-				catch (const std::filesystem::filesystem_error& ex) {
-					GetLogger()->critical("Failed to create_directories ({})\tpath1 -> {}\tpath2 -> {}",
-						ex.what(), ex.path1().string(), ex.path2().string());
-					continue;
-				}
 
-				auto of = std::ofstream(path, std::ofstream::app);
-				of << "-- " << sanitized_filename << "\n";
-				of << "-- Retrieved by https://github.com/c4fe/glua-steal\n";
-				of << entry.code << "\n\n";
+				shared_entries.clear();
 			}
-
-			shared_entries.clear();
 		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 }
