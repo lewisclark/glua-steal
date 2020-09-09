@@ -1,4 +1,10 @@
-## A cross-platform Garry's Mod tool that retrieves client-side Lua files from servers
+## glua-steal
+
+[![Build Status](https://travis-ci.org/lewisclark/glua-steal.svg?branch=master)](https://travis-ci.org/lewisclark/glua-steal)
+![Downloads](https://img.shields.io/github/downloads/lewisclark/glua-steal/total)
+![Version](https://img.shields.io/badge/version-1.9-green)
+![License](https://img.shields.io/github/license/lewisclark/glua-steal)
+![Issues](https://img.shields.io/github/issues/lewisclark/glua-steal)
 
 gluasteal retrieves client-side & shared Lua files from Garry's Mod servers that you join. gluasteal also allows you to execute your own Lua code.
 
