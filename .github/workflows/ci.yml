@@ -1,0 +1,48 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:
+          - { name: Linux, distro: ubuntu-latest }
+        build_type: [Debug, Release]
+        toolchain: ["gcc-32bit", "gcc-64bit"]
+
+    name: "${{matrix.os.name}} ${{matrix.build_type}} ${{matrix.toolchain}}"
+    runs-on: ${{matrix.os.distro}}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Install dependencies
+      shell: bash
+      run: sudo apt-get install gcc-8 g++-8 gcc-multilib libstdc++-8-dev lib32stdc++-8-dev
+
+    - name: Create build environment
+      working-directory: ${{runner.workspace}}
+      run: mkdir build
+
+    - name: Initialize CMake
+      shell: bash
+      env:
+        CC: /usr/bin/gcc-8
+        CXX: /usr/bin/g++-8
+      working-directory: ${{runner.workspace}}/build
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchains/${{matrix.toolchain}}.cmake
+
+    - name: Build
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: make
+
+    - name: Test
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: ctest -V -C $BUILD_TYPE
+
+
