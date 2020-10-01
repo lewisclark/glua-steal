@@ -20,11 +20,9 @@ static std::vector<glt::lua::LuaDumperEntry> entry_buffer;
 static std::mutex mtx;
 static std::vector<glt::lua::LuaDumperEntry> shared_entries;
 
-std::thread glt::lua::Init() {
+void glt::lua::Init() {
 	entry_buffer = std::vector<glt::lua::LuaDumperEntry>();
 	shared_entries = std::vector<glt::lua::LuaDumperEntry>();
-
-	return std::thread(glt::lua::IoThread);
 }
 
 void glt::lua::DumpLua(std::string filename, std::string code) {
@@ -47,6 +45,8 @@ void glt::lua::DumpLua(std::string filename, std::string code) {
 }
 
 void glt::lua::IoThread() {
+	glt::lua::Init();
+
 	const auto& storepath = glt::file::GetServerStorePath();
 
 	while (true) {

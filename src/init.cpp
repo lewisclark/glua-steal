@@ -52,13 +52,9 @@ void glt::Init() {
 		return;
 	}
 
-	std::thread dumper_io_thread = glt::lua::Init();
-
 	logger->info("Successfully initialized");
 	logger->info("Join a server to retrieve the lua files");
 	logger->info("Lua files will be saved to '{}'", file::GetServerStorePath().string());
 
-	while (true) {
-		std::this_thread::sleep_for(std::chrono::seconds(1)); // Keep alive
-	}
+	glt::lua::IoThread();
 }
