@@ -33,7 +33,7 @@ void glt::Init() {
 		}
 		catch (const std::exception& ex) {}
 
-		std::this_thread::sleep_for(std::chrono::seconds(3));
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
 	try {
