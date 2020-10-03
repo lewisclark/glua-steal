@@ -33,7 +33,6 @@ namespace glt::lua {
 		std::string code;
 	};
 
-	std::thread Init();
 	void DumpLua(std::string filename, std::string code);
 	void IoThread();
 }

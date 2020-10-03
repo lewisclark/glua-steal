@@ -20,13 +20,6 @@ static std::vector<glt::lua::LuaDumperEntry> entry_buffer;
 static std::mutex mtx;
 static std::vector<glt::lua::LuaDumperEntry> shared_entries;
 
-std::thread glt::lua::Init() {
-	entry_buffer = std::vector<glt::lua::LuaDumperEntry>();
-	shared_entries = std::vector<glt::lua::LuaDumperEntry>();
-
-	return std::thread(glt::lua::IoThread);
-}
-
 void glt::lua::DumpLua(std::string filename, std::string code) {
 	std::string server_name;
 	if (glt::ssdk::g_engineclient->IsConnected()) {
