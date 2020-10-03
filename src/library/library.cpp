@@ -16,6 +16,24 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "library.hpp"
 
+// Some libraries (not all) contain the _client prefix on Linux 64-bit
+// This makes it easier to use more libraries in the future
+static const std::map<std::string, std::string> extension_mapping = {
+#if (defined(OS_LINUX) && defined(ARCH_32BIT))
+	{"engine", ".so"},
+	{"lua_shared", ".so"}
+#elif (defined(OS_LINUX) && defined(ARCH_64BIT))
+	{"engine", "_client.so"},
+	{"lua_shared", "_client.so"}
+#elif (defined(OS_MAC))
+	{"engine", ".dylib"},
+	{"lua_shared", ".dylib"}
+#elif (defined(OS_WINDOWS))
+	{"engine", ".dll"},
+	{"lua_shared", ".dll"}
+#endif
+};
+
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	struct library_entry {
 		const char* name;
@@ -37,7 +55,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 glt::lib::Library::Library(const std::string& pathname) :
 	m_pathname(pathname) {
 
-	std::string pathnamext(pathname + GetExtension());
+	std::string pathnamext(pathname + GetExtension(pathname));
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	library_entry entry;
@@ -85,14 +103,6 @@ std::string glt::lib::Library::GetPathName() const {
 	return m_pathname;
 }
 
-std::string glt::lib::Library::GetExtension() const {
-#if (defined(OS_LINUX) && defined(ARCH_32BIT))
-	return ".so";
-#elif (defined(OS_LINUX) && defined(ARCH_64BIT))
-	return "_client.so"; // FIXME: This will break for libraries without _client prefix in the name
-#elif (defined(OS_MAC))
-	return ".dylib"
-#elif (defined(OS_WINDOWS))
-	return ".dll";
-#endif
+std::string glt::lib::Library::GetExtension(const std::string& pathname) const {
+	return extension_mapping.at(pathname);
 }

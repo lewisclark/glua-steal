@@ -21,6 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <string>
 #include <stdexcept>
 #include <cstring>
+#include <map>
 
 #include "os.hpp"
 
@@ -74,7 +75,7 @@ namespace glt::lib {
 		}
 		
 		private:
-		std::string GetExtension() const;
+		std::string GetExtension(const std::string& pathname) const;
 
 		std::uintptr_t* m_handle = nullptr;
 		std::string m_pathname;
