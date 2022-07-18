@@ -21,8 +21,14 @@ jobs:
         submodules: recursive
 
     - name: Install dependencies
+      if: matrix.os.distro == "ubuntu-20.04"
       shell: bash
-      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-10-dev lib32stdc++-10-dev libstdc++-11-dev lib32stdc++-11-dev
+      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-9-dev lib32stdc++-9-dev
+
+    - name: Install dependencies
+      if: matrix.os.distro == "ubuntu-22.04"
+      shell: bash
+      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-11-dev lib32stdc++-11-dev
 
     - name: Create build environment
       working-directory: ${{runner.workspace}}
