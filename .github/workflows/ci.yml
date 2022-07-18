@@ -7,7 +7,8 @@ jobs:
     strategy:
       matrix:
         os:
-          - { name: Linux, distro: ubuntu-latest }
+          - { name: Ubuntu 20.04, distro: ubuntu-20.04 }
+          - { name: Ubuntu 22.04, distro: ubuntu-22.04 }
         build_type: [Debug, Release]
         toolchain: ["gcc-32bit", "gcc-64bit"]
 
