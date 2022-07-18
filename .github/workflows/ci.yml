@@ -22,7 +22,7 @@ jobs:
 
     - name: Install dependencies
       shell: bash
-      run: sudo apt-get install gcc-8 g++-8 gcc-multilib libstdc++-8-dev lib32stdc++-8-dev
+      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-10-dev lib32stdc++-10-dev
 
     - name: Create build environment
       working-directory: ${{runner.workspace}}
@@ -31,8 +31,8 @@ jobs:
     - name: Initialize CMake
       shell: bash
       env:
-        CC: /usr/bin/gcc-8
-        CXX: /usr/bin/g++-8
+        CC: /usr/bin/gcc
+        CXX: /usr/bin/g++
       working-directory: ${{runner.workspace}}/build
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchains/${{matrix.toolchain}}.cmake
 
