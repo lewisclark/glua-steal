@@ -7,8 +7,8 @@ jobs:
     strategy:
       matrix:
         os:
-          - { name: Ubuntu 20.04, distro: ubuntu-20.04 }
-          - { name: Ubuntu 22.04, distro: ubuntu-22.04 }
+          - { name: Ubuntu 20.04, distro: ubuntu-20.04, gcc_version: 9 }
+          - { name: Ubuntu 22.04, distro: ubuntu-22.04, gcc_version: 11 }
         build_type: [Debug, Release]
         toolchain: ["gcc-32bit", "gcc-64bit"]
 
@@ -21,14 +21,8 @@ jobs:
         submodules: recursive
 
     - name: Install dependencies
-      if: matrix.os.distro == "ubuntu-20.04"
       shell: bash
-      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-9-dev lib32stdc++-9-dev
-
-    - name: Install dependencies
-      if: matrix.os.distro == "ubuntu-22.04"
-      shell: bash
-      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-11-dev lib32stdc++-11-dev
+      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-${{gcc_version}}-dev lib32stdc++-${{gcc_version}}-dev
 
     - name: Create build environment
       working-directory: ${{runner.workspace}}
