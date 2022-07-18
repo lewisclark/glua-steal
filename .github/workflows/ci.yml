@@ -22,7 +22,7 @@ jobs:
 
     - name: Install dependencies
       shell: bash
-      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-10-dev lib32stdc++-10-dev
+      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-10-dev lib32stdc++-10-dev libstdc++-11-dev lib32stdc++-11-dev
 
     - name: Create build environment
       working-directory: ${{runner.workspace}}
