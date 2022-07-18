@@ -22,7 +22,7 @@ jobs:
 
     - name: Install dependencies
       shell: bash
-      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-${{gcc_version}}-dev lib32stdc++-${{gcc_version}}-dev
+      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-${{matrix.os.gcc_version}}-dev lib32stdc++-${{matrix.os.gcc_version}}-dev
 
     - name: Create build environment
       working-directory: ${{runner.workspace}}
