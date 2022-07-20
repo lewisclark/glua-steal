@@ -29,7 +29,7 @@ static std::vector<std::string> reserved {
 #endif
 
 static bool is_bad_char(const char& c) {
-	if (c >= 0x0 && c <= 0x1f) {
+	if ((c >= 0x0 && c <= 0x1f) || c < 0) {
 		return true;
 	}
 

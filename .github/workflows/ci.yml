@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  build:
+  linux:
     strategy:
       matrix:
         os:
@@ -16,34 +16,66 @@ jobs:
     runs-on: ${{matrix.os.distro}}
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
-    - name: Install dependencies
-      shell: bash
-      run: sudo apt-get install gcc g++ gcc-multilib libstdc++-${{matrix.os.gcc_version}}-dev lib32stdc++-${{matrix.os.gcc_version}}-dev
+      - name: Install dependencies
+        shell: bash
+        run: sudo apt-get install gcc g++ gcc-multilib libstdc++-${{matrix.os.gcc_version}}-dev lib32stdc++-${{matrix.os.gcc_version}}-dev
 
-    - name: Create build environment
-      working-directory: ${{runner.workspace}}
-      run: mkdir build
+      - name: Create build environment
+        working-directory: ${{runner.workspace}}
+        run: mkdir build
 
-    - name: Initialize CMake
-      shell: bash
-      env:
-        CC: /usr/bin/gcc
-        CXX: /usr/bin/g++
-      working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchains/${{matrix.toolchain}}.cmake
+      - name: Initialize CMake
+        shell: bash
+        env:
+          CC: /usr/bin/gcc
+          CXX: /usr/bin/g++
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_TOOLCHAIN_FILE=toolchains/${{matrix.toolchain}}.cmake
 
-    - name: Build
-      shell: bash
-      working-directory: ${{runner.workspace}}/build
-      run: make
+      - name: Build
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: make
 
-    - name: Test
-      working-directory: ${{runner.workspace}}/build
-      shell: bash
-      run: ctest -V -C $BUILD_TYPE
+      - name: Test
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: ctest -V -C ${{matrix.build_type}}
+  windows:
+    strategy:
+      matrix:
+        os:
+          - { name: Windows Server 2019, distro: windows-2019 }
+          - { name: Windows Server 2022, distro: windows-2022 }
+        build_type: [Debug, Release]
+        arch: [Win32, x64]
 
+    name: "${{matrix.os.name}} ${{matrix.build_type}} ${{matrix.arch}}"
+    runs-on: ${{matrix.os.distro}}
 
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Create build environment
+        working-directory: ${{runner.workspace}}
+        run: mkdir build
+
+      - name: Initialize CMake
+        working-directory: ${{runner.workspace}}/build
+        run: cmake -A ${{matrix.arch}} -DCMAKE_TOOLCHAIN_FILE=../toolchains/msvc.cmake $env:GITHUB_WORKSPACE
+
+      - name: Build
+        working-directory: ${{runner.workspace}}/build
+        run: msbuild gluasteal.sln /p:Configuration=${{matrix.build_type}} /p:Platform=${{matrix.arch == 'x86' && 'Win32' || matrix.arch}}
+
+      - name: Test
+        working-directory: ${{runner.workspace}}/build
+        run: ctest -V -C ${{matrix.build_type}} --timeout 60
