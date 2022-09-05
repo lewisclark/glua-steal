@@ -11,7 +11,7 @@ gluasteal retrieves client-side & shared Lua files from Garry's Mod servers that
 ![Windows usage](https://i.imgur.com/j38AKQ7.png)
 ![Linux usage](https://i.imgur.com/N7reRXS.png)
 
-Currently working on Windows & Linux (32-bit & 64-bit). Testing is required on macOS.
+Currently working on Windows & Linux (32-bit & 64-bit). Has not yet been tested on macOS.
 
 ---
 
@@ -48,25 +48,25 @@ Logs and Lua files will be written to the gluasteal folder, in your home directo
 #### Windows
 
 1. Obtain an injector
-2. Add the gluasteal dll to the injector
+2. Add the gluasteal DLL to the injector
 3. Select the Garry's Mod process
 4. Inject at the main menu
 
 #### Linux
 
-##### Method 1
+##### Method 1 (Recommended)
+
+[Using gdb](https://github.com/AimTuxOfficial/AimTux/blob/master/load)
+
+##### Method 2
 
 [linux-inject](https://github.com/gaffe23/linux-inject)
 
-##### Method 2
+##### Method 3
 
 Editing the Garry's Mod launch script (hl2.sh) to preload the gluasteal library.
 
 `LD_PRELOAD=$LD_PRELOAD:/home/lewis/gluasteal.so`
-
-##### Method 3 (Recommended)
-
-[Using gdb](https://github.com/AimTuxOfficial/AimTux/blob/master/load)
 
 #### macOS
 
