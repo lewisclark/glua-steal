@@ -1,12 +1,10 @@
-## gluasteal
+![Banner](https://i.imgur.com/LqJQrsL.png)
 
 [![CI Badge](https://github.com/lewisclark/glua-steal/workflows/CI/badge.svg)](https://github.com/lewisclark/glua-steal/actions?query=workflow%3Aci)
 ![Downloads Badge](https://img.shields.io/github/downloads/lewisclark/glua-steal/total)
 ![Version Badge](https://img.shields.io/badge/version-1.9-green)
 ![License Badge](https://img.shields.io/github/license/lewisclark/glua-steal)
 ![Issues Badge](https://img.shields.io/github/issues/lewisclark/glua-steal)
-
-![Banner](https://i.imgur.com/LqJQrsL.png)
 
 gluasteal retrieves client-side & shared Lua files from Garry's Mod servers that you join. gluasteal also allows you to execute your own Lua code on any server.
 
