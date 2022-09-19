@@ -23,8 +23,9 @@ Currently working on Windows & Linux (32-bit & 64-bit). Has not yet been tested 
 * Lua Executor - Allows you to execute your own Lua scripts
 * Lua Blocker - Block Lua scripts of your choosing
 * Concurrent IO - The Lua dumper does IO in its own thread to eliminate bottleneck and ensure maximum in-game performance
+* Robust protections against servers serving malicious file paths
 * Supports the 32-bit and 64-bit versions of the game
-* Supports Linux and Windows
+* Supports Windows and Linux
 
 ---
 
