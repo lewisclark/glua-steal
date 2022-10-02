@@ -83,7 +83,8 @@ end
 if gluasteal.SCRIPT == "includes/init.lua" then
     -- your code here
     
-    gluasteal.include("my_cool_script.lua") -- executes the script "my_cool_script.lua" in your gluasteal directory
+    -- e.g. execute the script "my_cool_script.lua" in your gluasteal directory
+    gluasteal.include("my_cool_script.lua")
 end
 ```
 
