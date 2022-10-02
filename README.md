@@ -52,19 +52,9 @@ Logs and Lua files will be written to the gluasteal folder, in your home directo
 
 #### Linux
 
-##### Method 1 (Recommended)
-
-[Using gdb](https://github.com/AimTuxOfficial/AimTux/blob/master/load)
-
-##### Method 2
-
-[linux-inject](https://github.com/gaffe23/linux-inject)
-
-##### Method 3
-
-Editing the Garry's Mod launch script (hl2.sh) to preload the gluasteal library.
-
-`LD_PRELOAD=$LD_PRELOAD:/home/lewis/gluasteal.so`
+- Recommended: [gdb](https://github.com/AimTuxOfficial/AimTux/blob/master/load)
+- [linux-inject](https://github.com/gaffe23/linux-inject)
+- using [LD_PRELOAD](https://man7.org/linux/man-pages/man8/ld.so.8.html), e.g. by modifying the Garry's Mod launch script (hl2.sh)
 
 #### macOS
 
@@ -88,10 +78,12 @@ end
 ```
 
 ```lua
---- Makes the code inside the if statement only execute once, before the first Lua file is loaded
+-- Makes the code inside the if statement only execute once, before the first Lua file is loaded
 -- also known as 'load before autorun'
 if gluasteal.SCRIPT == "includes/init.lua" then
     -- your code here
+    
+    gluasteal.include("my_cool_script.lua") -- executes the script "my_cool_script.lua" in your gluasteal directory
 end
 ```
 
