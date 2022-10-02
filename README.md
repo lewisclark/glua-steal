@@ -11,7 +11,7 @@ gluasteal retrieves client-side & shared Lua files from Garry's Mod servers that
 ![Windows usage](https://i.imgur.com/j38AKQ7.png)
 ![Linux usage](https://i.imgur.com/N7reRXS.png)
 
-Currently working on Windows & Linux (32-bit & 64-bit). Has not yet been tested on macOS.
+Supports Windows & Linux (32-bit & 64-bit). Has not yet been tested on macOS.
 
 ---
 
@@ -29,14 +29,14 @@ Currently working on Windows & Linux (32-bit & 64-bit). Has not yet been tested 
 
 ### How to Use
 
-1. Either Download pre-built from the [Releases section](https://github.com/lewisclark/glua-steal/releases) or [build from source](#Building-From-Source).
-2. [Inject](#How-to-Inject) gluasteal into Garry's Mod, at the main menu.
-3. Optionally, set up your [Lua file to be loaded](#lua-loader-load-before-autorun).
+1. Download from the [Releases section](https://github.com/lewisclark/glua-steal/releases) or [build from source](#Building-From-Source).
+2. [Inject](#How-to-Inject) into Garry's Mod at the main menu.
+3. Optionally, set up your own [Lua file to be loaded](#lua-loader).
 4. Join a server.
 
 ##### The gluasteal Directory
 
-Logs and Lua files will be written to the gluasteal folder, in your home directory.
+Logs and Lua files will be written to the gluasteal folder, in your home directory. You may create the folder if it does not already exist.
 
 * Windows: C:/Users/username/Documents/gluasteal/
 * Linux: /home/username/gluasteal/
@@ -48,26 +48,13 @@ Logs and Lua files will be written to the gluasteal folder, in your home directo
 
 #### Windows
 
-1. Obtain an injector
-2. Add the gluasteal DLL to the injector
-3. Select the Garry's Mod process
-4. Inject at the main menu
+[Extreme Injector](https://github.com/master131/ExtremeInjector), [jector](https://github.com/lewisclark/jector), [GuidedHacking Injector](https://github.com/guided-hacking/GuidedHacking-Injector), and many more
 
 #### Linux
 
-##### Method 1 (Recommended)
-
-[Using gdb](https://github.com/AimTuxOfficial/AimTux/blob/master/load)
-
-##### Method 2
-
-[linux-inject](https://github.com/gaffe23/linux-inject)
-
-##### Method 3
-
-Editing the Garry's Mod launch script (hl2.sh) to preload the gluasteal library.
-
-`LD_PRELOAD=$LD_PRELOAD:/home/lewis/gluasteal.so`
+- Recommended: [gdb](https://github.com/AimTuxOfficial/AimTux/blob/master/load)
+- [linux-inject](https://github.com/gaffe23/linux-inject)
+- using [LD_PRELOAD](https://man7.org/linux/man-pages/man8/ld.so.8.html), e.g. by modifying the Garry's Mod launch script (hl2.sh)
 
 #### macOS
 
@@ -75,17 +62,29 @@ Using DYLD\_INSERT\_LIBRARIES (see LD\_PRELOAD above)
 
 ---
 
-### Lua Loader (Load Before Autorun)
+### Lua Loader
 
-Place your Lua code in your [gluasteal directory](#The-gluasteal-Directory), in a file named gluasteal.lua
-This file is executed in a separate environment, not in \_G, Though you will still able to access everything in \_G.
+Create the file 'gluasteal.lua' in the [gluasteal directory](#the-gluasteal-directory); you can place your Lua code you wish to execute in here. This file is executed in a separate environment, not in \_G, Though you will still able to access everything in \_G.
 
-This file will be executed every time a Garry's Mod Lua script is about to be executed. You can return false to stop the current file (gluasteal.SCRIPT) from being executed.
+This file will be executed every time a Garry's Mod Lua script is about to be executed. You can return false to stop the current file (stored in gluasteal.SCRIPT) from being executed.
+
+#### Examples
 
 ```lua
--- All scripts with the string 'derma' in their name will be blocked from executing
+-- Stops scripts with the string 'derma' in their path from executing.
 if (gluasteal.SCRIPT:match("derma")) then
 	return false
+end
+```
+
+```lua
+-- Makes the code inside the if statement only execute once, before the first Lua file is loaded
+-- also known as 'load before autorun'
+if gluasteal.SCRIPT == "includes/init.lua" then
+    -- your code here
+    
+    -- e.g. execute the script "my_cool_script.lua" in your gluasteal directory
+    gluasteal.include("my_cool_script.lua")
 end
 ```
 
