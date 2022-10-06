@@ -28,18 +28,28 @@ void glt::config::LoadConfig() {
 	try {
 		const auto t = toml::parse(glt::file::GetConfigFilePath());
 
-		const auto& arr_stealer = toml::find(t, "stealer");
-		const auto stealer_enabled = toml::find(arr_stealer, "enabled");
+		if (t.contains("stealer")) {
+			const auto& table_stealer = toml::find(t, "stealer");
 
-		if (stealer_enabled.is_boolean()) {
-			cfg.stealer_enabled = toml::get<bool>(stealer_enabled);
+			if (table_stealer.contains("enabled")) {
+				const auto stealer_enabled = toml::find(table_stealer, "enabled");
+
+				if (stealer_enabled.is_boolean()) {
+					cfg.stealer_enabled = toml::get<bool>(stealer_enabled);
+				}
+			}
 		}
 
-		const auto& arr_loader = toml::find(t, "loader");
-		const auto& loader_file = toml::find(arr_loader, "file");
+		if (t.contains("loader")) {
+			const auto& table_loader = toml::find(t, "loader");
 
-		if (loader_file.is_string()) {
-			cfg.loader_file = toml::get<std::string>(loader_file);
+			if (table_loader.contains("file")) {
+				const auto& loader_file = toml::find(table_loader, "file");
+
+				if (loader_file.is_string()) {
+					cfg.loader_file = toml::get<std::string>(loader_file);
+				}
+			}
 		}
 
 		logger->info("Config loaded");
