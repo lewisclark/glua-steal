@@ -70,24 +70,11 @@ std::string glt::file::ReadFile(const std::string& path) {
 	return ss.str();
 }
 
-std::string glt::file::ReadConfigOrDefault() {
-	auto ifconfig = std::ifstream(GetConfigFilePath());
-
-	if (ifconfig.is_open()) {
-		std::stringstream contents;
-		contents << ifconfig.rdbuf();
-		ifconfig.close();
-
-		return contents.str();
-	}
-	else {
-		const std::string default_config = "[general]\n\n[stealer]\nenabled = true\n\n[loader]\nfile = \"gluasteal.lua\"\n\n";
-
+void glt::file::CreateConfig() {
+	if (!std::filesystem::exists(GetConfigFilePath())) {
 		auto ofconfig = std::ofstream(GetConfigFilePath());
 
-		ofconfig << default_config;
+		ofconfig << "[general]\n\n[stealer]\nenabled = true\n\n[loader]\nfile = \"gluasteal.lua\"\n\n";
 		ofconfig.close();
-
-		return default_config;
 	}
 }

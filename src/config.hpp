@@ -14,29 +14,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 
-#ifndef INIT_H
-#define INIT_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
-#include <cinttypes>
-#include <thread>
+#include <toml.hpp>
 
-#include "logger.hpp"
-#include "config.hpp"
 #include "file/file.hpp"
-#include "library/library.hpp"
 
-#include "lua/luaexports.hpp"
+namespace glt::config {
+	struct Config {
+		bool stealer_enabled = true;
+		std::string loader_file = "gluateal.lua";
+	};
 
-#include "gamesdk/IVEngineClient.hpp"
-#include "gamesdk/ILuaShared.hpp"
-#include "gamesdk/ILuaInterface.hpp"
-
-#include "hook/luashared.hpp"
-#include "hook/luainterface.hpp"
-
-namespace glt {
-	void Init();
-	void InitConfig();
+	void LoadConfig();
+	const Config GetConfig();
 }
 
 #endif

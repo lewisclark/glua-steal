@@ -35,5 +35,5 @@ namespace glt::file {
 	std::filesystem::path GetConfigFilePath();
 	std::filesystem::path GetServerStorePath();
 	std::string ReadFile(const std::string& path); // Relative to work directory
-	std::string ReadConfigOrDefault();
+	void CreateConfig();
 }
