@@ -20,5 +20,8 @@ include_directories(glua_headers/include)
 # catch2
 include_directories(catch2/single_include)
 
+# toml11
+include_directories(toml11)
+
 # gluasteal src
 add_subdirectory(src)
