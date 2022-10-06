@@ -25,6 +25,8 @@ void glt::Init() {
 	const auto& logger = GetLogger();
 	logger->info("Initializing gluasteal v{:.1f}", GLUASTEAL_VERSION);
 
+	glt::config::LoadConfig();
+
 	while (true) {
 		try {
 			lib::Library("engine").GetInterface<ssdk::IVEngineClient>("VEngineClient015");

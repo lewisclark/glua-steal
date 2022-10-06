@@ -44,11 +44,15 @@ std::filesystem::path glt::file::GetHomeDirectory() {
 }
 
 std::filesystem::path glt::file::GetLogFilePath() {
-	return (GetWorkDirectory() / "log.txt");
+	return GetWorkDirectory() / "log.txt";
+}
+
+std::filesystem::path glt::file::GetConfigFilePath() {
+	return GetWorkDirectory() / "config.toml";
 }
 
 std::filesystem::path glt::file::GetServerStorePath() {
-	return (GetWorkDirectory() / "servers");
+	return GetWorkDirectory() / "servers";
 }
 
 std::string glt::file::ReadFile(const std::string& path) {
@@ -64,4 +68,15 @@ std::string glt::file::ReadFile(const std::string& path) {
 	iff.close();
 
 	return ss.str();
+}
+
+void glt::file::CreateConfig() {
+	if (!std::filesystem::exists(GetConfigFilePath())) {
+		auto ofconfig = std::ofstream(GetConfigFilePath());
+
+		ofconfig << glt::config::DEFAULT_CONFIG;
+		ofconfig.close();
+
+		GetLogger()->debug("Created config file and filled with defaults");
+	}
 }

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(gluasteal LANGUAGES CXX VERSION 1.9)
+project(gluasteal LANGUAGES CXX VERSION 2.0)
 
 enable_testing()
 
@@ -19,6 +19,9 @@ include_directories(glua_headers/include)
 
 # catch2
 include_directories(catch2/single_include)
+
+# toml11
+include_directories(toml11)
 
 # gluasteal src
 add_subdirectory(src)

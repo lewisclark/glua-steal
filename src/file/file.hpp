@@ -19,6 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <sstream>
 
 #include "os.hpp"
+#include "logger.hpp"
+#include "config.hpp"
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	#include <unistd.h>
@@ -32,6 +34,8 @@ namespace glt::file {
 	std::filesystem::path GetWorkDirectory(); // Returns a path where everything is stored
 	std::filesystem::path GetHomeDirectory();
 	std::filesystem::path GetLogFilePath();
+	std::filesystem::path GetConfigFilePath();
 	std::filesystem::path GetServerStorePath();
 	std::string ReadFile(const std::string& path); // Relative to work directory
+	void CreateConfig();
 }
