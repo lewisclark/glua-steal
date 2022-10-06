@@ -53,7 +53,8 @@ static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::u
 		ret = RunStringExOrig(thisptr, filename, path, buf, b1, b2, b3, b4);
 	}
 
-	glt::lua::DumpLua(std::move(strfilename), std::move(strcode));
+	if (glt::config::GetConfig().stealer_enabled)
+		glt::lua::DumpLua(std::move(strfilename), std::move(strcode));
 
 	return ret;
 }

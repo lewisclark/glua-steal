@@ -49,10 +49,12 @@ void glt::lua::RunLua(ssdk::ILuaInterface* lua, const std::string& identifier, c
 }
 
 bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code) {
+	const auto& loader_file = glt::config::GetConfig().loader_file;
+
 	try {
-		RunLua(lua, "gluasteal.lua", GetLuaFileContents(), filename, code);
+		RunLua(lua, loader_file, GetLuaFileContents(loader_file), filename, code);
 	}
-	catch (const std::filesystem::filesystem_error&) { // gluasteal.lua doesn't exist, supress.
+	catch (const std::filesystem::filesystem_error&) {
 		return true;
 	}
 

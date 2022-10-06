@@ -21,6 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <filesystem>
 
 #include "logger.hpp"
+#include "config.hpp"
 #include "file/file.hpp"
 #include "file/sanitization.hpp"
 

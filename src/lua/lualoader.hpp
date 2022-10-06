@@ -22,6 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "luaexports.hpp"
 #include "logger.hpp"
+#include "config.hpp"
 #include "file/file.hpp"
 
 namespace glt::lua {
@@ -35,7 +36,7 @@ namespace glt::lua {
 	bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code);
 
 	// Returns the lua code to run, relative to the gluasteal work directory
-	std::string GetLuaFileContents(const std::string& path = "gluasteal.lua");
+	std::string GetLuaFileContents(const std::string& path);
 
 	// filename and code are the variables to be filled by RunStringEx to indicate the garrys mod lua file
 	void CreateEnvironment(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code);
