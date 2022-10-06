@@ -76,5 +76,7 @@ void glt::file::CreateConfig() {
 
 		ofconfig << "[general]\n\n[stealer]\nenabled = true\n\n[loader]\nfile = \"gluasteal.lua\"\n\n";
 		ofconfig.close();
+
+		GetLogger()->debug("Created config file and filled with defaults");
 	}
 }

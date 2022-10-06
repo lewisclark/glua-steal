@@ -24,7 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 namespace glt::config {
 	struct Config {
 		bool stealer_enabled = true;
-		std::string loader_file = "gluateal.lua";
+		std::string loader_file = "gluasteal.lua";
 	};
 
 	void LoadConfig();

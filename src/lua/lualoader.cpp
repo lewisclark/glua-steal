@@ -54,7 +54,7 @@ bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, co
 	try {
 		RunLua(lua, loader_file, GetLuaFileContents(loader_file), filename, code);
 	}
-	catch (const std::filesystem::filesystem_error&) {
+	catch (const std::filesystem::filesystem_error&) { // loader file does not exist, supress exception
 		return true;
 	}
 

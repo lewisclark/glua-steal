@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <sstream>
 
 #include "os.hpp"
+#include "logger.hpp"
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	#include <unistd.h>
