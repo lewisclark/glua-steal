@@ -32,6 +32,8 @@ namespace glt::file {
 	std::filesystem::path GetWorkDirectory(); // Returns a path where everything is stored
 	std::filesystem::path GetHomeDirectory();
 	std::filesystem::path GetLogFilePath();
+	std::filesystem::path GetConfigFilePath();
 	std::filesystem::path GetServerStorePath();
 	std::string ReadFile(const std::string& path); // Relative to work directory
+	std::string ReadConfigOrDefault();
 }

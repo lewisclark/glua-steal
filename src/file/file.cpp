@@ -44,11 +44,15 @@ std::filesystem::path glt::file::GetHomeDirectory() {
 }
 
 std::filesystem::path glt::file::GetLogFilePath() {
-	return (GetWorkDirectory() / "log.txt");
+	return GetWorkDirectory() / "log.txt";
+}
+
+std::filesystem::path glt::file::GetConfigFilePath() {
+	return GetWorkDirectory() / "config.toml";
 }
 
 std::filesystem::path glt::file::GetServerStorePath() {
-	return (GetWorkDirectory() / "servers");
+	return GetWorkDirectory() / "servers";
 }
 
 std::string glt::file::ReadFile(const std::string& path) {
@@ -64,4 +68,26 @@ std::string glt::file::ReadFile(const std::string& path) {
 	iff.close();
 
 	return ss.str();
+}
+
+std::string glt::file::ReadConfigOrDefault() {
+	auto ifconfig = std::ifstream(GetConfigFilePath());
+
+	if (ifconfig.is_open()) {
+		std::stringstream contents;
+		contents << ifconfig.rdbuf();
+		ifconfig.close();
+
+		return contents.str();
+	}
+	else {
+		const std::string default_config = "[general]\n\n[stealer]\nenabled = true\n\n[loader]\nfile = \"gluasteal.lua\"\n\n";
+
+		auto ofconfig = std::ofstream(GetConfigFilePath());
+
+		ofconfig << default_config;
+		ofconfig.close();
+
+		return default_config;
+	}
 }
