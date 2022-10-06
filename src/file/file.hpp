@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "os.hpp"
 #include "logger.hpp"
+#include "config.hpp"
 
 #if (defined(OS_LINUX) || defined(OS_MAC))
 	#include <unistd.h>

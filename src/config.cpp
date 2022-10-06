@@ -16,8 +16,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "config.hpp"
 
-#include "logger.hpp"
-
 static glt::config::Config cfg;
 
 void glt::config::LoadConfig() {

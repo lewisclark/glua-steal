@@ -74,7 +74,7 @@ void glt::file::CreateConfig() {
 	if (!std::filesystem::exists(GetConfigFilePath())) {
 		auto ofconfig = std::ofstream(GetConfigFilePath());
 
-		ofconfig << "[general]\n\n[stealer]\nenabled = true\n\n[loader]\nfile = \"gluasteal.lua\"\n\n";
+		ofconfig << glt::config::DEFAULT_CONFIG;
 		ofconfig.close();
 
 		GetLogger()->debug("Created config file and filled with defaults");
