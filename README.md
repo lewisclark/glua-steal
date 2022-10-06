@@ -24,6 +24,7 @@ Supports Windows & Linux (32-bit & 64-bit). Has not yet been tested on macOS.
 * Robust protections against servers serving malicious file paths
 * Supports the 32-bit and 64-bit versions of the game
 * Supports Windows and Linux
+* Easily [configurable](#configuration)
 
 ---
 
@@ -67,6 +68,25 @@ Using DYLD\_INSERT\_LIBRARIES (see LD\_PRELOAD above)
 Create the file 'gluasteal.lua' in the [gluasteal directory](#the-gluasteal-directory); you can place your Lua code you wish to execute in here. This file is executed in a separate environment, not in \_G, Though you will still able to access everything in \_G.
 
 This file will be executed every time a Garry's Mod Lua script is about to be executed. You can return false to stop the current file (stored in gluasteal.SCRIPT) from being executed.
+
+### Configuration
+
+glua-steal can be configured through the `config.toml` file in the [gluasteal directory](#the-gluasteal-directory).
+
+The configuration file will automatically be created and filled with the default values if it does not exist.
+
+Please open an issue if you would like more options to be available through the configuration file.
+
+Example (default) configuration:
+```toml
+[general]
+
+[stealer]
+enabled = true
+
+[loader]
+file = "gluasteal.lua"
+```
 
 #### Examples
 
