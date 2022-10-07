@@ -79,8 +79,7 @@ void glt::config::LoadConfig() {
 
 		spdlog::set_level(cfg.logger_level);
 
-		logger->info("Config loaded");
-
+		logger->debug("Config loaded");
 		logger->debug("stealer.enabled = {}, loader.file = {}, logger.level = {}", cfg.stealer_enabled, cfg.loader_file, cfg.logger_level);
 	}
 	catch (const std::exception& ex) {

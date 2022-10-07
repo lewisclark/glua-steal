@@ -23,7 +23,8 @@ void glt::Init() {
 	InitLogger();
 
 	const auto& logger = GetLogger();
-	logger->info("Initializing gluasteal v{:.1f}", GLUASTEAL_VERSION);
+
+	logger->debug("Initializing gluasteal v{:.1f}", GLUASTEAL_VERSION);
 
 	glt::config::LoadConfig();
 
@@ -54,9 +55,7 @@ void glt::Init() {
 		return;
 	}
 
-	logger->info("Successfully initialized");
-	logger->info("Join a server to retrieve the lua files");
-	logger->info("Lua files will be saved to '{}'", file::GetServerStorePath().string());
+	logger->info("Successfully initialized - join a server to retrieve Lua files ({})", file::GetServerStorePath().string());
 
 	glt::lua::IoThread();
 }
