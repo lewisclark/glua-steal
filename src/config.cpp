@@ -50,9 +50,37 @@ void glt::config::LoadConfig() {
 			}
 		}
 
-		logger->info("Config loaded");
+		if (t.contains("logger")) {
+			const auto& table_logger = toml::find(t, "logger");
 
-		logger->debug("stealer.enabled = {}, loader.file = {}", cfg.stealer_enabled, cfg.loader_file);
+			if (table_logger.contains("level")) {
+				const auto& logger_level = toml::find(table_logger, "level");
+
+				if (logger_level.is_string()) {
+					auto level = toml::get<std::string>(logger_level);
+
+					std::transform(level.begin(), level.end(), level.begin(), ::tolower);
+
+					if (level == "trace")
+						cfg.logger_level = spdlog::level::trace;
+					else if (level == "debug")
+						cfg.logger_level = spdlog::level::debug;
+					else if (level == "warn")
+						cfg.logger_level = spdlog::level::warn;
+					else if (level == "error")
+						cfg.logger_level = spdlog::level::err;
+					else if (level == "critical")
+						cfg.logger_level = spdlog::level::critical;
+					else
+						cfg.logger_level = spdlog::level::info;
+				}
+			}
+		}
+
+		spdlog::set_level(cfg.logger_level);
+
+		logger->debug("Config loaded");
+		logger->debug("stealer.enabled = {}, loader.file = {}, logger.level = {}", cfg.stealer_enabled, cfg.loader_file, cfg.logger_level);
 	}
 	catch (const std::exception& ex) {
 		logger->error("Failed to parse config!");

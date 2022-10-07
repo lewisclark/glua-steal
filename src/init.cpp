@@ -23,9 +23,10 @@ void glt::Init() {
 	InitLogger();
 
 	const auto& logger = GetLogger();
-	logger->info("Initializing gluasteal v{:.1f}", GLUASTEAL_VERSION);
 
 	glt::config::LoadConfig();
+
+	logger->debug("Initializing gluasteal v{:.1f}", GLUASTEAL_VERSION);
 
 	while (true) {
 		try {
@@ -35,8 +36,12 @@ void glt::Init() {
 		}
 		catch (const std::exception& ex) {}
 
+		logger->trace("Waiting for game to finish loading...");
+
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
+
+	logger->debug("Game loaded - continuing");
 
 	try {
 		const auto& libengine = lib::Library("engine");
@@ -47,16 +52,19 @@ void glt::Init() {
 
 		lua::GetExports();
 
+		logger->debug("Fetched Lua exports");
+
 		luasharedhooker.Hook();
+
+		logger->debug("Hooked LuaShared");
 	}
 	catch (const std::exception& ex) {
 		logger->critical("Failed to initialize: {}", ex.what());
+
 		return;
 	}
 
-	logger->info("Successfully initialized");
-	logger->info("Join a server to retrieve the lua files");
-	logger->info("Lua files will be saved to '{}'", file::GetServerStorePath().string());
+	logger->info("Successfully initialized - join a server to retrieve Lua files ({})", file::GetServerStorePath().string());
 
 	glt::lua::IoThread();
 }

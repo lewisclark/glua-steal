@@ -23,11 +23,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "file/file.hpp"
 
 namespace glt::config {
-	const std::string DEFAULT_CONFIG = "[general]\n\n[stealer]\nenabled = true\n\n[loader]\nfile = \"gluasteal.lua\"\n\n";
+	const std::string DEFAULT_CONFIG = "[general]\n\n[stealer]\nenabled = true\n\n[loader]\nfile = \"gluasteal.lua\"\n\n[logger]\nlevel = \"info\"\n\n";
 
 	struct Config {
 		bool stealer_enabled = true;
 		std::string loader_file = "gluasteal.lua";
+		spdlog::level::level_enum logger_level = spdlog::level::info;
 	};
 
 	void LoadConfig();
