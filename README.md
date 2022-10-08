@@ -111,13 +111,17 @@ Example (default) configuration:
 ```toml
 [general]
 
-# Controls options for the file stealer/dumper
+# Options for the file stealer/dumper
 [stealer]
 enabled = true # Enable or disable
 
-# Controls options for the Lua loader
+# Options for the Lua loader
 [loader]
 file = "gluasteal.lua" # The file which will be run every time a Garry's Mod script is executed - relative to the glua-steal directory
+
+# Options for the logger
+[logger]
+level = "info" # can be one of: trace, debug, info, warn, error, critical
 ```
 
 ---
