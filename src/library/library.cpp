@@ -34,7 +34,7 @@ static const std::map<std::string, std::string> extension_mapping = {
 #endif
 };
 
-#if (defined(OS_LINUX) || defined(OS_MAC))
+#if (defined(OS_LINUX))
 	struct library_entry {
 		const char* name;
 		void* lib;
@@ -57,7 +57,7 @@ glt::lib::Library::Library(const std::string& pathname) :
 
 	std::string pathnamext(pathname + GetExtension(pathname));
 
-#if (defined(OS_LINUX) || defined(OS_MAC))
+#if (defined(OS_LINUX))
 	library_entry entry;
 	entry.name = pathnamext.c_str();
 	entry.lib = nullptr;
@@ -92,7 +92,7 @@ glt::lib::Library::Library(const std::string& pathname) :
 }
 
 glt::lib::Library::~Library() {
-#if (defined(OS_LINUX) || defined(OS_MAC))
+#if (defined(OS_LINUX))
 	if (m_handle) {
 		dlclose(m_handle);
 	}
