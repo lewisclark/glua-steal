@@ -1,4 +1,4 @@
-set(CMAKE_CXX_FLAGS "-m32 -Wall -Wextra -pedantic -Wno-unused-variable -llibSystem")
-set(CMAKE_C_FLAGS "-m32 -Wall -Wextra -pedantic -Wno-unused-variable -llibSystem")
+set(CMAKE_CXX_FLAGS "-lSystem -m32 -Wall -Wextra -pedantic -Wno-unused-variable")
+set(CMAKE_C_FLAGS "-lSystem -m32 -Wall -Wextra -pedantic -Wno-unused-variable")
 
-set(CMAKE_EXE_LINKER_FLAGS "-m32 -llibSystem")
+set(CMAKE_EXE_LINKER_FLAGS "-lSystem -m32")
