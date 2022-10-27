@@ -2,7 +2,7 @@
 
 [![CI Badge](https://github.com/lewisclark/glua-steal/workflows/CI/badge.svg)](https://github.com/lewisclark/glua-steal/actions?query=workflow%3Aci)
 ![Downloads Badge](https://img.shields.io/github/downloads/lewisclark/glua-steal/total)
-![Version Badge](https://img.shields.io/badge/version-1.9-green)
+![Version Badge](https://img.shields.io/badge/version-2.0-green)
 ![License Badge](https://img.shields.io/github/license/lewisclark/glua-steal)
 ![Issues Badge](https://img.shields.io/github/issues/lewisclark/glua-steal)
 
