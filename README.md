@@ -8,6 +8,8 @@
 
 gluasteal retrieves client-side & shared Lua files from Garry's Mod servers that you join. gluasteal also allows you to execute your own Lua code on any server.
 
+gluasteal is a better, cross-platform replacement for various Lua dumpers and loaders; such as scripthook.
+
 ![Windows usage](https://i.imgur.com/j38AKQ7.png)
 ![Linux usage](https://i.imgur.com/N7reRXS.png)
 
