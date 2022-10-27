@@ -36,6 +36,21 @@ void glt::config::LoadConfig() {
 					cfg.stealer_enabled = toml::get<bool>(stealer_enabled);
 				}
 			}
+
+			if (table_stealer.contains("write_mode")) {
+				const auto stealer_write_mode = toml::find(table_stealer, "write_mode");
+
+				if (stealer_write_mode.is_string()) {
+					auto wm = toml::get<std::string>(stealer_write_mode);
+
+					std::transform(wm.begin(), wm.end(), wm.begin(), ::tolower);
+
+					if (wm == "append")
+						cfg.stealer_write_mode = std::ofstream::app;
+					else
+						cfg.stealer_write_mode = std::ofstream::trunc;
+				}
+			}
 		}
 
 		if (t.contains("loader")) {
@@ -80,7 +95,14 @@ void glt::config::LoadConfig() {
 		spdlog::set_level(cfg.logger_level);
 
 		logger->debug("Config loaded");
-		logger->debug("stealer.enabled = {}, loader.file = {}, logger.level = {}", cfg.stealer_enabled, cfg.loader_file, cfg.logger_level);
+
+		logger->debug(
+			"stealer.enabled = {}, stealer.write_mode = {}, loader.file = {}, logger.level = {}",
+			cfg.stealer_enabled,
+			cfg.stealer_write_mode,
+			cfg.loader_file,
+			cfg.logger_level
+		);
 	}
 	catch (const std::exception& ex) {
 		logger->error("Failed to parse config!");
