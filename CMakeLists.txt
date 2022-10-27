@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(gluasteal LANGUAGES CXX VERSION 2.0)
 
+find_library(libSystem "system" "System" "libsystem" "libSystem")
+
+message(STATUS "libSystem: ${libSystem}")
+
 enable_testing()
 
 # set PIC
