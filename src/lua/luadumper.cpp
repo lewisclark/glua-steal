@@ -67,7 +67,7 @@ void glt::lua::IoThread() {
 						continue;
 					}
 
-					auto of = std::ofstream(path, std::ofstream::app);
+					auto of = std::ofstream(path, glt::config::GetConfig().stealer_write_mode);
 					of << "-- " << sanitized_filename << "\n";
 					of << "-- Retrieved by https://github.com/c4fe/glua-steal\n";
 					of << entry.code << "\n\n";
