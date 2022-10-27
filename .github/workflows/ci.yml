@@ -85,7 +85,7 @@ jobs:
         os:
           - { name: "macOS Monterey 12", distro: macos-12 }
         build_type: [Debug, Release]
-        toolchain: ["gcc-32bit", "gcc-64bit"]
+        toolchain: ["gcc-macos-32bit", "gcc-64bit"]
 
     name: "${{matrix.os.name}} ${{matrix.build_type}} ${{matrix.toolchain}}"
     runs-on: ${{matrix.os.distro}}
