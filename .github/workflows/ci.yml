@@ -34,7 +34,7 @@ jobs:
           CC: /usr/bin/gcc
           CXX: /usr/bin/g++
         working-directory: ${{runner.workspace}}/build
-        run: cmake --debug-output $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_TOOLCHAIN_FILE=toolchains/${{matrix.toolchain}}.cmake
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_TOOLCHAIN_FILE=toolchains/${{matrix.toolchain}}.cmake
 
       - name: Build
         shell: bash
@@ -104,7 +104,7 @@ jobs:
           CC: /usr/bin/gcc
           CXX: /usr/bin/g++
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_TOOLCHAIN_FILE=toolchains/${{matrix.toolchain}}.cmake
+        run: cmake --debug-output $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_TOOLCHAIN_FILE=toolchains/${{matrix.toolchain}}.cmake
 
       - name: Build
         shell: bash
