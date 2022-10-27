@@ -79,3 +79,40 @@ jobs:
       - name: Test
         working-directory: ${{runner.workspace}}/build
         run: ctest -V -C ${{matrix.build_type}} --timeout 60
+  macos:
+    strategy:
+      matrix:
+        os:
+          - { name: macos-12 }
+        build_type: [Debug, Release]
+        toolchain: ["gcc-32bit", "gcc-64bit"]
+
+    name: "${{matrix.os.name}} ${{matrix.build_type}} ${{matrix.toolchain}}"
+    runs-on: ${{matrix.os.distro}}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Create build environment
+        working-directory: ${{runner.workspace}}
+        run: mkdir build
+
+      - name: Initialize CMake
+        env:
+          CC: /usr/bin/gcc
+          CXX: /usr/bin/g++
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_TOOLCHAIN_FILE=toolchains/${{matrix.toolchain}}.cmake
+
+      - name: Build
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: make
+
+      - name: Test
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: ctest -V -C ${{matrix.build_type}}
+
