@@ -114,6 +114,7 @@ Example (default) configuration:
 # Options for the file stealer/dumper
 [stealer]
 enabled = true # Enable or disable
+write_mode = "truncate" # can be "truncate" or "append" - see issue #35 for info
 
 # Options for the Lua loader
 [loader]
