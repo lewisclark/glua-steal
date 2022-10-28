@@ -33,6 +33,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <tlhelp32.h>
 #elif (defined(OS_MAC))
 #include <dlfcn.h>
+#include <mach-o/dyld.h>
 #endif
 
 namespace glt::lib {
