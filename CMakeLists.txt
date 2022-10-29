@@ -4,10 +4,6 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 
 project(gluasteal LANGUAGES CXX VERSION 2.0)
 
-find_library(libSystem "system" "System" "libsystem" "libSystem")
-
-message(STATUS "libSystem: ${libSystem}")
-
 enable_testing()
 
 # set PIC
