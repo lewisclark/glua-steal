@@ -83,8 +83,8 @@ jobs:
     strategy:
       matrix:
         os:
-          - { name: "macOS Big Sur 11", distro: macos-11, xcode_version: 10.7 }
-          - { name: "macOS Monterey 12", distro: macos-12, xcode_version: latest-stable }
+          - { name: "macOS Big Sur 11", distro: macos-11 }
+          - { name: "macOS Monterey 12", distro: macos-12 }
         build_type: [Debug, Release]
         toolchain: ["gcc-macos-32bit", "gcc-64bit"]
 
@@ -92,10 +92,6 @@ jobs:
     runs-on: ${{matrix.os.distro}}
 
     steps:
-      - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: ${{matrix.os.xcode_version}}
-
       - uses: actions/checkout@v2
         with:
           submodules: recursive
