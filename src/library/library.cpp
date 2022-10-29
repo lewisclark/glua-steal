@@ -84,6 +84,23 @@ glt::lib::Library::Library(const std::string& pathname) :
 		}
 
 	} while (Module32Next(module_snap, &module_entry));
+#elif (defined(OS_MAC))
+	// https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/dyld.3.html
+
+	// FIXME: It isn't thread safe to iterate using this count - find an alternative
+	uint32_t num_images = _dyld_image_count();
+
+	for (uint32_t i = 0; i < num_images; ++i) {
+		std::string library_name = _dyld_get_image_name(i);
+
+		if (library_name.find(pathnamext) != std::string::npos) {
+			m_handle = reinterpret_cast<std::uintptr_t*>(
+				_dyld_get_image_vmaddr_slide(i)
+			);
+
+			break;
+		}
+	}
 #endif
 
 	if (!m_handle) {
