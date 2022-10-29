@@ -104,9 +104,9 @@ glt::lib::Library::Library(const std::string& pathname) :
 		logger->debug("image \"{}\"", name);
 
 		if (name.find(pathnamext) != std::string::npos) {
-			auto p = _dyld_get_image_vmaddr_slide(i);
+			auto p = dlopen(c_name, RTLD_NOLOAD | RTLD_NOW);
 
-			logger->debug("found image \"{}\" at {:x}", name, p);
+			logger->debug("found image \"{}\" at {:x}", name, (uintptr_t)p);
 
 			m_handle = reinterpret_cast<std::uintptr_t*>(p);
 
@@ -121,7 +121,7 @@ glt::lib::Library::Library(const std::string& pathname) :
 }
 
 glt::lib::Library::~Library() {
-#if (defined(OS_LINUX))
+#if (defined(OS_LINUX) || defined(OS_MAC))
 	if (m_handle) {
 		dlclose(m_handle);
 	}
