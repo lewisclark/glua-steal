@@ -154,8 +154,19 @@ git clone https://github.com/lewisclark/glua-steal
 cd glua-steal
 git submodule update --init --recursive
 mkdir build && cd build
-choose the 32bit or 64bit toolchain below (toolchains are in toolchains/ folder)
+choose the gcc-32bit or gcc-64bit toolchain below (toolchains are in toolchains/ folder)
 cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/gcc-<32bit/64bit>.cmake
+make
+```
+
+##### macOS
+```
+git clone https://github.com/lewisclark/glua-steal
+cd glua-steal
+git submodule update --init --recursive
+mkdir build && cd build
+choose the gcc-macos-32bit or gcc-64bit toolchain below (toolchains are in toolchains/ folder)
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/gcc-<macos-32bit/64bit>.cmake
 make
 ```
 
