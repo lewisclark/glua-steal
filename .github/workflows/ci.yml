@@ -93,8 +93,8 @@ jobs:
 
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: ${{matrix.os.xcode_version}}
+        with:
+          xcode-version: ${{matrix.os.xcode_version}}
 
       - uses: actions/checkout@v2
         with:
