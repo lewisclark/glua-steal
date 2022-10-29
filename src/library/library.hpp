@@ -24,6 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <map>
 
 #include "os.hpp"
+#include "logger.hpp"
 
 #if (defined(OS_LINUX))
 #include <dlfcn.h>
