@@ -91,7 +91,7 @@ glt::lib::Library::Library(const std::string& pathname) :
 	uint32_t num_images = _dyld_image_count();
 
 	const auto& logger = glt::GetLogger();
-	logger->debug("{} images to enumerate");
+	logger->debug("{} images to enumerate", num_images);
 
 	for (uint32_t i = 0; i < num_images; ++i) {
 		const char* c_name = _dyld_get_image_name(i);
