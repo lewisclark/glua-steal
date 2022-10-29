@@ -90,13 +90,25 @@ glt::lib::Library::Library(const std::string& pathname) :
 	// FIXME: It isn't thread safe to iterate using this count - find an alternative
 	uint32_t num_images = _dyld_image_count();
 
-	for (uint32_t i = 0; i < num_images; ++i) {
-		std::string library_name = _dyld_get_image_name(i);
+	const auto& logger = glt::GetLogger();
+	logger->debug("{} images to enumerate");
 
-		if (library_name.find(pathnamext) != std::string::npos) {
-			m_handle = reinterpret_cast<std::uintptr_t*>(
-				_dyld_get_image_vmaddr_slide(i)
-			);
+	for (uint32_t i = 0; i < num_images; ++i) {
+		const char* c_name = _dyld_get_image_name(i);
+
+		if (!c_name)
+			continue;
+
+		std::string name = c_name;
+
+		logger->debug("image \"{}\"", name);
+
+		if (name.find(pathnamext) != std::string::npos) {
+			auto p = _dyld_get_image_vmaddr_slide(i);
+
+			logger->debug("found image \"{}\" at {:x}", name, p);
+
+			m_handle = reinterpret_cast<std::uintptr_t*>(p);
 
 			break;
 		}
