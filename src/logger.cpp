@@ -21,10 +21,13 @@ static std::shared_ptr<spdlog::logger> logger = nullptr;
 void glt::InitLogger() {
 	spdlog::flush_every(std::chrono::seconds(1));
 	spdlog::set_pattern("[%d-%m-%C - %T.%e] [%l] %v");
+	spdlog::set_level(spdlog::level::trace);
 
 	const auto& logpath = file::GetLogFilePath();
 
 	logger = spdlog::basic_logger_mt("gluasteal", logpath.string());
+
+	logger.get()->debug("Logger initialised");
 }
 
 spdlog::logger* glt::GetLogger() {
