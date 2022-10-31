@@ -166,10 +166,11 @@ git clone https://github.com/lewisclark/glua-steal
 cd glua-steal
 git submodule update --init --recursive
 mkdir build && cd build
-choose the gcc-macos-32bit or gcc-64bit toolchain below (toolchains are in toolchains/ folder)
-cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/gcc-<macos-32bit/64bit>.cmake
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/gcc-macos-x86_64.cmake
 make
 ```
+
+If needed, the library can be built in i386 (32-bit) using either the `gcc-macos-i386` or `gcc-macos-fat` toolchain. The 32-bit build of glua-steal has not been build or tested because [Xcode dropped support](b54eb95f1412f36d0609ebc59a0af23608d6ea75) for building 32-bit applications.
 
 ---
 
