@@ -86,7 +86,7 @@ jobs:
           - { name: "macOS Big Sur 11", distro: macos-11 }
           - { name: "macOS Monterey 12", distro: macos-12 }
         build_type: [Debug, Release]
-        toolchain: ["gcc-macos-i386", "gcc-macos-x86_64", "gcc-macos-fat"]
+        toolchain: ["gcc-macos-x86_64"]
 
     name: "${{matrix.os.name}} ${{matrix.build_type}} ${{matrix.toolchain}}"
     runs-on: ${{matrix.os.distro}}
