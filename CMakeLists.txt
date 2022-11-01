@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(gluasteal LANGUAGES CXX VERSION 2.0)
+project(gluasteal LANGUAGES CXX VERSION 2.1)
 
 enable_testing()
 
