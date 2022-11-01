@@ -13,11 +13,6 @@ gluasteal is a better, cross-platform replacement for various Lua dumpers and lo
 ![Windows usage](https://i.imgur.com/j38AKQ7.png)
 ![Linux usage](https://i.imgur.com/N7reRXS.png)
 
-| Operating System | Architecture |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-
 Supported operating systems and architectures:
 - Windows 32-bit
 - Windows 64-bit
@@ -36,7 +31,6 @@ Please submit an issue if glua-steal is not working on your system.
 * Lua Blocker - Block Lua scripts of your choosing
 * Concurrent IO - The Lua dumper does IO in its own thread to eliminate bottleneck and ensure maximum in-game performance
 * Robust protections against servers serving malicious file paths
-* Supports the 32-bit and 64-bit versions of the game
 * Easily [configurable](#configuration)
 
 ---
