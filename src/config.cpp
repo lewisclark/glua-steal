@@ -92,7 +92,7 @@ void glt::config::LoadConfig() {
 			}
 		}
 
-		//spdlog::set_level(cfg.logger_level);
+		spdlog::set_level(cfg.logger_level);
 
 		logger->debug("Config loaded");
 
