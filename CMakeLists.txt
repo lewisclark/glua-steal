@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
-
 project(gluasteal LANGUAGES CXX VERSION 2.0)
 
 enable_testing()
