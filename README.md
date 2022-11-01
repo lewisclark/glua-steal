@@ -13,7 +13,14 @@ gluasteal is a better, cross-platform replacement for various Lua dumpers and lo
 ![Windows usage](https://i.imgur.com/j38AKQ7.png)
 ![Linux usage](https://i.imgur.com/N7reRXS.png)
 
-Supports Windows & Linux (32-bit & 64-bit). Has not yet been tested on macOS.
+Supported operating systems and architectures:
+- Windows 32-bit
+- Windows 64-bit
+- Linux 32-bit
+- Linux 64-bit
+- macOS 64-bit
+
+Please submit an issue if glua-steal is not working on your system.
 
 ---
 
@@ -61,7 +68,17 @@ Logs and Lua files will be written to the gluasteal folder, in your home directo
 
 #### macOS
 
-Using DYLD\_INSERT\_LIBRARIES (see LD\_PRELOAD above)
+Using LLDB.
+
+```bash
+pid=1234
+lib_path="/full/path/to/libgluasteal.dylib"
+
+sudo lldb --attach-pid $pid --batch \
+    -o "p (void*)dlopen(\"$lib_path\", 1)" \
+    -o detach \
+    -o quit
+```
 
 ---
 
