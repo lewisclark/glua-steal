@@ -50,6 +50,8 @@ jobs:
         with:
           name: ${{matrix.os.distro}}-gcc${{matrix.os.gcc_version}}-${{matrix.toolchain}}-${{matrix.build_type}}
           path: ${{runner.workspace}}/build/src/libgluasteal.so
+          if-no-files-found: error
+          retention-days: 14
   windows:
     strategy:
       matrix:
@@ -89,6 +91,8 @@ jobs:
         with:
           name: ${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}
           path: ${{runner.workspace}}/build/src/${{matrix.build_type}}/gluasteal.dll
+          if-no-files-found: error
+          retention-days: 14
   macos:
     strategy:
       matrix:
@@ -131,4 +135,6 @@ jobs:
         with:
           name: ${{matrix.os.distro}}-${{matrix.toolchain}}-${{matrix.build_type}}
           path: ${{runner.workspace}}/build/src/libgluasteal.dylib
+          if-no-files-found: error
+          retention-days: 14
 
