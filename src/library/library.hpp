@@ -24,13 +24,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include <map>
 
 #include "os.hpp"
+#include "logger.hpp"
 
-#if (defined(OS_LINUX) || defined(OS_MAC))
+#if (defined(OS_LINUX))
 #include <dlfcn.h>
 #include <link.h>
 #elif (defined(OS_WINDOWS))
 #include <windows.h>
 #include <tlhelp32.h>
+#elif (defined(OS_MAC))
+#include <dlfcn.h>
+#include <mach-o/dyld.h>
 #endif
 
 namespace glt::lib {

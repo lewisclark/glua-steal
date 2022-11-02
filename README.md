@@ -2,7 +2,7 @@
 
 [![CI Badge](https://github.com/lewisclark/glua-steal/workflows/CI/badge.svg)](https://github.com/lewisclark/glua-steal/actions?query=workflow%3Aci)
 ![Downloads Badge](https://img.shields.io/github/downloads/lewisclark/glua-steal/total)
-![Version Badge](https://img.shields.io/badge/version-2.0-green)
+![Version Badge](https://img.shields.io/badge/version-2.1-green)
 ![License Badge](https://img.shields.io/github/license/lewisclark/glua-steal)
 ![Issues Badge](https://img.shields.io/github/issues/lewisclark/glua-steal)
 
@@ -13,7 +13,14 @@ gluasteal is a better, cross-platform replacement for various Lua dumpers and lo
 ![Windows usage](https://i.imgur.com/j38AKQ7.png)
 ![Linux usage](https://i.imgur.com/N7reRXS.png)
 
-Supports Windows & Linux (32-bit & 64-bit). Has not yet been tested on macOS.
+Supported operating systems and architectures:
+- Windows 32-bit
+- Windows 64-bit
+- Linux 32-bit
+- Linux 64-bit
+- macOS 64-bit
+
+Please submit an issue if glua-steal is not working on your system.
 
 ---
 
@@ -24,8 +31,6 @@ Supports Windows & Linux (32-bit & 64-bit). Has not yet been tested on macOS.
 * Lua Blocker - Block Lua scripts of your choosing
 * Concurrent IO - The Lua dumper does IO in its own thread to eliminate bottleneck and ensure maximum in-game performance
 * Robust protections against servers serving malicious file paths
-* Supports the 32-bit and 64-bit versions of the game
-* Supports Windows and Linux
 * Easily [configurable](#configuration)
 
 ---
@@ -61,7 +66,17 @@ Logs and Lua files will be written to the gluasteal folder, in your home directo
 
 #### macOS
 
-Using DYLD\_INSERT\_LIBRARIES (see LD\_PRELOAD above)
+Using LLDB.
+
+```bash
+pid=1234
+lib_path="/full/path/to/libgluasteal.dylib"
+
+sudo lldb --attach-pid $pid --batch \
+    -o "p (void*)dlopen(\"$lib_path\", 1)" \
+    -o detach \
+    -o quit
+```
 
 ---
 
@@ -155,10 +170,22 @@ git clone https://github.com/lewisclark/glua-steal
 cd glua-steal
 git submodule update --init --recursive
 mkdir build && cd build
-choose the 32bit or 64bit toolchain below (toolchains are in toolchains/ folder)
+choose the gcc-32bit or gcc-64bit toolchain below (toolchains are in toolchains/ folder)
 cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/gcc-<32bit/64bit>.cmake
 make
 ```
+
+##### macOS
+```
+git clone https://github.com/lewisclark/glua-steal
+cd glua-steal
+git submodule update --init --recursive
+mkdir build && cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/gcc-macos-x86_64.cmake
+make
+```
+
+If needed, the library can be built in i386 (32-bit) using either the `gcc-macos-i386` or `gcc-macos-fat` toolchain. The 32-bit build of glua-steal has not been built or tested because Xcode [dropped support](../../commit/b54eb95f1412f36d0609ebc59a0af23608d6ea75) for building 32-bit applications.
 
 ---
 

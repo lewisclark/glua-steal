@@ -34,7 +34,7 @@ static const std::map<std::string, std::string> extension_mapping = {
 #endif
 };
 
-#if (defined(OS_LINUX) || defined(OS_MAC))
+#if (defined(OS_LINUX))
 	struct library_entry {
 		const char* name;
 		void* lib;
@@ -57,7 +57,7 @@ glt::lib::Library::Library(const std::string& pathname) :
 
 	std::string pathnamext(pathname + GetExtension(pathname));
 
-#if (defined(OS_LINUX) || defined(OS_MAC))
+#if (defined(OS_LINUX))
 	library_entry entry;
 	entry.name = pathnamext.c_str();
 	entry.lib = nullptr;
@@ -84,6 +84,35 @@ glt::lib::Library::Library(const std::string& pathname) :
 		}
 
 	} while (Module32Next(module_snap, &module_entry));
+#elif (defined(OS_MAC))
+	// https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/dyld.3.html
+
+	// FIXME: It isn't thread safe to iterate using this count - find an alternative
+	uint32_t num_images = _dyld_image_count();
+
+	const auto& logger = glt::GetLogger();
+	logger->debug("{} images to enumerate", num_images);
+
+	for (uint32_t i = 0; i < num_images; ++i) {
+		const char* c_name = _dyld_get_image_name(i);
+
+		if (!c_name)
+			continue;
+
+		std::string name = c_name;
+
+		logger->debug("image \"{}\"", name);
+
+		if (name.find(pathnamext) != std::string::npos) {
+			auto p = dlopen(c_name, RTLD_NOLOAD | RTLD_NOW);
+
+			logger->debug("found image \"{}\" at {:x}", name, (uintptr_t)p);
+
+			m_handle = reinterpret_cast<std::uintptr_t*>(p);
+
+			break;
+		}
+	}
 #endif
 
 	if (!m_handle) {
