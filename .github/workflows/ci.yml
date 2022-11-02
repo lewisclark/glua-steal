@@ -83,7 +83,7 @@ jobs:
 
       - name: Test
         working-directory: ${{runner.workspace}}/build
-        run: ctest -V -C ${{matrix.build_type}} --timeout 60
+        run: ctest -V -C ${{matrix.build_type}} --timeout 60 && dir /a-D /S /B
 
       - uses: actions/upload-artifact@v3
         with:
