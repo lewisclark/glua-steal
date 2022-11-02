@@ -45,6 +45,11 @@ jobs:
         working-directory: ${{runner.workspace}}/build
         shell: bash
         run: ctest -V -C ${{matrix.build_type}}
+
+      - uses: actions/upload-artifact@v3
+      with:
+        name: ${{matrix.os.distro}}-gcc${{matrix.os.gcc_version}}-${{matrix.toolchain}}-${{matrix.build_type}}
+        path: ${{runner.workspace}}/build/src/${{matrix.build_type}}/libgluasteal.dll
   windows:
     strategy:
       matrix:
@@ -79,6 +84,11 @@ jobs:
       - name: Test
         working-directory: ${{runner.workspace}}/build
         run: ctest -V -C ${{matrix.build_type}} --timeout 60
+
+      - uses: actions/upload-artifact@v3
+      with:
+        name: ${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}
+        path: ${{runner.workspace}}/build/src/libgluasteal.so
   macos:
     strategy:
       matrix:
@@ -116,4 +126,9 @@ jobs:
         working-directory: ${{runner.workspace}}/build
         shell: bash
         run: ctest -V -C ${{matrix.build_type}}
+
+      - uses: actions/upload-artifact@v3
+      with:
+        name: ${{matrix.os.distro}}-${{matrix.toolchain}}-${{matrix.build_type}}
+        path: ${{runner.workspace}}/build/src/libgluasteal.dylib
 
