@@ -83,12 +83,12 @@ jobs:
 
       - name: Test
         working-directory: ${{runner.workspace}}/build
-        run: ctest -V -C ${{matrix.build_type}} --timeout 60 && dir /a-D /S /B
+        run: ctest -V -C ${{matrix.build_type}} --timeout 60
 
       - uses: actions/upload-artifact@v3
         with:
           name: ${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}
-          path: ${{runner.workspace}}/build/src/${{matrix.build_type}}/${{matrix.arch}}/libgluasteal.dll
+          path: ${{runner.workspace}}/build/src/${{matrix.build_type}}/gluasteal.dll
   macos:
     strategy:
       matrix:
