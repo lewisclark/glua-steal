@@ -14,6 +14,7 @@ jobs:
 
     name: "${{matrix.os.name}} ${{matrix.build_type}} ${{matrix.toolchain}}"
     runs-on: ${{matrix.os.distro}}
+    artifact-path: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-gcc${{matrix.os.gcc_version}}-${{matrix.toolchain}}-${{matrix.build_type}}.so
 
     steps:
       - uses: actions/checkout@v3
@@ -46,10 +47,13 @@ jobs:
         shell: bash
         run: ctest -V -C ${{matrix.build_type}}
 
+      - name: Rename library artifact
+        run: mv ${{runner.workspace}}/build/src/libgluasteal.so ${{artifact-path}}
+
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{matrix.os.distro}}-gcc${{matrix.os.gcc_version}}-${{matrix.toolchain}}-${{matrix.build_type}}
-          path: ${{runner.workspace}}/build/src/libgluasteal.so
+          name: "Linux"
+          path: ${{artifact-path}}
           if-no-files-found: error
           retention-days: 14
   windows:
@@ -63,6 +67,7 @@ jobs:
 
     name: "${{matrix.os.name}} ${{matrix.build_type}} ${{matrix.arch}}"
     runs-on: ${{matrix.os.distro}}
+    artifact-path: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}.dll
 
     steps:
       - uses: actions/checkout@v3
@@ -87,10 +92,13 @@ jobs:
         working-directory: ${{runner.workspace}}/build
         run: ctest -V -C ${{matrix.build_type}} --timeout 60
 
+      - name: Rename library artifact
+        run: move ${{runner.workspace}}/build/src/${{matrix.build_type}}/gluasteal.dll ${{artifact-path}}
+
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}
-          path: ${{runner.workspace}}/build/src/${{matrix.build_type}}/gluasteal.dll
+          name: "Windows"
+          path: ${{artifact-path}}
           if-no-files-found: error
           retention-days: 14
   macos:
@@ -104,6 +112,7 @@ jobs:
 
     name: "${{matrix.os.name}} ${{matrix.build_type}} ${{matrix.toolchain}}"
     runs-on: ${{matrix.os.distro}}
+    artifact-path: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.toolchain}}-${{matrix.build_type}}.dylib
 
     steps:
       - uses: actions/checkout@v3
@@ -131,10 +140,13 @@ jobs:
         shell: bash
         run: ctest -V -C ${{matrix.build_type}}
 
+      - name: Rename library artifact
+        run: mv ${{runner.workspace}}/build/src/libgluasteal.dylib ${{artifact-path}}
+
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{matrix.os.distro}}-${{matrix.toolchain}}-${{matrix.build_type}}
-          path: ${{runner.workspace}}/build/src/libgluasteal.dylib
+          name: "macOS"
+          path: ${{artifact-path}}
           if-no-files-found: error
           retention-days: 14
 
