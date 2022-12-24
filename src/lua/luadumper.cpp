@@ -70,7 +70,7 @@ void glt::lua::IoThread() {
 					auto of = std::ofstream(path, glt::config::GetConfig().stealer_write_mode | std::ofstream::binary);
 					of << "-- " << sanitized_filename << std::endl;
 					of << "-- Retrieved by https://github.com/lewisclark/glua-steal" << std::endl;
-					of << entry.code;
+					of << entry.code << std::endl;
 				}
 
 				shared_entries.clear();

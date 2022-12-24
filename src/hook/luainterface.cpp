@@ -38,10 +38,18 @@ static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::u
 	std::string strcode = buf;
 
 	bool load = true;
+	bool dump = true;
 	try {
-		if (!glt::lua::LoadLua(thisptr, strfilename, strcode)) {
-			glt::GetLogger()->info("Blocked the execution of {}", strfilename);
+		auto ret = glt::lua::LoadLua(thisptr, strfilename, strcode);
+
+		if (!std::get<0>(ret)) {
+			glt::GetLogger()->debug("Blocked the execution of {}", strfilename);
 			load = false;
+		}
+
+		if (!std::get<1>(ret)) {
+			glt::GetLogger()->debug("Blocked the dumping of {}", strfilename);
+			dump = false;
 		}
 	}
 	catch (const std::exception& ex) {
@@ -53,7 +61,7 @@ static bool __FASTCALL__ RunStringExHk(glt::ssdk::ILuaInterface* thisptr, std::u
 		ret = RunStringExOrig(thisptr, filename, path, buf, b1, b2, b3, b4);
 	}
 
-	if (glt::config::GetConfig().stealer_enabled)
+	if (glt::config::GetConfig().stealer_enabled && dump)
 		glt::lua::DumpLua(std::move(strfilename), std::move(strcode));
 
 	return ret;
