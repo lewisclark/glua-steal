@@ -84,14 +84,30 @@ sudo lldb --attach-pid $pid --batch \
 
 Create the file 'gluasteal.lua' in the [gluasteal directory](#the-gluasteal-directory); you can place your Lua code you wish to execute in here. This file is executed in a separate environment, not in \_G, Though you will still able to access everything in \_G.
 
-This file will be executed every time a Garry's Mod Lua script is about to be executed. You can return false to stop the current file (stored in gluasteal.SCRIPT) from being executed.
+This file will be executed every time a Garry's Mod Lua script is about to be executed.
+
+#### Return Values
+
+There are two values you can return, if you choose to:
+
+1. should the current file be loaded/executed?
+2. should the current file be dumped/written to disk? (more info in #49)
+
+These values default to true when they are nil/not given.
 
 #### Examples
 
 ```lua
--- Stops scripts with the string 'derma' in their path from executing.
+-- Stops scripts with the string 'derma' in their path from executing, while still dumping them.
 if (gluasteal.SCRIPT:match("derma")) then
-	return false
+    return false, true
+end
+```
+
+```lua
+-- Stops scripts with the string 'derma' in their path from being dumped/written to disk.
+if (gluasteal.SCRIPT:match("derma")) then
+    return true, false
 end
 ```
 
@@ -101,13 +117,13 @@ end
 if gluasteal.SCRIPT == "includes/init.lua" then
     -- your code here
     
-    -- e.g. execute the script "my_cool_script.lua" in your gluasteal directory
-    gluasteal.include("my_cool_script.lua")
+    -- e.g. execute another Lua file in your gluasteal directory
+    gluasteal.include("init.lua")
 end
 ```
 
 #### gluasteal variables and functions
-- gluasteal.SCRIPT -- The path of the Garry's Mod Lua script that is about to be executed. e.g. `init.lua`
+- gluasteal.SCRIPT -- The path of the Garry's Mod Lua script that is about to be executed. e.g. `includes/init.lua`
 - gluasteal.SOURCE -- The source code of the script that is about to be executed. e.g. `do return end`
 - gluasteal.VERSION -- The version of gluasteal being used
 - gluasteal.include -- A function to execute other gluasteal Lua files, relative to the gluasteal directory. e.g. `gluasteal.include("other.lua")`
