@@ -91,7 +91,7 @@ This file will be executed every time a Garry's Mod Lua script is about to be ex
 There are two values you can return, if you choose to:
 
 1. should the current file be loaded/executed?
-2. should the current file be dumped/written to disk? (more info in #49)
+2. should the current file be dumped/written to disk? (more info in [issue 49](https://github.com/lewisclark/glua-steal/issues/49#issuecomment-1364582025))
 
 These values default to true when they are nil/not given.
 
