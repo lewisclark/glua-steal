@@ -98,7 +98,7 @@ end
 ```lua
 -- Makes the code inside the if statement only execute once, before the first Lua file is loaded
 -- also known as 'load before autorun'
-if gluasteal.SCRIPT == "includes/init.lua" then
+if gluasteal.SCRIPT == "lua/includes/init.lua" then
     -- your code here
     
     -- e.g. execute the script "my_cool_script.lua" in your gluasteal directory
@@ -107,7 +107,7 @@ end
 ```
 
 #### gluasteal variables and functions
-- gluasteal.SCRIPT -- The path of the Garry's Mod Lua script that is about to be executed. e.g. `init.lua`
+- gluasteal.SCRIPT -- The path of the Garry's Mod Lua script that is about to be executed. e.g. `lua/includes/init.lua`
 - gluasteal.SOURCE -- The source code of the script that is about to be executed. e.g. `do return end`
 - gluasteal.VERSION -- The version of gluasteal being used
 - gluasteal.include -- A function to execute other gluasteal Lua files, relative to the gluasteal directory. e.g. `gluasteal.include("other.lua")`
