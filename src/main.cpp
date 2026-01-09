@@ -26,16 +26,26 @@ void* InitWrap(void*) {
 	return nullptr;
 }
 
-int __attribute__((constructor)) main() {
+bool is_game_process() {
+	std::string proc_name = program_invocation_short_name;
+
+	return proc_name == "gmod" || proc_name == "hl2_linux";
+}
+
+void __attribute__((constructor)) glt_main() {
+	if (!is_game_process()) {
+		return;
+	}
+
 	pthread_t th;
 	pthread_create(&th, NULL, InitWrap, NULL);
+	pthread_detach(th);
+}
 
+int __attribute__((destructor)) glt_kill() {
 	return 0;
 }
 
-int __attribute__((destructor)) kill() {
-	return 0;
-}
 #endif
 
 
