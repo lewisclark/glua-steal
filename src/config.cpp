@@ -99,9 +99,9 @@ void glt::config::LoadConfig() {
 		logger->debug(
 			"stealer.enabled = {}, stealer.write_mode = {}, loader.file = {}, logger.level = {}",
 			cfg.stealer_enabled,
-			cfg.stealer_write_mode,
+			static_cast<int>(cfg.stealer_write_mode),
 			cfg.loader_file,
-			cfg.logger_level
+			spdlog::level::to_string_view(cfg.logger_level)
 		);
 	}
 	catch (const std::exception& ex) {
