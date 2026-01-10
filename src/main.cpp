@@ -20,14 +20,26 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #if (defined(OS_LINUX) || defined(OS_MAC))
 #include <pthread.h>
 
+#ifdef OS_MAC
+#include <stdlib.h>
+#endif
+
 void* InitWrap(void*) {
 	glt::Init();
 
 	return nullptr;
 }
 
+std::string get_process_name() {
+#ifdef OS_MAC
+	return std::string(getprogname());
+#else
+	return std::string(program_invocation_short_name);
+#endif
+}
+
 bool is_game_process() {
-	std::string proc_name = program_invocation_short_name;
+	std::string proc_name = get_process_name();
 
 	return proc_name == "gmod" || proc_name == "hl2_linux";
 }
