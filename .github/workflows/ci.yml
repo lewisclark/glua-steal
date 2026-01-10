@@ -47,7 +47,7 @@ jobs:
         run: ctest -V -C ${{matrix.build_type}}
 
       - name: Rename library artifact
-        run: mv ${{runner.workspace}}/build/src/libgluasteal.so ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-gcc${{matrix.os.gcc_version}}-${{matrix.toolchain}}-${{matrix.build_type}}.so
+        run: mv ${{runner.workspace}}/build/src/libgluasteal.so ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-gcc${{matrix.os.gcc_version}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}.so
 
       - uses: actions/upload-artifact@v4
         with:
@@ -91,7 +91,7 @@ jobs:
         run: ctest -V -C ${{matrix.build_type}} --timeout 60
 
       - name: Rename library artifact
-        run: move ${{runner.workspace}}/build/src/${{matrix.build_type}}/gluasteal.dll ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}.dll
+        run: move ${{runner.workspace}}/build/src/${{matrix.build_type}}/gluasteal.dll ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}-${{github.sha}}.dll
 
       - uses: actions/upload-artifact@v4
         with:
@@ -138,7 +138,7 @@ jobs:
         run: ctest -V -C ${{matrix.build_type}}
 
       - name: Rename library artifact
-        run: mv ${{runner.workspace}}/build/src/libgluasteal.dylib ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.toolchain}}-${{matrix.build_type}}.dylib
+        run: mv ${{runner.workspace}}/build/src/libgluasteal.dylib ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}.dylib
 
       - uses: actions/upload-artifact@v4
         with:
