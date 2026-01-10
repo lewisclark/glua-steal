@@ -51,7 +51,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-gcc${{matrix.os.gcc_version}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}.so
+          name: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-gcc${{matrix.os.gcc_version}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}
           path: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-gcc${{matrix.os.gcc_version}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}.so
           if-no-files-found: error
           retention-days: 14
@@ -95,7 +95,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}-${{github.sha}}.dll
+          name: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}-${{github.sha}}
           path: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}-${{github.sha}}.dll
           if-no-files-found: error
           retention-days: 14
@@ -142,7 +142,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}.dylib
+          name: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}
           path: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}.dylib
           if-no-files-found: error
           retention-days: 14
