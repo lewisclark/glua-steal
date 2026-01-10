@@ -17,6 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef LOGGER_H
 #define LOGGER_H
 
+// Disable unicode for the fmt library, which is used by spdlog.
+// creates issues when compiling with msvc.
 #define FMT_UNICODE 0
 
 #include "spdlog/spdlog.h"
