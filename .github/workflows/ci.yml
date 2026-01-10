@@ -51,11 +51,10 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: "Linux"
+          name: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-gcc${{matrix.os.gcc_version}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}.so
           path: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-gcc${{matrix.os.gcc_version}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}.so
           if-no-files-found: error
           retention-days: 14
-          overwrite: true
   windows:
     strategy:
       matrix:
@@ -96,11 +95,10 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: "Windows"
+          name: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}-${{github.sha}}.dll
           path: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.arch}}-${{matrix.build_type}}-${{github.sha}}.dll
           if-no-files-found: error
           retention-days: 14
-          overwrite: true
   macos:
     strategy:
       matrix:
@@ -144,9 +142,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: "macOS"
+          name: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}.dylib
           path: ${{runner.workspace}}/build/gluasteal-${{matrix.os.distro}}-${{matrix.toolchain}}-${{matrix.build_type}}-${{github.sha}}.dylib
           if-no-files-found: error
           retention-days: 14
-          overwrite: true
 
