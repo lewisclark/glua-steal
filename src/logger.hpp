@@ -17,6 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #ifndef LOGGER_H
 #define LOGGER_H
 
+#define FMT_UNICODE 0
+
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
