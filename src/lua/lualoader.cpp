@@ -41,34 +41,36 @@ void glt::lua::RunLua(ssdk::ILuaInterface* lua, const std::string& identifier, c
 
 	CreateEnvironment(lua, gfilename, gcode);
 
-	if (lua->PCall(0, 1, 0)) {
+	if (lua->PCall(0, 2, 0)) {
 		const char* errstr = lua->GetString(-1);
 		lua->Pop(1);
 		throw std::runtime_error(fmt::format("execution error '{}'", errstr));
 	}
 }
 
-bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code) {
+std::tuple<bool, bool> glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code) {
 	const auto& loader_file = glt::config::GetConfig().loader_file;
 
 	try {
 		RunLua(lua, loader_file, GetLuaFileContents(loader_file), filename, code);
 	}
 	catch (const std::filesystem::filesystem_error&) { // loader file does not exist, supress exception
-		return true;
+		return std::tuple(true, true);
 	}
 
+	bool should_dump = true;
 	if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL)) {
-		bool shouldloadfile = lua->GetBool(-1);
-
-		lua->Pop(1);
-
-		return shouldloadfile;
+		should_dump = lua->GetBool(-1);
 	}
 
-	lua->Pop(1);
+	bool should_load = true;
+	if (lua->IsType(-2, GarrysMod::Lua::Type::BOOL)) {
+		should_load = lua->GetBool(-2);
+	}
 
-	return true;
+	lua->Pop(2);
+
+	return std::tuple(should_load, should_dump);
 }
 
 std::string glt::lua::GetLuaFileContents(const std::string& path) {

@@ -33,7 +33,7 @@ namespace glt::lua {
 
 	// Called by RunStringEx to determine if the lua file 'filename' should be blocked from executing
 	// Returns false if we should not load the current file (filename)
-	bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code);
+	std::tuple<bool, bool> LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code);
 
 	// Returns the lua code to run, relative to the gluasteal work directory
 	std::string GetLuaFileContents(const std::string& path);

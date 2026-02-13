@@ -84,14 +84,30 @@ sudo lldb --attach-pid $pid --batch \
 
 Create the file 'gluasteal.lua' in the [gluasteal directory](#the-gluasteal-directory); you can place your Lua code you wish to execute in here. This file is executed in a separate environment, not in \_G, Though you will still able to access everything in \_G.
 
-This file will be executed every time a Garry's Mod Lua script is about to be executed. You can return false to stop the current file (stored in gluasteal.SCRIPT) from being executed.
+This file will be executed every time a Garry's Mod Lua script is about to be executed.
+
+#### Return Values
+
+There are two values you can return, if you choose to:
+
+1. should the current file be loaded/executed?
+2. should the current file be dumped/written to disk? (more info in [issue 49](https://github.com/lewisclark/glua-steal/issues/49#issuecomment-1364582025))
+
+These values default to true when they are nil/not given.
 
 #### Examples
 
 ```lua
--- Stops scripts with the string 'derma' in their path from executing.
+-- Stops scripts with the string 'derma' in their path from executing, while still dumping them.
 if (gluasteal.SCRIPT:match("derma")) then
-	return false
+    return false, true
+end
+```
+
+```lua
+-- Stops scripts with the string 'derma' in their path from being dumped/written to disk.
+if (gluasteal.SCRIPT:match("derma")) then
+    return true, false
 end
 ```
 
@@ -101,8 +117,8 @@ end
 if gluasteal.SCRIPT == "lua/includes/init.lua" then
     -- your code here
     
-    -- e.g. execute the script "my_cool_script.lua" in your gluasteal directory
-    gluasteal.include("my_cool_script.lua")
+    -- e.g. execute another Lua file in your gluasteal directory
+    gluasteal.include("init.lua")
 end
 ```
 
