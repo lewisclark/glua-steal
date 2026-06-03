@@ -26,14 +26,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "file/file.hpp"
 
 namespace glt::lua {
+	struct LoaderResult {
+		bool should_load = true;
+		bool should_write = true;
+	};
+
 	// For running our own lua in a seperate environment
 	// TODO: Too many args. Refactor.
 	void RunLua(ssdk::ILuaInterface* lua, const std::string& identifier, const std::string& code,
-		const std::string& gfilename = "", const std::string& gcode = "");
+		const std::string& gfilename = "", const std::string& gcode = "", int results = 0);
 
-	// Called by RunStringEx to determine if the lua file 'filename' should be blocked from executing
-	// Returns false if we should not load the current file (filename)
-	bool LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code);
+	// Called by RunStringEx to determine how the current file should be handled
+	LoaderResult LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code);
 
 	// Returns the lua code to run, relative to the gluasteal work directory
 	std::string GetLuaFileContents(const std::string& path);

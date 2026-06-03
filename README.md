@@ -84,26 +84,27 @@ sudo lldb --attach-pid $pid --batch \
 
 Create the file 'gluasteal.lua' in the [gluasteal directory](#the-gluasteal-directory); you can place your Lua code you wish to execute in here. This file is executed in a separate environment, not in \_G, Though you will still able to access everything in \_G.
 
-This file will be executed every time a Garry's Mod Lua script is about to be executed. You can return false to stop the current file (stored in gluasteal.SCRIPT) from being executed.
+This file will be executed every time a Garry's Mod Lua script is about to be executed. You can return false to stop the current file (stored in gluasteal.SCRIPT) from being executed. You can also return a second false value to skip writing the current file to disk.
 
 #### Examples
 
 ```lua
--- Stops scripts with the string 'derma' in their path from executing.
 if (gluasteal.SCRIPT:match("derma")) then
 	return false
 end
 ```
 
 ```lua
--- Makes the code inside the if statement only execute once, before the first Lua file is loaded
--- also known as 'load before autorun'
 if gluasteal.SCRIPT == "lua/includes/init.lua" then
-    -- your code here
-    
-    -- e.g. execute the script "my_cool_script.lua" in your gluasteal directory
     gluasteal.include("my_cool_script.lua")
 end
+```
+
+```lua
+local should_load = not gluasteal.SOURCE:find("while true do end", 1, true)
+local should_write = not gluasteal.SOURCE:find("gluapack()()", 1, true)
+
+return should_load, should_write
 ```
 
 #### gluasteal variables and functions
@@ -111,8 +112,11 @@ end
 - gluasteal.SOURCE -- The source code of the script that is about to be executed. e.g. `do return end`
 - gluasteal.VERSION -- The version of gluasteal being used
 - gluasteal.include -- A function to execute other gluasteal Lua files, relative to the gluasteal directory. e.g. `gluasteal.include("other.lua")`
+- gluasteal.getenv -- Returns the value of an environment variable from the host process, or nil if it is not set. e.g. `gluasteal.getenv("HOME")`
 
 Note that gluasteal.SCRIPT and gluasteal.SOURCE will be an empty string in files included by gluasteal.include.
+
+The loader environment also provides `os.getenv(...)` for compatibility with standalone Lua scripts.
 
 ---
 
@@ -131,7 +135,7 @@ Example (default) configuration:
 # Options for the file stealer/dumper
 [stealer]
 enabled = true # Enable or disable
-write_mode = "truncate" # can be "truncate" or "append" - see issue #35 for info
+write_mode = "truncate" # can be "truncate", "append", or "once" - see issue #35 for info
 
 # Options for the Lua loader
 [loader]

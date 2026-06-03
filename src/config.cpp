@@ -16,7 +16,35 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "config.hpp"
 
+#include <algorithm>
+#include <cctype>
+
 static glt::config::Config cfg;
+
+glt::config::StealerWriteMode glt::config::ParseStealerWriteMode(std::string write_mode) {
+	std::transform(write_mode.begin(), write_mode.end(), write_mode.begin(), [](unsigned char c) {
+		return static_cast<char>(std::tolower(c));
+	});
+
+	if (write_mode == "append")
+		return StealerWriteMode::Append;
+
+	if (write_mode == "once")
+		return StealerWriteMode::Once;
+
+	return StealerWriteMode::Truncate;
+}
+
+const char* glt::config::GetStealerWriteModeName(StealerWriteMode write_mode) {
+	switch (write_mode) {
+		case StealerWriteMode::Append:
+			return "append";
+		case StealerWriteMode::Once:
+			return "once";
+		default:
+			return "truncate";
+	}
+}
 
 void glt::config::LoadConfig() {
 	glt::file::CreateConfig();
@@ -41,14 +69,7 @@ void glt::config::LoadConfig() {
 				const auto stealer_write_mode = toml::find(table_stealer, "write_mode");
 
 				if (stealer_write_mode.is_string()) {
-					auto wm = toml::get<std::string>(stealer_write_mode);
-
-					std::transform(wm.begin(), wm.end(), wm.begin(), ::tolower);
-
-					if (wm == "append")
-						cfg.stealer_write_mode = std::ofstream::app;
-					else
-						cfg.stealer_write_mode = std::ofstream::trunc;
+					cfg.stealer_write_mode = ParseStealerWriteMode(toml::get<std::string>(stealer_write_mode));
 				}
 			}
 		}
@@ -74,7 +95,9 @@ void glt::config::LoadConfig() {
 				if (logger_level.is_string()) {
 					auto level = toml::get<std::string>(logger_level);
 
-					std::transform(level.begin(), level.end(), level.begin(), ::tolower);
+					std::transform(level.begin(), level.end(), level.begin(), [](unsigned char c) {
+						return static_cast<char>(std::tolower(c));
+					});
 
 					if (level == "trace")
 						cfg.logger_level = spdlog::level::trace;
@@ -99,7 +122,7 @@ void glt::config::LoadConfig() {
 		logger->debug(
 			"stealer.enabled = {}, stealer.write_mode = {}, loader.file = {}, logger.level = {}",
 			cfg.stealer_enabled,
-			static_cast<int>(cfg.stealer_write_mode),
+			GetStealerWriteModeName(cfg.stealer_write_mode),
 			cfg.loader_file,
 			spdlog::level::to_string_view(cfg.logger_level)
 		);

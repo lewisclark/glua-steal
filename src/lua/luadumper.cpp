@@ -67,7 +67,18 @@ void glt::lua::IoThread() {
 						continue;
 					}
 
-					auto of = std::ofstream(path, glt::config::GetConfig().stealer_write_mode | std::ofstream::binary);
+					const auto write_mode = glt::config::GetConfig().stealer_write_mode;
+
+					if (write_mode == glt::config::StealerWriteMode::Once && std::filesystem::exists(path)) {
+						continue;
+					}
+
+					auto open_mode = std::ofstream::trunc;
+					if (write_mode == glt::config::StealerWriteMode::Append) {
+						open_mode = std::ofstream::app;
+					}
+
+					auto of = std::ofstream(path, open_mode | std::ofstream::binary);
 					of << "-- " << sanitized_filename << std::endl;
 					of << "-- Retrieved by https://github.com/lewisclark/glua-steal" << std::endl;
 					of << entry.code;

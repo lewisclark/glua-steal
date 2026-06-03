@@ -16,12 +16,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "lualoader.hpp"
 
+#include <cstdlib>
+#include <optional>
+
 static int include(lua_State*) {
 	glt::ssdk::ILuaInterface* lua = glt::ssdk::g_clientluainterface;
 	const char* filename = lua->CheckString(-1);
 
 	try {
-		glt::lua::RunLua(lua, filename, glt::lua::GetLuaFileContents(filename));
+		glt::lua::RunLua(lua, filename, glt::lua::GetLuaFileContents(filename), "", "", 0);
 	}
 	catch (const std::exception& ex) {
 		glt::GetLogger()->warn("Failed to include {}\t{}", filename, ex.what());
@@ -30,8 +33,44 @@ static int include(lua_State*) {
 	return 0;
 }
 
+static std::optional<std::string> get_environment_value(const char* key) {
+#ifdef OS_WINDOWS
+	char* value = nullptr;
+	size_t length = 0;
+	if (_dupenv_s(&value, &length, key) != 0 || value == nullptr) {
+		return std::nullopt;
+	}
+
+	std::string result(value, length > 0 ? length - 1 : 0);
+	free(value);
+	return result;
+#else
+	const char* value = std::getenv(key);
+	if (!value) {
+		return std::nullopt;
+	}
+
+	return std::string(value);
+#endif
+}
+
+static int getenv_fn(lua_State*) {
+	glt::ssdk::ILuaInterface* lua = glt::ssdk::g_clientluainterface;
+	const char* key = lua->CheckString(-1);
+	const auto value = get_environment_value(key);
+
+	if (value.has_value()) {
+		lua->PushString(value->c_str(), static_cast<unsigned int>(value->length()));
+	}
+	else {
+		lua->PushNil();
+	}
+
+	return 1;
+}
+
 void glt::lua::RunLua(ssdk::ILuaInterface* lua, const std::string& identifier, const std::string& code,
-	const std::string& gfilename, const std::string& gcode) {
+	const std::string& gfilename, const std::string& gcode, int results) {
 
 	if (luaL_loadbuffer(lua->GetLuaState(), code.c_str(), code.length(), identifier.c_str())) {
 		const char* errstr = lua->GetString(-1);
@@ -41,34 +80,35 @@ void glt::lua::RunLua(ssdk::ILuaInterface* lua, const std::string& identifier, c
 
 	CreateEnvironment(lua, gfilename, gcode);
 
-	if (lua->PCall(0, 1, 0)) {
+	if (lua->PCall(0, results, 0)) {
 		const char* errstr = lua->GetString(-1);
 		lua->Pop(1);
 		throw std::runtime_error(fmt::format("execution error '{}'", errstr));
 	}
 }
 
-bool glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code) {
+glt::lua::LoaderResult glt::lua::LoadLua(ssdk::ILuaInterface* lua, const std::string& filename, const std::string& code) {
 	const auto& loader_file = glt::config::GetConfig().loader_file;
+	LoaderResult result;
 
 	try {
-		RunLua(lua, loader_file, GetLuaFileContents(loader_file), filename, code);
+		RunLua(lua, loader_file, GetLuaFileContents(loader_file), filename, code, 2);
 	}
 	catch (const std::filesystem::filesystem_error&) { // loader file does not exist, supress exception
-		return true;
+		return result;
 	}
 
 	if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL)) {
-		bool shouldloadfile = lua->GetBool(-1);
-
-		lua->Pop(1);
-
-		return shouldloadfile;
+		result.should_write = lua->GetBool(-1);
 	}
 
-	lua->Pop(1);
+	if (lua->IsType(-2, GarrysMod::Lua::Type::BOOL)) {
+		result.should_load = lua->GetBool(-2);
+	}
 
-	return true;
+	lua->Pop(2);
+
+	return result;
 }
 
 std::string glt::lua::GetLuaFileContents(const std::string& path) {
@@ -79,10 +119,10 @@ void glt::lua::CreateEnvironment(ssdk::ILuaInterface* lua, const std::string& fi
 	lua->CreateTable(); // env
 
 	lua->CreateTable(); // env.gluasteal
-		lua->PushString(filename.c_str(), filename.length());
+		lua->PushString(filename.c_str(), static_cast<unsigned int>(filename.length()));
 		lua->SetField(-2, "SCRIPT");
 
-		lua->PushString(code.c_str(), code.length());
+		lua->PushString(code.c_str(), static_cast<unsigned int>(code.length()));
 		lua->SetField(-2, "SOURCE");
 
 		lua->PushNumber(GLUASTEAL_VERSION);
@@ -90,7 +130,24 @@ void glt::lua::CreateEnvironment(ssdk::ILuaInterface* lua, const std::string& fi
 
 		lua->PushCFunction(include);
 		lua->SetField(-2, "include");
+
+		lua->PushCFunction(getenv_fn);
+		lua->SetField(-2, "getenv");
 	lua->SetField(-2, "gluasteal");
+
+	lua->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
+	lua->GetField(-1, "os");
+	lua->CreateTable();
+		lua->PushCFunction(getenv_fn);
+		lua->SetField(-2, "getenv");
+		if (lua->IsType(-2, GarrysMod::Lua::Type::TABLE)) {
+			lua->CreateTable();
+				lua->Push(-3);
+				lua->SetField(-2, "__index");
+			lua->SetMetaTable(-2);
+		}
+	lua->SetField(-4, "os");
+	lua->Pop(2);
 
 	lua->CreateTable(); // env metatable
 		lua->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);

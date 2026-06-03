@@ -23,15 +23,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 #include "file/file.hpp"
 
 namespace glt::config {
+	enum class StealerWriteMode {
+		Truncate,
+		Append,
+		Once
+	};
+
 	const std::string DEFAULT_CONFIG = "[general]\n\n[stealer]\nenabled = true\nwrite_mode = \"truncate\"\n\n[loader]\nfile = \"gluasteal.lua\"\n\n[logger]\nlevel = \"info\"\n\n";
 
 	struct Config {
 		bool stealer_enabled = true;
-		std::ofstream::openmode stealer_write_mode = std::ofstream::trunc;
+		StealerWriteMode stealer_write_mode = StealerWriteMode::Truncate;
 		std::string loader_file = "gluasteal.lua";
 		spdlog::level::level_enum logger_level = spdlog::level::info;
 	};
 
+	StealerWriteMode ParseStealerWriteMode(std::string write_mode);
+	const char* GetStealerWriteModeName(StealerWriteMode write_mode);
 	void LoadConfig();
 	const Config GetConfig();
 }
